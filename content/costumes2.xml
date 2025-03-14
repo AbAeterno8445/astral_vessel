@@ -1,0 +1,51 @@
+<costumes anm2root="gfx/characters/">
+    <!-- HAIRSTYLES -->
+    <costume anm2path="hair/astralvessel/hair_guardian.anm2" type="none" priority="100" />
+    <costume anm2path="hair/astralvessel/hair_venus.anm2" type="none" priority="100" />
+    <costume anm2path="hair/astralvessel/hair_eden.anm2" type="none" priority="100" />
+    <costume anm2path="hair/astralvessel/hair_tlilith.anm2" type="none" priority="100" />
+
+    <costume anm2path="hair/astralvessel/hair_vessel.anm2" type="none" priority="100" />
+
+    <!-- FACES -->
+    <costume anm2path="faces/astralvessel/face_isaac.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_isaac_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_3dollar.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_chaos.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_chaos_nobrows.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_euthanasia.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_exp.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_godsflesh.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_foundpills.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_happy.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_happy_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_venus.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_knockout.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_knockout_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_luna.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_luna_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_maxhead.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_maxhead_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_maxhead_eyeonly.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_mindhead.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_polyphemus.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_polyphemus_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_roidrage.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_roidrage_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_sosig.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_speedball.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_spoonbender.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_spoonbender_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_taurus.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_taurus_nocry.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_thewiz.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_vampire.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_vampire_noblood.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_dads_dip.anm2" type="none" priority="0" />
+
+    <!-- ACCESSORIES -->
+    <costume anm2path="accessories/accessory_monocle.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/accessory_cainseyepatch.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/accessory_judasfez.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/accessory_keepernoose.anm2" type="none" priority="0" />
+</costumes>

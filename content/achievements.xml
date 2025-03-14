@@ -1,0 +1,12 @@
+<achievements gfxroot="gfx/ui/achievement/">
+    <achievement name="AVesselExtraItem1" gfxback="avessel_Mom.png" hidden="false" />
+    <achievement name="AVesselLesser1" gfxback="avessel_Moms_Heart.png" hidden="false" />
+    <achievement name="AVesselLesser2" gfxback="avessel_Mega_Satan.png" hidden="false" />
+    <achievement name="AVesselActives" gfxback="avessel_Boss_Rush.png" hidden="false" />
+    <achievement name="AVesselQual3" gfxback="avessel_Hush.png" hidden="false" />
+    <achievement name="AVesselExtraItem2" gfxback="avessel_Lamb.png" hidden="false" />
+    <achievement name="AVesselGreater1" gfxback="avessel_Blue_Baby.png" hidden="false" />
+    <achievement name="AVesselEmpyrean1" gfxback="avessel_Beast_Delirium.png" hidden="false" />
+    <achievement name="AVesselTrinkets" gfxback="avessel_Mother.png" hidden="false" />
+    <achievement name="AVesselExp1" gfxback="avessel_Ultra_Greed.png" hidden="false" />
+</achievements>

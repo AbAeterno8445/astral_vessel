@@ -1,0 +1,9 @@
+<players root="gfx/characters/costumes/" portraitroot="gfx/ui/stage/" nameimageroot="gfx/ui/boss/">
+    <player name="Astral Vessel"
+        skin="character_astralvessel.png"
+        nameimage="playername_astralvessel.png"
+        hp="4"
+        portrait="playerportrait_astralvessel.png"
+        skinColor="-1"
+    />
+</players>
