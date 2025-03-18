@@ -3,13 +3,25 @@ PSTAVessel.charType = Isaac.GetPlayerTypeByName("Astral Vessel")
 PSTAVessel.modCooldowns = {
     lightBeamHit = 0,
     palaChampSwords = 0,
-    squeezeBloodStone = 0
+    squeezeBloodStone = 0,
+    tempSpeedOnKill = 0,
+    roomClearIncubus = 0,
+    undeadSummonTears = 0,
+    dmgUntilKill = 0
+}
+PSTAVessel.firingCooldowns = {
+    ritualPurpleFlame = 0
 }
 PSTAVessel.updateTrackers = {
-    eternalHearts = 0
+    eternalHearts = 0,
+    redHearts = 0,
+    soulHearts = 0,
+    blackHearts = 0
 }
 PSTAVessel.floorFirstUpdate = false
 PSTAVessel.roomFirstFire = false
+
+PSTAVessel.carrionMobs = {}
 
 PSTAVessel.charUnlocks = {}
 PSTAVessel.charLoadouts = {}
@@ -24,6 +36,8 @@ function PSTAVessel:initCharData()
     PSTAVessel.charFace = nil
     PSTAVessel.charAccessories = {}
     PSTAVessel.charStartItems = {}
+
+    PSTAVessel.corpseRaiserChoice = {1, 1, 1}
 end
 PSTAVessel:initCharData()
 
@@ -267,3 +281,31 @@ PSTAVessel.facesList = {
 }
 
 include("scripts.constellationsInitData")
+
+PSTAVessel.knifeItems = {
+    CollectibleType.COLLECTIBLE_MOMS_KNIFE, CollectibleType.COLLECTIBLE_SACRIFICIAL_DAGGER, CollectibleType.COLLECTIBLE_BACKSTABBER,
+    CollectibleType.COLLECTIBLE_KNIFE_PIECE_1, CollectibleType.COLLECTIBLE_KNIFE_PIECE_2, CollectibleType.COLLECTIBLE_BETRAYAL,
+    CollectibleType.COLLECTIBLE_VENTRICLE_RAZOR, CollectibleType.COLLECTIBLE_DARK_ARTS, CollectibleType.COLLECTIBLE_POINTY_RIB
+}
+
+-- Corpse Raiser summon choices {entity type, variant, max summons, {anim1, anim2, ...}}
+PSTAVessel.corpseRaiserSummons1 = { -- Floors 5 and below
+    {EntityType.ENTITY_BONY, 0, 5},
+    {EntityType.ENTITY_CHARGER, 3, 4, {"Move Hori"}},
+    {EntityType.ENTITY_CLICKETY_CLACK, 0, 2}
+}
+PSTAVessel.corpseRaiserSummons2 = { -- Floors 9 and below
+    {EntityType.ENTITY_BONY, 0, 8},
+    {EntityType.ENTITY_BLACK_BONY, 0, 4},
+    {EntityType.ENTITY_CHARGER, 3, 8, {"Move Hori"}},
+    {EntityType.ENTITY_CLICKETY_CLACK, 0, 3},
+    {EntityType.ENTITY_REVENANT, 0, 2}
+}
+PSTAVessel.corpseRaiserSummons3 = { -- Floors 10+
+    {EntityType.ENTITY_BONY, 0, 11},
+    {EntityType.ENTITY_BLACK_BONY, 0, 6},
+    {EntityType.ENTITY_BONY, 1, 2},
+    {EntityType.ENTITY_CHARGER, 3, 11, {"Move Hori"}},
+    {EntityType.ENTITY_CLICKETY_CLACK, 0, 5},
+    {EntityType.ENTITY_REVENANT, 0, 3}
+}

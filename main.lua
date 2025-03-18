@@ -7,10 +7,11 @@ include("scripts.saveData")
 include("scripts.initTrees")
 include("scripts.menus.appearance.appearanceMenu")
 include("scripts.menus.nexus.nexusMenu")
-include("scripts.loadoutSubmenu")
+include("scripts.menus.loadoutSubmenu")
+include("scripts.menus.corpseRaiserSubmenu")
 
 include("scripts.costumes")
-include("scripts.onRender")
+include("scripts.treeRender")
 include("scripts.onNewRun")
 include("scripts.onNewRoom")
 include("scripts.onDeath")
@@ -22,6 +23,8 @@ include("scripts.onRoomClear")
 include("scripts.useItems")
 include("scripts.pickups")
 include("scripts.shops")
+include("scripts.entities")
+include("scripts.useCardsPills")
 include("scripts.consoleCommands")
 
 local initFlag = false
@@ -39,6 +42,7 @@ function PSTAVessel:initMod()
     PSTAVessel:initAppearanceMenu()
     PSTAVessel:initNexusMenu()
     PSTAVessel:initLoadoutSubmenu()
+    PSTAVessel:initCorpseRaiserSubmenu()
     print("Initialized Astral Vessel v" .. PSTAVessel.version)
 
     -- EID
@@ -64,7 +68,15 @@ function PSTAVessel:initMod()
     PSTAVessel:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, PSTAVessel.onCache)
     PSTAVessel:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, PSTAVessel.onRoomClear)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_PICKUP_SHOP_PURCHASE, PSTAVessel.onShopPurchase)
+    PSTAVessel:AddCallback(ModCallbacks.MC_NPC_UPDATE, PSTAVessel.onNPCUpdate)
+    PSTAVessel:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, PSTAVessel.effectUpdate)
     PSTAVessel:AddCallback(ModCallbacks.MC_USE_ITEM, PSTAVessel.onUseItem)
+    PSTAVessel:AddCallback(ModCallbacks.MC_USE_CARD, PSTAVessel.onUseCard)
+
+    -- Entity debug
+    --[[PSTAVessel:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, function(self, entityType, variant, subtype)
+        print("Entity Spawn:", entityType, variant, subtype)
+    end)]]
 
     PSTAVessel:load()
 end

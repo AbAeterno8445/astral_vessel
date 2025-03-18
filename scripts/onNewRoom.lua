@@ -29,6 +29,9 @@ function PSTAVessel:onNewRoom()
 
         -- Update trackers
         PSTAVessel.updateTrackers.eternalHearts = player:GetEternalHearts()
+        PSTAVessel.updateTrackers.redHearts = player:GetHearts()
+        PSTAVessel.updateTrackers.soulHearts = player:GetSoulHearts()
+        PSTAVessel.updateTrackers.blackHearts = PSTAVessel:GetBlackHeartCount(player)
     end
 
     -- Versus screen sprite color
@@ -55,7 +58,6 @@ function PSTAVessel:onNewRoom()
                 PST:addModifiers({ naturalCurseCleanse = 100, angelRoomCurseProc = true }, true)
                 PST:createFloatTextFX("Curse Cleanse", Vector.Zero, Color(1, 1, 1, 1), 0.13, 120, true)
             end
-
         -- Devil room
         elseif roomType == RoomType.ROOM_DEVIL then
             -- Mod: % chance to gain a black heart when entering a devil room, up to 3x per run
@@ -65,7 +67,6 @@ function PSTAVessel:onNewRoom()
                 SFXManager():Play(SoundEffect.SOUND_UNHOLY)
                 PST:addModifiers({ devilBlackHeartProcs = 1 }, true)
             end
-
         -- Treasure room
         elseif roomType == RoomType.ROOM_TREASURE then
             -- Mod: % chance to replace one item in the treasure room with an angel item (no Q4)
@@ -111,6 +112,76 @@ function PSTAVessel:onNewRoom()
                     end
                 end
             end
+
+            -- Astral Angle node (Dark Gambler occult constellation)
+            if PST:getTreeSnapshotMod("astralAngle", false) and PST:getTreeSnapshotMod("astralAngleSpawns", 0) < 2 then
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_REVERSE_STARS, tmpPos, Vector.Zero, nil)
+                PST:addModifiers({ astralAngleSpawns = 1 }, true)
+            end
+            if PST:getTreeSnapshotMod("astralAngleProc", 0) > 0 then
+                local tmpChance = 0.5 - PST:getTreeSnapshotMod("astralAngleKeep") / 100
+                if math.random() < tmpChance then
+                    local tmpItems = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+                    for _, tmpItem in ipairs(tmpItems) do
+                        if not PSTAVessel:arrHasValue(PST.progressionItems, tmpItem.SubType) then
+                            tmpItem:Remove()
+                        end
+                    end
+                end
+                PST:addModifiers({ astralAngleProc = -1 }, true)
+            end
+        -- Curse Room
+        elseif roomType == RoomType.ROOM_CURSE then
+            -- Mod: % chance for the curse room to contain an additional red chest
+            local tmpMod = PST:getTreeSnapshotMod("curseRoomRedChest", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, 0, tmpPos, Vector.Zero, nil)
+                SFXManager():Play(SoundEffect.SOUND_CHEST_DROP)
+            end
+
+            -- Mod: % chance for the curse room to contain an additional black heart
+            tmpMod = PST:getTreeSnapshotMod("curseRoomBlackHeart", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, tmpPos, Vector.Zero, nil)
+            end
         end
+    end
+
+    -- Mod: % chance to gain up to 1/2 lost heart in the room when killing enemies
+    if PST:getTreeSnapshotMod("daggerHeartOnKillProc", false) then
+        PST:addModifiers({
+            daggerHeartOnKill_red = false,
+            daggerHeartOnKill_soul = false,
+            daggerHeartOnKill_black = false,
+            daggerHeartOnKill_eternal = false,
+            daggerHeartOnKillProc = true
+        }, false)
+    end
+
+    -- Corpse Raiser node - ephemeral mod (Necromancer occult constellation)
+    -- Carrion Harvest node (Ritualist occult constellation)
+    if PST:getTreeSnapshotMod("corpseRaiserEphemeral", false) or PST:getTreeSnapshotMod("carrionHarvest", false) then
+        local tmpEntities = Isaac.GetRoomEntities()
+        for _, tmpEnt in ipairs(tmpEntities) do
+            local tmpNPC = tmpEnt:ToNPC()
+            if tmpNPC and (tmpNPC:GetData().PST_corpseRaised or tmpNPC:GetData().PST_carrionHarvestMob) then
+                tmpNPC:Remove()
+            end
+        end
+    end
+
+    -- Mod: +% damage until you kill a monster in the room
+    if PST:getTreeSnapshotMod("dmgUntilKillProc", false) then
+        PST:addModifiers({ dmgUntilKillProc = false }, true)
+        PSTAVessel.modCooldowns.dmgUntilKill = 0
+        PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+    end
+
+    -- Carrion Harvest node (Ritualist occult constellation)
+    if PST:getTreeSnapshotMod("carrionHarvest", false) then
+        PST:addModifiers({ carrionHarvestHits = { value = 3, set = true } }, true)
     end
 end

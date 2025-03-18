@@ -32,4 +32,30 @@ function PSTAVessel:onRoomClear()
             Isaac.ExecuteCommand("goto s.devil")
         end
     end
+
+    -- Mod: clearing room within 5 seconds has % chance to spawn a temporary incubus
+    tmpMod = PST:getTreeSnapshotMod("roomClearIncubus", 0)
+    if tmpMod > 0 and room:GetFrameCount() <= 150 and not playerGotHit and 100 * math.random() < tmpMod then
+        if PSTAVessel.modCooldowns.roomClearIncubus == 0 then
+            player:AddInnateCollectible(CollectibleType.COLLECTIBLE_INCUBUS)
+        end
+        PSTAVessel.modCooldowns.roomClearIncubus = 600
+    end
+
+    -- Boss room clear
+    if roomType == RoomType.ROOM_BOSS then
+        -- Mod: boss room soul conversion
+        tmpMod = PST:getTreeSnapshotMod("bossClearSoulConv", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local playerSoulHearts = player:GetSoulHearts() - PSTAVessel:GetBlackHeartCount(player)
+            if playerSoulHearts < 2 then
+                player:AddSoulHearts(2)
+                SFXManager():Play(SoundEffect.SOUND_HOLY)
+            else
+                player:AddSoulHearts(-2)
+                player:AddBlackHearts(2)
+                SFXManager():Play(SoundEffect.SOUND_UNHOLY)
+            end
+        end
+    end
 end

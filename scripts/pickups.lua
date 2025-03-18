@@ -15,6 +15,12 @@ function PSTAVessel:prePickup(pickup, collider, low)
 end
 
 local redHeartVariants = {HeartSubType.HEART_FULL, HeartSubType.HEART_HALF, HeartSubType.HEART_DOUBLEPACK, HeartSubType.HEART_SCARED}
+local redHeartWorth = {
+    [HeartSubType.HEART_HALF] = 1,
+    [HeartSubType.HEART_FULL] = 2,
+    [HeartSubType.HEART_SCARED] = 2,
+    [HeartSubType.HEART_DOUBLEPACK] = 4
+}
 
 ---@param pickup EntityPickup
 ---@param collider Entity
@@ -55,6 +61,15 @@ function PSTAVessel:onPickup(pickup, collider, low, forced)
                         end
                     end
                 end
+            end
+
+            -- Mod: % chance to gain a charge with active items when picking up red hearts, doubled if temporary
+            local tmpMod = PST:getTreeSnapshotMod("vampHeartCharges", 0)
+            if pickup.Timeout > 0 then tmpMod = tmpMod * 2 end
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local tmpWorth = redHeartWorth[pickup.SubType] or 1
+                player:AddActiveCharge(tmpWorth, ActiveSlot.SLOT_PRIMARY, true, false, false)
+                player:AddActiveCharge(tmpWorth, ActiveSlot.SLOT_POCKET, true, false, false)
             end
         end
     end

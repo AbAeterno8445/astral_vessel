@@ -9,6 +9,15 @@ function PSTAVessel:treeRender()
             if hoveredNode then
                 local alloc = PST:isNodeNameAllocated("Astral Vessel", hoveredNode.name)
 
+                -- Check if allocated within constellation trees
+                if not alloc then
+                    for _, tmpType in pairs(PSTAVConstellationType) do
+                        if PST:isNodeNameAllocated("Astral Vessel " .. tmpType, hoveredNode.name) then
+                            alloc = true
+                            break
+                        end
+                    end
+                end
                 if alloc then
                     -- Vessel-Shaping node, open appearance menu
                     if hoveredNode.name == "Vessel-Shaping" then
@@ -21,6 +30,13 @@ function PSTAVessel:treeRender()
                     -- Vessel Loadouts node, open loadouts submenu
                     elseif hoveredNode.name == "Vessel Loadouts" then
                         PST.treeScreen.modules.submenusModule:SwitchSubmenu(PSTAVessel.loadoutSubmenuID, {
+                            menuX = hoveredNode.pos.X * 38,
+                            menuY = hoveredNode.pos.Y * 38
+                        })
+                        SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
+                    -- Corpse Raiser node, open summon choice submenu
+                    elseif hoveredNode.name == "Corpse Raiser" then
+                        PST.treeScreen.modules.submenusModule:SwitchSubmenu(PSTAVessel.corpseRaiserSubmenuID, {
                             menuX = hoveredNode.pos.X * 38,
                             menuY = hoveredNode.pos.Y * 38
                         })

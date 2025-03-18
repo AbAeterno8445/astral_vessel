@@ -5,7 +5,7 @@ function PSTAVessel:sanitizeTrees()
     for _, tmpType in pairs(PSTAVConstellationType) do
         local tmpTree = "Astral Vessel " .. tmpType
         if PST.modData.treeNodes[tmpTree] then
-            local tmpTreeData = {}
+            local tmpTreeData = { [0] = 0 }
             for k, v in pairs(PST.modData.treeNodes[tmpTree]) do
                 if tonumber(k) ~= nil then
                     tmpTreeData[tonumber(k)] = v
@@ -43,7 +43,7 @@ end
 
 -- Save variables thrown 'as-is'
 local asIsVars = {
-    "charStartItems"
+    "charStartItems", "corpseRaiserChoice"
 }
 
 -- Save current settings into the currently selected loadout (PSTAVessel.currentLoadout)

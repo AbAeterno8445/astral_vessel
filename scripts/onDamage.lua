@@ -11,6 +11,21 @@ function PSTAVessel:onDamage(target, damage, flag, source)
         if PST:getTreeSnapshotMod("trueEternal", false) and player:GetEternalHearts() > 0 then
             PSTAVessel.trueEternalHitProc = true
         end
+
+        -- Mod: hexer curse buffs, up to % chance to block damage. Halve the chance when blocking
+        tmpMod = PST:getTreeSnapshotMod("hexerCurseBuff", 0) / (2 ^ PST:getTreeSnapshotMod("hexerCurseBuffBlocks", 0))
+        if tmpMod > 0 and (Game():GetLevel():GetCurses() & LevelCurse.CURSE_OF_THE_UNKNOWN) > 0 and 100 * math.random() < tmpMod * 2 then
+            PST:addModifiers({ hexerCurseBuffBlocks = 1 }, true)
+            SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
+            return { Damage = 0 }
+        end
+
+        -- Mod: % chance to spawn a Lil Abaddon for the room when hit
+        tmpMod = PST:getTreeSnapshotMod("lilAbaddonOnHit", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("lilAbaddonOnHitProcs", 0) < 2 and 100 * math.random() < tmpMod then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_LIL_ABADDON)
+            PST:addModifiers({ lilAbaddonOnHitProcs = 1 }, true)
+        end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
         local srcPlayer
         if source and source.Entity then
@@ -68,6 +83,42 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                         local soulHearts = math.floor((srcPlayer:GetSoulHearts() - PSTAVessel:GetBlackHeartCount(srcPlayer)) / 2)
                         if soulHearts > 0 then
                             dmgMult = dmgMult + (tmpMod / 100) * soulHearts
+                        end
+                    end
+                end
+
+                -- Hit source is directly the player or their tears
+                local trueSrcPlayer = source.Entity:ToPlayer()
+                if trueSrcPlayer == nil then
+                    if source.Entity.Parent then
+                        trueSrcPlayer = source.Entity.Parent:ToPlayer()
+                    end
+                    if trueSrcPlayer == nil and source.Entity.SpawnerEntity then
+                        trueSrcPlayer = source.Entity.SpawnerEntity:ToPlayer()
+                    end
+                end
+                if trueSrcPlayer then
+                    -- Squeeze Blood From Stone node (Baphomet demonic constellation)
+                    if PST:getTreeSnapshotMod("squeezeBloodStone", false) and (flag & DamageFlag.DAMAGE_LASER) == 0 and target:GetFreezeCountdown() > 0 and PSTAVessel.modCooldowns.squeezeBloodStone == 0 then
+                        local nearbyEnems = Isaac.FindInRadius(srcPlayer.Position, 120, EntityPartition.ENEMY)
+                        for _, tmpEnem in ipairs(nearbyEnems) do
+                            local nearNPC = tmpEnem:ToNPC()
+                            if nearNPC and nearNPC:IsVulnerableEnemy() and nearNPC:IsActiveEnemy(false) and not EntityRef(nearNPC).IsFriendly then
+                                if nearNPC:GetFreezeCountdown() > 0 then
+                                    local newLaser = srcPlayer:FireBrimstone((nearNPC.Position - srcPlayer.Position):Normalized(), srcPlayer, 0.9)
+                                    newLaser:SetScale(0.5)
+                                end
+                            end
+                        end
+                        PSTAVessel.modCooldowns.squeezeBloodStone = 150
+                    end
+
+                    -- Mod: hexer curse buffs, up to +% damage dealt to enemies far away from you
+                    tmpMod = PST:getTreeSnapshotMod("hexerCurseBuff", 0)
+                    if tmpMod > 0 and (Game():GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS) > 0 then
+                        local tmpDist = trueSrcPlayer.Position:Distance(target.Position)
+                        if tmpDist >= 70 then
+                            dmgMult = dmgMult + math.min((tmpMod * 2), (tmpMod * 2) * ((tmpDist - 69) / 150))
                         end
                     end
                 end
@@ -140,6 +191,15 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                 PSTAVessel.modCooldowns.lightBeamHit = 60
             end
 
+            -- Carrion Harvest node (Ritualist occult constellation)
+            if target:GetData().PST_carrionCurse then
+                dmgMult = dmgMult + 0.1
+            end
+            if PST:getTreeSnapshotMod("carrionHarvestHits", 0) > 0 and not target:GetData().PST_carrionCurse then
+                target:GetData().PST_carrionCurse = true
+                PST:addModifiers({ carrionHarvestHits = -1 }, true)
+            end
+
             -- NPC checks
             local tmpNPC = target:ToNPC()
             if tmpNPC then
@@ -159,32 +219,15 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                         SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.3, (i - 1) * 2, false, 1.4 + 0.6 * math.random())
                     end
                 end
-            end
 
-            -- Hit source is directly the player or their tears
-            local trueSrcPlayer = source.Entity:ToPlayer()
-            if trueSrcPlayer == nil then
-                if source.Entity.Parent then
-                    trueSrcPlayer = source.Entity.Parent:ToPlayer()
+                -- Mod: +% damage dealt to full health enemies per 1/2 red heart you have. Double bonus against bosses in boss rooms
+                tmpMod = PST:getTreeSnapshotMod("vampHealthyDmg", 0)
+                local roomType = Game():GetRoom():GetType()
+                if tmpNPC:IsBoss() and (roomType == RoomType.ROOM_BOSS or roomType == RoomType.ROOM_BOSSRUSH) then
+                    tmpMod = tmpMod * 2
                 end
-                if trueSrcPlayer == nil and source.Entity.SpawnerEntity then
-                    trueSrcPlayer = source.Entity.SpawnerEntity:ToPlayer()
-                end
-            end
-            if trueSrcPlayer then
-                -- Squeeze Blood From Stone node (Baphomet demonic constellation)
-                if PST:getTreeSnapshotMod("squeezeBloodStone", false) and (flag & DamageFlag.DAMAGE_LASER) == 0 and target:GetFreezeCountdown() > 0 and PSTAVessel.modCooldowns.squeezeBloodStone == 0 then
-                    local nearbyEnems = Isaac.FindInRadius(srcPlayer.Position, 120, EntityPartition.ENEMY)
-                    for _, tmpEnem in ipairs(nearbyEnems) do
-                        local tmpNPC = tmpEnem:ToNPC()
-                        if tmpNPC and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsActiveEnemy(false) and not EntityRef(tmpNPC).IsFriendly then
-                            if tmpNPC:GetFreezeCountdown() > 0 then
-                                local newLaser = srcPlayer:FireBrimstone((tmpNPC.Position - srcPlayer.Position):Normalized(), srcPlayer, 0.9)
-                                newLaser:SetScale(0.5)
-                            end
-                        end
-                    end
-                    PSTAVessel.modCooldowns.squeezeBloodStone = 150
+                if tmpMod > 0 and target.HitPoints == target.MaxHitPoints then
+                    dmgMult = dmgMult + (tmpMod / 100) * srcPlayer:GetHearts()
                 end
             end
         end

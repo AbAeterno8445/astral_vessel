@@ -18,10 +18,14 @@ local AVesselTree = [[
 -- Constellation trees
 local constTreeBanks = {
     [PSTAVConstellationType.DIVINE] = include("scripts.constellationTrees.divineTreeBank"),
-    [PSTAVConstellationType.DEMONIC] = include("scripts.constellationTrees.demonicTreeBank")
+    [PSTAVConstellationType.DEMONIC] = include("scripts.constellationTrees.demonicTreeBank"),
+    [PSTAVConstellationType.OCCULT] = include("scripts.constellationTrees.occultTreeBank")
 }
 
 function PSTAVessel:initVesselTree()
+    -- Init items
+    PSTAVessel:initConstellationItems()
+
     local vesselNodesSprite = Sprite("gfx/ui/astralvessel/vessel_nodes.anm2", true)
     PST.SkillTreesAPI.InitCustomNodeImage("astralvessel", vesselNodesSprite)
 

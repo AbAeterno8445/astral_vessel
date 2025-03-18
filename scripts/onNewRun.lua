@@ -58,8 +58,18 @@ function PSTAVessel:onNewRun(isContinued)
         if PST:getTreeSnapshotMod("archdemonDarkDecay", false) then
             PSTAVessel_addStartItem(CollectibleType.COLLECTIBLE_ABADDON)
         end
+
+        -- Corpse Raiser node (Necromancer occult constellation)
+        if PST:getTreeSnapshotMod("corpseRaiser", false) then
+            PST:addModifiers({
+                corpseRaiserChoice1 = PSTAVessel.corpseRaiserChoice[1],
+                corpseRaiserChoice2 = PSTAVessel.corpseRaiserChoice[2],
+                corpseRaiserChoice3 = PSTAVessel.corpseRaiserChoice[3]
+            }, true)
+        end
     end
 
+    PSTAVessel:onNewLevel()
     PSTAVessel:onNewRoom()
     PSTAVessel:save()
 end

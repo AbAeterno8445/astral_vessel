@@ -29,6 +29,25 @@ function PSTAVessel:onCache(player, cacheFlag)
             end
             dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod * devilItems
         end
+
+        -- Mod: +% damage per knife item you have
+        tmpMod = PST:getTreeSnapshotMod("knifeItemsDmg", 0)
+        if tmpMod > 0 then
+            local itemQ = 0
+            for _, tmpKnifeItem in ipairs(PSTAVessel.knifeItems) do
+                itemQ = itemQ + player:GetCollectibleNum(tmpKnifeItem, true)
+            end
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod * itemQ
+        end
+
+        -- Mod: +% damage until you kill a monster in the room
+        tmpMod = PST:getTreeSnapshotMod("dmgUntilKill", 0)
+        if PST:getTreeSnapshotMod("dmgUntilKillProc", false) then
+            tmpMod = tmpMod * math.max(0, PSTAVessel.modCooldowns.dmgUntilKill / 150)
+        end
+        if tmpMod > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: +% tears per angel item you have
@@ -41,12 +60,40 @@ function PSTAVessel:onCache(player, cacheFlag)
             end
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpMod * angelItems
         end
+
+        -- Mod: +% tears whenever a friendly undead monster is summoned
+        tmpMod = PST:getTreeSnapshotMod("undeadSummonTears", 0)
+        if tmpMod > 0 and PSTAVessel.modCooldowns.undeadSummonTears > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpMod
+        end
+    -- SPEED CACHE
+    elseif cacheFlag == CacheFlag.CACHE_SPEED then
+        -- Mod: +% speed for 3 seconds after killing an enemy. Stacks up to 5 times
+        tmpMod = PST:getTreeSnapshotMod("tempSpeedOnKill", 0)
+        local tmpStacks = PST:getTreeSnapshotMod("tempSpeedOnKillStacks", 0)
+        if tmpMod > 0 and tmpStacks > 0 and PSTAVessel.modCooldowns.tempSpeedOnKill > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod * math.min(5, tmpStacks)
+        end
     end
 
     -- Mod: +% all stats while you have eternal hearts
     tmpMod = PST:getTreeSnapshotMod("eternalAllstat", 0)
     if tmpMod > 0 and player:GetEternalHearts() > 0 then
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpMod
+    end
+
+    -- Mod: buffs based on present level curses
+    tmpMod = PST:getTreeSnapshotMod("hexerCurseBuff", 0)
+    if tmpMod > 0 then
+        local lvlCurses = Game():GetLevel():GetCurses()
+        -- Curse of the Blind: +% tears
+        if (lvlCurses & LevelCurse.CURSE_OF_BLIND) > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpMod
+        end
+        -- Curse of the Lost/Labyrinth/Maze: +% speed
+        if (lvlCurses & (LevelCurse.CURSE_OF_LABYRINTH | LevelCurse.CURSE_OF_MAZE | LevelCurse.CURSE_OF_THE_LOST)) > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
+        end
     end
 
     ---- Stat modifier application ----

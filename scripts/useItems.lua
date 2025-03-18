@@ -28,5 +28,22 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
                 end
             end
         end
+
+        -- Used by self
+        if (useFlags & UseFlag.USE_OWNED) > 0 then
+            -- Spindown Dice
+            if itemType == CollectibleType.COLLECTIBLE_SPINDOWN_DICE then
+                -- Spindown Angle node (Dark Gambler occult constellation)
+                tmpMod = PST:getTreeSnapshotMod("spindownAngleKeep", 0)
+                if PST:getTreeSnapshotMod("spindownAngle", false) and not PST:getTreeSnapshotMod("spindownAngleProc", false) then
+                    if not (100 * math.random() < tmpMod) then
+                        player:RemoveCollectible(CollectibleType.COLLECTIBLE_SPINDOWN_DICE)
+                        PST:addModifiers({ spindownAngleProc = true }, true)
+                    else
+                        PST:addModifiers({ spindownAngleKeep = { value = 0, set = true } }, true)
+                    end
+                end
+            end
+        end
     end
 end
