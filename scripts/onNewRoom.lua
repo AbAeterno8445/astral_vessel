@@ -184,4 +184,14 @@ function PSTAVessel:onNewRoom()
     if PST:getTreeSnapshotMod("carrionHarvest", false) then
         PST:addModifiers({ carrionHarvestHits = { value = 3, set = true } }, true)
     end
+
+    -- Mod: % chance to replace dropped basic pickups with sacks
+    if PST:getTreeSnapshotMod("pickupSacksProcs", 0) > 0 then
+        PST:addModifiers({ pickupSacksProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Life Insured node (God Of Fortune mercantile constellation)
+    if PST:getTreeSnapshotMod("lifeInsuredProc", false) then
+        PST:addModifiers({ lifeInsuredProc = false }, true)
+    end
 end

@@ -6,7 +6,7 @@ collectibleSprite:Play("ShopIdle")
 function PSTAVessel:onUpdate()
     ---@type EntityPlayer
     local player = PST:getPlayer()
-    if player:GetPlayerType() ~= PSTAVessel.charType then return end
+    --if player:GetPlayerType() ~= PSTAVessel.charType then return end
 
     ---@type Room
     local room = PST:getRoom()
@@ -21,6 +21,15 @@ function PSTAVessel:onUpdate()
             if player:GetEternalHearts() == 0 then
                 player:AddEternalHearts(1)
             end
+        end
+
+        -- Mod: % chance to spawn a Crane Game at the beginning of the floor
+        local tmpMod = PST:getTreeSnapshotMod("floorStartCrane", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos() - Vector(70, 70), 20)
+            Isaac.Spawn(EntityType.ENTITY_SLOT, SlotVariant.CRANE_GAME, 0, tmpPos, Vector.Zero, nil)
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+            SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN)
         end
 
         -- On first floor

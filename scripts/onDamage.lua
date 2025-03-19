@@ -26,6 +26,20 @@ function PSTAVessel:onDamage(target, damage, flag, source)
             player:AddCollectible(CollectibleType.COLLECTIBLE_LIL_ABADDON)
             PST:addModifiers({ lilAbaddonOnHitProcs = 1 }, true)
         end
+
+        -- Killing hits
+        local plHealth = player:GetHearts() + player:GetSoulHearts() + player:GetEternalHearts() + player:GetRottenHearts() / 2
+        if damage >= plHealth then
+            -- Life Insured node (God Of Fortune mercantile constellation)
+            if PST:getTreeSnapshotMod("lifeInsured", false) and player:GetNumCoins() >= 20 and not PST:getTreeSnapshotMod("lifeInsuredProc", false) and
+            PST:getTreeSnapshotMod("lifeInsuredProcsRun", 0) < 5 then
+                player:AddCoins(-20)
+                PST:addModifiers({ lifeInsuredProc = true, lifeInsuredProcsRun = 1 }, true)
+                SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE, 1, 2, false, 1.2)
+                PST:createFloatTextFX("Life Insured", Vector.Zero, Color(1, 1, 0.3, 1), 0.13, 120, true)
+                return { Damage = 0 }
+            end
+        end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
         local srcPlayer
         if source and source.Entity then

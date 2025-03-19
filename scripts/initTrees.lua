@@ -19,7 +19,8 @@ local AVesselTree = [[
 local constTreeBanks = {
     [PSTAVConstellationType.DIVINE] = include("scripts.constellationTrees.divineTreeBank"),
     [PSTAVConstellationType.DEMONIC] = include("scripts.constellationTrees.demonicTreeBank"),
-    [PSTAVConstellationType.OCCULT] = include("scripts.constellationTrees.occultTreeBank")
+    [PSTAVConstellationType.OCCULT] = include("scripts.constellationTrees.occultTreeBank"),
+    [PSTAVConstellationType.MERCANTILE] = include("scripts.constellationTrees.mercantileTreeBank")
 }
 
 function PSTAVessel:initVesselTree()

@@ -94,3 +94,13 @@ function PSTAVessel:GetBlackHeartCount(player)
 
     return black_count
 end
+
+---@param player EntityPlayer
+function PSTAVessel:playerHealthType(player)
+    if player:GetPlayerType() == PSTAVessel.charType then
+        -- Gold-Bound node (Greed mercantile constellation)
+        if PST:getTreeSnapshotMod("goldBound", false) then
+            return HealthType.COIN
+        end
+    end
+end

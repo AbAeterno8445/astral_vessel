@@ -43,5 +43,23 @@ function PSTAVessel:onNewLevel()
         PST:addModifiers({ lilAbaddonOnHitProcs = { value = 0, set = true } }, true)
     end
 
+    -- Mod: % chance to reduce all shop prices by 1-4 coins
+    tmpMod = PST:getTreeSnapshotMod("travelMerchShopDiscount", 0)
+    if tmpMod > 0 and 100 * math.random() < tmpMod then
+        PST:addModifiers({ travelMerchShopDiscountProc = { value = math.random(4), set = true } }, true)
+    elseif PST:getTreeSnapshotMod("travelMerchShopDiscountProc", 0) > 0 then
+        PST:addModifiers({ travelMerchShopDiscountProc = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to spawn a golden chest when purchasing an item
+    if PST:getTreeSnapshotMod("purchaseChestProcs", 0) > 0 then
+        PST:addModifiers({ purchaseChestProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to gain a gold heart when picking up pennies, once per floor
+    if PST:getTreeSnapshotMod("goldHeartOnPennyProc", false) then
+        PST:addModifiers({ goldHeartOnPennyProc = false }, true)
+    end
+
     PSTAVessel.floorFirstUpdate = true
 end

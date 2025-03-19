@@ -100,6 +100,19 @@ function PSTAVessel:onDeath(entity)
             PST:addModifiers({ dmgUntilKillProc = true }, true)
         end
 
+        -- Mod: % chance for monsters with at least X HP to drop an additional penny on death
+        tmpMod = PST:getTreeSnapshotMod("hpMobPenny", 0)
+        if tmpMod > 0 and entity.MaxHitPoints >= 10 and 100 * math.random() < tmpMod then
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY, entity.Position, RandomVector() * 3, nil)
+        end
+
+        -- Mod: % chance for monsters to drop an additional vanishing penny on death
+        tmpMod = PST:getTreeSnapshotMod("tempPennyOnKill", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local newPenny = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY, entity.Position, RandomVector() * 3, nil)
+            newPenny:ToPickup().Timeout = 60
+        end
+
         -- NPC checks
         local tmpNPC = entity:ToNPC()
         if tmpNPC then

@@ -21,6 +21,15 @@ local redHeartWorth = {
     [HeartSubType.HEART_SCARED] = 2,
     [HeartSubType.HEART_DOUBLEPACK] = 4
 }
+local coinWorth = {
+    [CoinSubType.COIN_PENNY] = 1,
+    [CoinSubType.COIN_NICKEL] = 5,
+    [CoinSubType.COIN_DIME] = 10,
+    [CoinSubType.COIN_DOUBLEPACK] = 2,
+    [CoinSubType.COIN_GOLDEN] = 1,
+    [CoinSubType.COIN_STICKYNICKEL] = 5,
+    [CoinSubType.COIN_LUCKYPENNY] = 1
+}
 
 ---@param pickup EntityPickup
 ---@param collider Entity
@@ -70,6 +79,157 @@ function PSTAVessel:onPickup(pickup, collider, low, forced)
                 local tmpWorth = redHeartWorth[pickup.SubType] or 1
                 player:AddActiveCharge(tmpWorth, ActiveSlot.SLOT_PRIMARY, true, false, false)
                 player:AddActiveCharge(tmpWorth, ActiveSlot.SLOT_POCKET, true, false, false)
+            end
+        -- Coin pickup
+        elseif pickup.Variant == PickupVariant.PICKUP_COIN then
+            -- Penny pickup
+            if pickup.SubType == CoinSubType.COIN_PENNY then
+                -- Mod: % chance to gain a gold heart when picking up pennies, once per floor
+                local tmpMod = PST:getTreeSnapshotMod("goldHeartOnPenny", 0)
+                if tmpMod > 0 and not PST:getTreeSnapshotMod("goldHeartOnPennyProc", false) and 100 * math.random() < tmpMod then
+                    player:AddGoldenHearts(1)
+                    SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.8)
+                    PST:addModifiers({ goldHeartOnPennyProc = true }, true)
+                end
+            end
+
+            -- Mod: % chance to fire a ring of coin tears when picking up coins
+            local tmpMod = PST:getTreeSnapshotMod("wealthGodCoinRing", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                for i=1,12 do
+                    local tearAng = ((math.pi * 2) / 12) * i
+                    local tearVel = Vector(math.cos(tearAng) * 7, math.sin(tearAng) * 7)
+                    local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.COIN, 0, pickup.Position, tearVel, player)
+                    newTear:ToTear():AddTearFlags(TearFlags.TEAR_GREED_COIN)
+                    newTear.CollisionDamage = 1 + math.max(11, player.Damage / 2)
+
+                    if coinWorth[pickup.SubType] then
+                        if coinWorth[pickup.SubType] >= 10 then
+                            newTear.Color = Color(1, 1, 1, 1, 0.5, 0.5, 0.5)
+                            newTear.CollisionDamage = 10 + math.max(20, math.ceil(player.Damage * 1.5))
+                        elseif coinWorth[pickup.SubType] >= 5 then
+                            newTear.Color = Color(0.1, 0.1, 0.1, 1)
+                            newTear.CollisionDamage = 3 + math.max(13, player.Damage)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local basePickups = {
+    [PickupVariant.PICKUP_COIN] = {CoinSubType.COIN_PENNY, CoinSubType.COIN_DOUBLEPACK},
+    [PickupVariant.PICKUP_KEY] = {KeySubType.KEY_NORMAL, KeySubType.KEY_CHARGED, KeySubType.KEY_DOUBLEPACK},
+    [PickupVariant.PICKUP_BOMB] = {BombSubType.BOMB_NORMAL, BombSubType.BOMB_DOUBLEPACK}
+}
+
+---@param pickup EntityPickup
+function PSTAVessel:onPickupInit(pickup, firstSpawn)
+    local room = PST:getRoom()
+    local isShop = room:GetType() == RoomType.ROOM_SHOP
+    local variant = pickup.Variant
+    local subtype = pickup.SubType
+
+    local pickupGone = false
+
+    -- First pickup spawn effects
+    if firstSpawn then
+        -- Mod: % chance to turn basic pickups into sacks
+        local tmpMod = PST:getTreeSnapshotMod("pickupSacks", 0)
+        if tmpMod > 0 and not isShop and basePickups[variant] and PSTAVessel:arrHasValue(basePickups[variant], subtype) and PST:getTreeSnapshotMod("pickupSacksProcs", 0) < 4 and
+        100 * math.random() < tmpMod then
+            PST:addModifiers({ pickupSacksProcs = 1 }, true)
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_GRAB_BAG, 0, pickup.Position, pickup.Velocity, nil)
+            pickup:Remove()
+            pickupGone = true
+        end
+
+        -- Mod: While you haven't taken damage in the floor, pennies have a chance to spawn as a rarer variant or a gold heart
+        tmpMod = PST:getTreeSnapshotMod("wealthGodPennyConv", 0)
+        if tmpMod > 0 and not pickupGone and variant == PickupVariant.PICKUP_COIN and subtype == CoinSubType.COIN_PENNY and not PST:getTreeSnapshotMod("floorGotHit", false) and
+        not isShop and 100 * math.random() < tmpMod then
+            if math.random() < 0.1 then
+                pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_GOLDEN)
+            else
+                local tmpVariants = {
+                    {CoinSubType.COIN_LUCKYPENNY, 50},
+                    {CoinSubType.COIN_NICKEL, 200},
+                    {CoinSubType.COIN_DOUBLEPACK, 100},
+                    {CoinSubType.COIN_DIME, 30}
+                }
+                local totalWeight = 0
+                for _, t in ipairs(tmpVariants) do totalWeight = totalWeight + t[2] end
+
+                local randWeight = math.random(totalWeight)
+                for _, t in ipairs(tmpVariants) do
+                    randWeight = randWeight - t[2]
+                    if randWeight <= 0 then
+                        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, t[1])
+                        break
+                    end
+                end
+            end
+        end
+    end
+end
+
+---@param pickup EntityPickup
+function PSTAVessel:onPickupUpdate(pickup)
+    -- Init pickup
+    if pickup.FrameCount == 1 then
+        local isFirstSpawn = not pickup:GetData().PSTAVessel_init and not pickup:GetData().PST_duped
+        PSTAVessel:onPickupInit(pickup, isFirstSpawn)
+        pickup:GetData().PSTAVessel_init = true
+
+        pickup:GetData().PST_price = pickup.Price
+    end
+
+    -- Shop discounts
+    if pickup.Price > 0 and pickup:GetData().PST_price then
+        -- Mod: % chance to reduce all shop prices by 1-4 coins
+        local tmpMod = PST:getTreeSnapshotMod("travelMerchShopDiscountProc", 0)
+        if tmpMod > 0 then
+            pickup.Price = math.max(1, pickup:GetData().PST_price - tmpMod)
+        end
+    end
+
+    if pickup.Timeout <= 0 then
+        -- Chests
+        if PST:isPickupChest(pickup.Variant) then
+            local pickupSpr = pickup:GetSprite()
+            -- Opened chest
+            if pickupSpr:GetAnimation() == "Open" and pickupSpr:GetFrame() == 1 then
+                local player = PST:getPlayer()
+
+                -- Mod: % chance for golden chests to return 1 key and 1 coin when opened
+                local tmpMod = PST:getTreeSnapshotMod("goldChestReturns", 0)
+                if tmpMod > 0 and pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST and 100 * math.random() < tmpMod then
+                    player:AddKeys(1)
+                    player:AddCoins(1)
+                end
+
+                -- Mod: % chance for regular/golden chests to spawn a random Mercantile pool item you don't currently have
+                tmpMod = PST:getTreeSnapshotMod("chestsMercantile", 0)
+                if PST:getTreeSnapshotMod("chestsMercantileProcs", 0) > 0 then
+                    tmpMod = tmpMod / 2
+                end
+                if tmpMod > 0 and PST:getTreeSnapshotMod("chestsMercantileProcs", 0) < 2 and (pickup.Variant == PickupVariant.PICKUP_LOCKEDCHEST or pickup.Variant == PickupVariant.PICKUP_CHEST) and
+                100 * math.random() < tmpMod then
+                    local itemPool = Game():GetItemPool()
+                    local newItem = itemPool:GetCollectibleFromList(PSTAVessel.constelItemPools[PSTAVConstellationType.MERCANTILE])
+                    local failsafe = 0
+                    while player:HasCollectible(newItem) and failsafe < 200 do
+                        newItem = itemPool:GetCollectibleFromList(PSTAVessel.constelItemPools[PSTAVConstellationType.MERCANTILE])
+                        failsafe = failsafe + 1
+                    end
+                    if failsafe < 200 then
+                        local tmpPos = Game():GetRoom():FindFreePickupSpawnPosition(pickup.Position, 20, true)
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, tmpPos, Vector.Zero, nil)
+                        Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+                        PST:addModifiers({ chestsMercantileProcs = 1 }, true)
+                    end
+                end
             end
         end
     end

@@ -67,6 +67,17 @@ function PSTAVessel:onNewRun(isContinued)
                 corpseRaiserChoice3 = PSTAVessel.corpseRaiserChoice[3]
             }, true)
         end
+
+        -- Teardrop Charm node (God Of Fortune mercantile constellation)
+        if PST:getTreeSnapshotMod("teardropCharm", false) then
+            player:AddSmeltedTrinket(TrinketType.TRINKET_TEARDROP_CHARM)
+        end
+
+        -- Gold-Bound node (Greed mercantile constellation)
+        if PST:getTreeSnapshotMod("goldBound", false) then
+            player:AddMaxHearts(2)
+            player:AddHearts(2)
+        end
     end
 
     PSTAVessel:onNewLevel()

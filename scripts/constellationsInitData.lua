@@ -72,6 +72,7 @@ PSTAVessel.constelItems = {
     [PSTAVConstellationType.MUTAGENIC] = {Q3={}, Q2={}, Q1={}, Q0={}},
     [PSTAVConstellationType.COSMIC] = {Q3={}, Q2={}, Q1={}, Q0={}}
 }
+PSTAVessel.constelItemPools = {}
 --[[ Item properties example:
 {
     item = CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES
@@ -105,6 +106,9 @@ function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost)
 
         for _, tmpType in ipairs(itemCategories) do
             table.insert(PSTAVessel.constelItems[tmpType]["Q" .. itemCfg.Quality], newEntry)
+
+            if not PSTAVessel.constelItemPools[tmpType] then PSTAVessel.constelItemPools[tmpType] = {} end
+            table.insert(PSTAVessel.constelItemPools[tmpType], itemType)
         end
         table.insert(tmpAddedItems, itemType)
 
