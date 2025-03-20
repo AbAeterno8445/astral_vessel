@@ -20,7 +20,8 @@ local constTreeBanks = {
     [PSTAVConstellationType.DIVINE] = include("scripts.constellationTrees.divineTreeBank"),
     [PSTAVConstellationType.DEMONIC] = include("scripts.constellationTrees.demonicTreeBank"),
     [PSTAVConstellationType.OCCULT] = include("scripts.constellationTrees.occultTreeBank"),
-    [PSTAVConstellationType.MERCANTILE] = include("scripts.constellationTrees.mercantileTreeBank")
+    [PSTAVConstellationType.MERCANTILE] = include("scripts.constellationTrees.mercantileTreeBank"),
+    [PSTAVConstellationType.ELEMENTAL] = include("scripts.constellationTrees.elementalTreeBank")
 }
 
 function PSTAVessel:initVesselTree()
@@ -247,4 +248,12 @@ function PSTAVessel:charHasStartingActive()
         if tmpItem.active then return true end
     end
     return false
+end
+
+function PSTAVessel:charGetQualStartingQuant(qual)
+    local quant = 0
+    for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
+        if tmpItem.qual == qual then quant = quant + 1 end
+    end
+    return quant
 end

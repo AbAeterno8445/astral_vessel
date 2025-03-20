@@ -104,3 +104,36 @@ function PSTAVessel:playerHealthType(player)
         end
     end
 end
+
+---@param pos Vector
+---@param radius number
+---@param partition EntityPartition
+---@return EntityNPC[]
+function PSTAVessel:getNearbyEntities(pos, radius, partition)
+    local enemList = {}
+    local nearbyEnems = Isaac.FindInRadius(pos, radius, partition)
+    for _, tmpEnem in ipairs(nearbyEnems) do
+        local tmpNPC = tmpEnem:ToNPC()
+        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+            table.insert(enemList, tmpNPC)
+        end
+    end
+    return enemList
+end
+
+---@param pos Vector
+---@param radius number
+---@return EntityNPC|nil
+function PSTAVessel:getClosestEnemy(pos, radius)
+    local enemList = PSTAVessel:getNearbyEntities(pos, radius, EntityPartition.ENEMY)
+    local closest = nil
+    local closestDist = 1000
+    for _, tmpEnem in ipairs(enemList) do
+        local dist = pos:Distance(tmpEnem.Position)
+        if dist < closestDist then
+            closest = tmpEnem
+            closestDist = dist
+        end
+    end
+    return closest
+end

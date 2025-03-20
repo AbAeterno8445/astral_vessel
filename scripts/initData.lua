@@ -7,7 +7,14 @@ PSTAVessel.modCooldowns = {
     tempSpeedOnKill = 0,
     roomClearIncubus = 0,
     undeadSummonTears = 0,
-    dmgUntilKill = 0
+    dmgUntilKill = 0,
+    poisonVialKillBuff = 0,
+    meteorEmber = 0,
+    scorpionHitTears = 0,
+    ragingEnergy = 0,
+    frozenMobTearBuff = 0,
+    blizzardSnowstorm = 0,
+    viperineLash = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0
@@ -22,6 +29,11 @@ PSTAVessel.floorFirstUpdate = false
 PSTAVessel.roomFirstFire = false
 
 PSTAVessel.carrionMobs = {}
+PSTAVessel.fusilladeEmbers = 0
+PSTAVessel.fusilladeEmberAng = 0
+PSTAVessel.fusilladeEmberDist = 30
+PSTAVessel.fusilladeDelay = 70
+PSTAVessel.spiralAbilityAng = 0
 
 PSTAVessel.charUnlocks = {}
 PSTAVessel.charLoadouts = {}
@@ -29,6 +41,7 @@ PSTAVessel.currentLoadout = "1"
 PSTAVessel.maxLoadouts = 15
 PSTAVessel.accessoryLimit = 5
 
+-- Character save data (for loadouts)
 function PSTAVessel:initCharData()
     PSTAVessel.charColor = Color(1, 1, 1, 1)
     PSTAVessel.charHair = nil
@@ -96,6 +109,7 @@ PSTAVessel.unlocksData = {
 function PSTAVessel:updateUnlockData()
     PSTAVessel.charMaxStartItems = 2
     PSTAVessel.charMaxQuality = 2
+    PSTAVessel.charMaxPerQuality = {4, 4, 3, 2, 1}
     PSTAVessel.charActivesAllowed = false
     PSTAVessel.charTrinketsAllowed = false
     PSTAVessel.charTrinketAlloc = false

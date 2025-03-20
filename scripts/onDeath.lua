@@ -4,8 +4,10 @@ function PSTAVessel:onDeath(entity)
     ---@type EntityPlayer
     local player = PST:getPlayer()
 
+    local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
+
     if entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
-    PST:getRoom():GetFrameCount() > 1 then
+    PST:getRoom():GetFrameCount() > 1 and not isFrozen then
         -- Mom death procs
         if entity.Type == EntityType.ENTITY_MOM then
             PSTAVessel:onCompletion("Mom")
@@ -113,6 +115,32 @@ function PSTAVessel:onDeath(entity)
             newPenny:ToPickup().Timeout = 60
         end
 
+        -- Mod: +% speed and tears for 3 seconds after killing a poisoned enemy with at least 10 HP
+        tmpMod = PST:getTreeSnapshotMod("poisonVialKillBuff", 0)
+        if tmpMod > 0 then
+            if PSTAVessel.modCooldowns.poisonVialKillBuff == 0 then
+                PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+            end
+            PSTAVessel.modCooldowns.poisonVialKillBuff = 90
+        end
+
+        -- Mod: % chance for enemies to leave a fire on death
+        tmpMod = PST:getTreeSnapshotMod("mobDeathFire", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local newFire = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 0, entity.Position, Vector.Zero, player)
+            newFire:ToEffect().Timeout = 150
+            newFire.CollisionDamage = math.min(20, player.Damage / 2)
+            newFire:GetData().PST_mobDeathFire = true
+        end
+
+        -- Mod: % chance for enemies to leave a poisonous cloud on death
+        tmpMod = PST:getTreeSnapshotMod("poisonCloudOnDeath", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local newCloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, entity.Position, Vector.Zero, player)
+            newCloud:GetData().PST_poisonCloudOnDeath = true
+            newCloud:ToEffect().Timeout = 150
+        end
+
         -- NPC checks
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
@@ -126,6 +154,43 @@ function PSTAVessel:onDeath(entity)
                         PSTAVessel[randMobID] = {entity.Type, entity.Variant, entity.SubType, entity.MaxHitPoints}
                     end
                 end
+            end
+        end
+    end
+
+    -- Destroyed frozen enemy
+    if isFrozen then
+        -- Mod: % chance to trigger The Hourglass' effect when destroying frozen enemies
+        local tmpMod = PST:getTreeSnapshotMod("freezeDestroyHourglass", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_HOURGLASS, UseFlag.USE_NOANIM)
+        end
+
+        -- Frozen enemy ice shards node
+        if PST:getTreeSnapshotMod("frozenMobIceShards", false) then
+            local maxIceShards = 3 + PST:getTreeSnapshotMod("frozenMobIceShardQuant", 0)
+            for i=1,maxIceShards do
+                local tmpAng = ((math.pi * 2) / maxIceShards) * i
+                local tmpVel = Vector(math.cos(tmpAng) * 5, math.sin(tmpAng) * 5)
+                local newShard = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.ICE, 0, entity.Position, tmpVel, player)
+                newShard:ToTear():AddTearFlags(TearFlags.TEAR_SLOW | TearFlags.TEAR_ICE)
+                newShard:ToTear().FallingAcceleration = -0.1
+                newShard:ToTear().FallingSpeed = -0.1
+                newShard:GetData().PST_frozenMobIceShard = true
+                newShard:GetData().PST_iceShard = true
+            end
+        end
+
+        -- Mod: destroying frozen enemies grants you a tears buff
+        if PST:getTreeSnapshotMod("frozenMobTearBuff", false) then
+            local enemReq = 15 - PST:getTreeSnapshotMod("frozenTearBuffExtra", 0)
+            PST:addModifiers({ frozenMobTearBuffKills = 1 }, true)
+            if PST:getTreeSnapshotMod("frozenMobTearBuffKills", 0) >= enemReq then
+                if PSTAVessel.modCooldowns.frozenMobTearBuff == 0 then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+                end
+                PSTAVessel.modCooldowns.frozenMobTearBuff = 600
+                PST:addModifiers({ frozenMobTearBuffKills = { value = 0, set = true } }, true)
             end
         end
     end

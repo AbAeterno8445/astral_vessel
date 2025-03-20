@@ -5,26 +5,46 @@
 function PSTAVessel:onDamage(target, damage, flag, source)
     local tmpMod
     local player = target:ToPlayer()
+    -- Player got hit
     if player then
-        -- Player got hit
         -- True Eternal node (Archangel divine constellation)
         if PST:getTreeSnapshotMod("trueEternal", false) and player:GetEternalHearts() > 0 then
             PSTAVessel.trueEternalHitProc = true
         end
 
-        -- Mod: hexer curse buffs, up to % chance to block damage. Halve the chance when blocking
-        tmpMod = PST:getTreeSnapshotMod("hexerCurseBuff", 0) / (2 ^ PST:getTreeSnapshotMod("hexerCurseBuffBlocks", 0))
-        if tmpMod > 0 and (Game():GetLevel():GetCurses() & LevelCurse.CURSE_OF_THE_UNKNOWN) > 0 and 100 * math.random() < tmpMod * 2 then
-            PST:addModifiers({ hexerCurseBuffBlocks = 1 }, true)
-            SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
-            return { Damage = 0 }
-        end
+        -- Source mob checks
+        if source and source.Entity then
+            local sourceMob = source.Entity:ToNPC()
+            if not sourceMob and source.Entity.Parent then
+                sourceMob = source.Entity.Parent:ToNPC()
+            end
+            if not sourceMob and source.Entity.SpawnerEntity then
+                sourceMob = source.Entity.SpawnerEntity:ToNPC()
+            end
+            if sourceMob then
+                -- Mod: hexer curse buffs, up to % chance to block damage. Halve the chance when blocking
+                tmpMod = PST:getTreeSnapshotMod("hexerCurseBuff", 0) / (2 ^ PST:getTreeSnapshotMod("hexerCurseBuffBlocks", 0))
+                if tmpMod > 0 and (Game():GetLevel():GetCurses() & LevelCurse.CURSE_OF_THE_UNKNOWN) > 0 and 100 * math.random() < tmpMod * 2 then
+                    PST:addModifiers({ hexerCurseBuffBlocks = 1 }, true)
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
+                    return { Damage = 0 }
+                end
 
-        -- Mod: % chance to spawn a Lil Abaddon for the room when hit
-        tmpMod = PST:getTreeSnapshotMod("lilAbaddonOnHit", 0)
-        if tmpMod > 0 and PST:getTreeSnapshotMod("lilAbaddonOnHitProcs", 0) < 2 and 100 * math.random() < tmpMod then
-            player:AddCollectible(CollectibleType.COLLECTIBLE_LIL_ABADDON)
-            PST:addModifiers({ lilAbaddonOnHitProcs = 1 }, true)
+                -- Mod: % chance to spawn a Lil Abaddon for the room when hit
+                tmpMod = PST:getTreeSnapshotMod("lilAbaddonOnHit", 0)
+                if tmpMod > 0 and PST:getTreeSnapshotMod("lilAbaddonOnHitProcs", 0) < 2 and 100 * math.random() < tmpMod then
+                    player:AddCollectible(CollectibleType.COLLECTIBLE_LIL_ABADDON)
+                    PST:addModifiers({ lilAbaddonOnHitProcs = 1 }, true)
+                end
+
+                -- Mod: % chance to block attacks from burning enemies
+                tmpMod = PST:getTreeSnapshotMod("burningMobBlock", 0)
+                if tmpMod > 0 and sourceMob:GetBurnCountdown() > 0 and 100 * math.random() < tmpMod then
+                    SFXManager():Play(SoundEffect.SOUND_HOLY_MANTLE)
+                    SFXManager():Play(SoundEffect.SOUND_FIREDEATH_HISS)
+                    return { Damage = 0 }
+                end
+            end
         end
 
         -- Killing hits
@@ -41,6 +61,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
             end
         end
     elseif target and target.Type ~= EntityType.ENTITY_GIDEON then
+        local tmpNPC = target:ToNPC()
         local srcPlayer
         if source and source.Entity then
             if source.Type == EntityType.ENTITY_PLAYER then
@@ -135,6 +156,133 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                             dmgMult = dmgMult + math.min((tmpMod * 2), (tmpMod * 2) * ((tmpDist - 69) / 150))
                         end
                     end
+
+                    -- Mod: +% damage dealt to burning enemies
+                    tmpMod = PST:getTreeSnapshotMod("burningExtraDmg", 0)
+                    if tmpMod > 0 and target:GetBurnCountdown() > 0 then
+                        dmgMult = dmgMult + tmpMod / 100
+                    end
+
+                    -- Mod: % chance to cause slowed enemies to freeze on death
+                    tmpMod = PST:getTreeSnapshotMod("slowMobFreeze", 0)
+                    if tmpMod > 0 and 100 * math.random() < tmpMod then
+                        target:AddIce(EntityRef(trueSrcPlayer), 150)
+                    end
+
+                    -- Mod: % chance to petrify poisoned enemies for 2 seconds on hit, once per enemy
+                    tmpMod = PST:getTreeSnapshotMod("poisonPetrify", 0)
+                    if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) and not target:GetData().PST_poisonPetrifyProc and
+                    100 * math.random() < tmpMod then
+                        target:AddFreeze(EntityRef(player), 60)
+                        target:GetData().PST_poisonPetrifyProc = true
+                    end
+
+                    -- Mod: % chance to spawn an orbiting ember on hit. Double the chance and embers gained when hitting burning enemies
+                    tmpMod = PST:getTreeSnapshotMod("meteorEmber", 0)
+                    if target:GetBurnCountdown() > 0 then
+                        tmpMod = tmpMod * 2
+                    end
+                    if tmpMod > 0 and not (source.Entity and source.Entity:GetData().PST_ember) and
+                    100 * math.random() < tmpMod then
+                        if PSTAVessel.fusilladeEmbers < 10 then
+                            SFXManager():Play(SoundEffect.SOUND_BEAST_FIRE_RING, 0.4, 2, false, 1.3 + 0.4 * math.random())
+                            PSTAVessel.fusilladeSpawnFrom = PSTAVessel.fusilladeEmbers
+                            local tmpAdd = 1
+                            if target:GetBurnCountdown() > 0 then
+                                tmpAdd = 2
+                            end
+                            PSTAVessel.fusilladeEmbers = math.min(10, PSTAVessel.fusilladeEmbers + tmpAdd)
+                            PSTAVessel.modCooldowns.meteorEmber = PSTAVessel.fusilladeDelay
+                        end
+                    end
+
+                    -- Mod: % chance to fire an ice shard towards the closest enemy when hitting slowed enemies
+                    tmpMod = PST:getTreeSnapshotMod("slowHitIceShard", 0)
+                    if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) and not (source.Entity and source.Entity:GetData().PST_iceShard) and
+                    100 * math.random() < tmpMod then
+                        local closestEnem = PSTAVessel:getClosestEnemy(srcPlayer.Position, 120)
+                        if closestEnem then
+                            local tmpVel = (closestEnem.Position - srcPlayer.Position):Normalized() * 8
+                            local newShard = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.ICE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                            newShard.CollisionDamage = 1 + math.min(20, srcPlayer.Damage)
+                            newShard:GetData().PST_iceShard = true
+                        end
+                    end
+
+                    -- Mod: +% damage dealt to slowed enemies
+                    tmpMod = PST:getTreeSnapshotMod("slowedDmg", 0)
+                    if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) then
+                        dmgMult = dmgMult + tmpMod / 100
+                    end
+
+                    -- Mod: +% damage dealt by your ice shards
+                    tmpMod = PST:getTreeSnapshotMod("frozenTearBuffExtra", 0)
+                    if tmpMod > 0 and (source.Type == EntityType.ENTITY_TEAR and source.Variant == TearVariant.ICE) then
+                        dmgMult = dmgMult + tmpMod * 0.02
+                    end
+
+                    -- Snowstorm node (Blizzard elemental constellation) - double damage from shards against bosses
+                    if PST:getTreeSnapshotMod("blizzardSnowstorm", false) and tmpNPC and tmpNPC:IsBoss() and source.Entity:GetData().PST_snowstormShard then
+                        dmgMult = dmgMult + 1
+                    end
+
+                    -- Mod: hitting poisoned enemies shoots 2 poison tears towards them
+                    if PST:getTreeSnapshotMod("scorpionHitTears", false) and PSTAVessel.modCooldowns.scorpionHitTears == 0 then
+                        local tmpMaxTears = 2
+                        if 100 * math.random() < PST:getTreeSnapshotMod("scorpionHitTearsExtra", 0) then
+                            tmpMaxTears = 3
+                        end
+                        for _=1,tmpMaxTears do
+                            local tmpVel = (target.Position + RandomVector() * 40 - srcPlayer.Position):Normalized() * 10
+                            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                            newTear.Color = Color(0.5, 0.5, 0.5, 1, 0, 0.5, 0)
+                            newTear:ToTear():AddTearFlags(TearFlags.TEAR_POISON | TearFlags.TEAR_BOUNCE)
+                            newTear.CollisionDamage = math.min(20, srcPlayer.Damage)
+                        end
+                        PSTAVessel.modCooldowns.scorpionHitTears = math.floor(120 - PST:getTreeSnapshotMod("scorpionHitTearsCD", 0) * 30)
+                    end
+
+                    -- Mod: % chance to spread poison to nearby enemies when hitting poisoned enemies
+                    tmpMod = PST:getTreeSnapshotMod("viperPoisonSpread", 0)
+                    if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) and 100 * math.random() < tmpMod then
+                        local nearbyEnems = PSTAVessel:getNearbyEntities(target.Position, 90, EntityPartition.ENEMY)
+                        for _, tmpEnem in ipairs(nearbyEnems) do
+                            if tmpEnem.InitSeed ~= target.InitSeed then
+                                tmpEnem:AddPoison(EntityRef(srcPlayer), math.max(45, tmpEnem:GetPoisonDamageTimer()), math.min(15, srcPlayer.Damage / 2))
+                            end
+                        end
+                    end
+
+                    -- Mod: +% damage dealt against poisoned enemies
+                    tmpMod = PST:getTreeSnapshotMod("poisonMobDmg", 0)
+                    if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) then
+                        dmgMult = dmgMult + tmpMod / 100
+                    end
+
+                    -- Viperine Lash node (Viper elemental constellation)
+                    if PST:getTreeSnapshotMod("viperineLash", false) and tmpNPC and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) and PSTAVessel.modCooldowns.viperineLash == 0 then
+                        local tmpMaxTears = 5 + math.floor(7 * (1 - target.HitPoints / target.MaxHitPoints))
+                        for _=1,tmpMaxTears do
+                            local tmpVel = (target.Position + RandomVector() * 40 - srcPlayer.Position):Normalized() * (30 * math.random())
+                            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                            newTear.Color = Color(0.5, 0.5, 0.5, 1, 0, 0.5, 0)
+                            newTear:ToTear().Scale = 0.5 + math.random()
+                            newTear:ToTear():AddTearFlags(TearFlags.TEAR_POISON | TearFlags.TEAR_BOUNCE | TearFlags.TEAR_DECELERATE)
+                            newTear:ToTear().Height = -40
+                            newTear:ToTear().FallingSpeed = 0.01
+                            newTear:ToTear().FallingAcceleration = 0.01
+                        end
+                        SFXManager():Play(SoundEffect.SOUND_HEARTOUT, 0.9, 2, false, 0.8 + 0.4 * math.random())
+                        PSTAVessel.modCooldowns.viperineLash = 150
+                        if target:HasEntityFlags(EntityFlag.FLAG_POISON) then
+                            PSTAVessel.modCooldowns.viperineLash = 75
+                        end
+                    end
+
+                    -- Mod: % chance for enemies to leave a fire on death (burns on hit)
+                    if (source.Entity and source.Entity:GetData().PST_mobDeathFire) and target:GetBurnCountdown() == 0 then
+                        target:AddBurn(EntityRef(srcPlayer), 100, math.min(20, srcPlayer.Damage / 2))
+                    end
                 end
             end
 
@@ -214,8 +362,13 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                 PST:addModifiers({ carrionHarvestHits = -1 }, true)
             end
 
+            -- Mod: % chance for explosions to cause burning for 4 seconds
+            tmpMod = PST:getTreeSnapshotMod("explosionsBurn", 0)
+            if tmpMod > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 and 100 * math.random() < tmpMod then
+                target:AddBurn(EntityRef(srcPlayer), 120, math.min(20, srcPlayer.Damage / 2))
+            end
+
             -- NPC checks
-            local tmpNPC = target:ToNPC()
             if tmpNPC then
                 -- Mod: swords on champion hit
                 tmpMod = PST:getTreeSnapshotMod("palaChampSwords", 0)

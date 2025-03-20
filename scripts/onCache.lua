@@ -66,6 +66,17 @@ function PSTAVessel:onCache(player, cacheFlag)
         if tmpMod > 0 and PSTAVessel.modCooldowns.undeadSummonTears > 0 then
             dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpMod
         end
+
+        -- Mod: +% speed and tears when killing poisoned enemies
+        tmpMod = PST:getTreeSnapshotMod("poisonVialKillBuff", 0)
+        if tmpMod > 0 and PSTAVessel.modCooldowns.poisonVialKillBuff > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + tmpMod
+        end
+
+        -- Mod: destroying frozen enemies grants you a tears buff
+        if PST:getTreeSnapshotMod("frozenMobTearBuff", false) and PSTAVessel.modCooldowns.frozenMobTearBuff > 0 then
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + 12
+        end
     -- SPEED CACHE
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- Mod: +% speed for 3 seconds after killing an enemy. Stacks up to 5 times
@@ -73,6 +84,12 @@ function PSTAVessel:onCache(player, cacheFlag)
         local tmpStacks = PST:getTreeSnapshotMod("tempSpeedOnKillStacks", 0)
         if tmpMod > 0 and tmpStacks > 0 and PSTAVessel.modCooldowns.tempSpeedOnKill > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod * math.min(5, tmpStacks)
+        end
+
+        -- Mod: +% speed and tears when killing poisoned enemies
+        tmpMod = PST:getTreeSnapshotMod("poisonVialKillBuff", 0)
+        if tmpMod > 0 and PSTAVessel.modCooldowns.poisonVialKillBuff > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
         end
     end
 

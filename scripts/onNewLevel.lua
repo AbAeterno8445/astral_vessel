@@ -61,5 +61,15 @@ function PSTAVessel:onNewLevel()
         PST:addModifiers({ goldHeartOnPennyProc = false }, true)
     end
 
+    -- Mod: +% damage for the current floor when destroying a fireplace
+    tmpMod = PST:getTreeSnapshotMod("fireplaceDmgBuff", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({
+            fireplaceDmgBuffTotal = { value = 0, set = true },
+            fireplaceDmgBuffProcs = { value = 0, set = true },
+            damagePerc = -tmpMod
+        }, true)
+    end
+
     PSTAVessel.floorFirstUpdate = true
 end

@@ -1,5 +1,5 @@
 PSTAVessel = RegisterMod("PST_AV", 1)
-PSTAVessel.version = "1.0"
+PSTAVessel.version = "0.1.0"
 
 include("scripts.utility")
 include("scripts.initData")
@@ -16,6 +16,7 @@ include("scripts.onNewRun")
 include("scripts.onNewRoom")
 include("scripts.onDeath")
 include("scripts.onDamage")
+include("scripts.postDamage")
 include("scripts.onNewLevel")
 include("scripts.onCache")
 include("scripts.onUpdate")
@@ -25,6 +26,7 @@ include("scripts.pickups")
 include("scripts.shops")
 include("scripts.slots")
 include("scripts.entities")
+include("scripts.rendering")
 include("scripts.useCardsPills")
 include("scripts.consoleCommands")
 
@@ -63,6 +65,7 @@ function PSTAVessel:initMod()
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, PSTAVessel.onCompletion)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, PSTAVessel.onDeath)
     PSTAVessel:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, PSTAVessel.onDamage)
+    PSTAVessel:AddCallback(ModCallbacks.MC_POST_ENTITY_TAKE_DMG, PSTAVessel.postDamage)
     PSTAVessel:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, PSTAVessel.prePickup)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PSTAVessel.onPickup)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_LEVEL_LAYOUT_GENERATED, PSTAVessel.onNewLevel)
@@ -77,6 +80,7 @@ function PSTAVessel:initMod()
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, PSTAVessel.onSlotUpdate)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, PSTAVessel.onPickupUpdate)
     PSTAVessel:AddCallback(ModCallbacks.MC_PLAYER_GET_HEALTH_TYPE, PSTAVessel.playerHealthType)
+    PSTAVessel:AddCallback(ModCallbacks.MC_POST_RENDER, PSTAVessel.onRender)
 
     -- Entity debug
     --[[PSTAVessel:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, function(self, entityType, variant, subtype)

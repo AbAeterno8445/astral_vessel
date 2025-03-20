@@ -91,6 +91,14 @@ function PSTAVessel:onUpdate()
                 if modName == "dmgUntilKill" then
                     PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
                 end
+                -- Mod: +% speed and tears when killing poisoned enemies
+                if modName == "poisonVialKillBuff" then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_FIREDELAY)
+                end
+                -- Mod: destroying frozen enemies grants you a tears buff
+                if modName == "frozenMobTearBuff" then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
+                end
             end
         end
     end
@@ -165,19 +173,52 @@ function PSTAVessel:onUpdate()
         end
     end
 
+    -- Mod: Meteor ember fusillade
+    if PSTAVessel.modCooldowns.meteorEmber > 0 or PSTAVessel.fusilladeEmbers > 0 then
+        if isShooting then
+            PSTAVessel.modCooldowns.meteorEmber = PSTAVessel.fusilladeDelay
+        elseif PSTAVessel.modCooldowns.meteorEmber <= 30 then
+            -- Fire embers in a slightly delayed sequence
+            if PSTAVessel.modCooldowns.meteorEmber % 3 == 0 and PSTAVessel.fusilladeEmbers > 0 then
+                local nearbyEnems = PSTAVessel:getNearbyEntities(player.Position, 200, EntityPartition.ENEMY)
+                local closestEnem = nil
+                local closestDist = 1000
+                for _, tmpEnem in ipairs(nearbyEnems) do
+                    local dist = player.Position:Distance(tmpEnem.Position)
+                    if dist < closestDist then
+                        closestEnem = tmpEnem
+                        closestDist = dist
+                    end
+                end
+
+                local emberID = PSTAVessel.fusilladeEmbers
+                local emberAng = (math.pi * 0.2) * emberID + PSTAVessel.fusilladeEmberAng
+                local emberPos = player.Position + Vector(math.cos(emberAng) * PSTAVessel.fusilladeEmberDist, math.sin(emberAng) * PSTAVessel.fusilladeEmberDist)
+                local tmpVel = (emberPos - player.Position):Normalized() * 15
+                if closestEnem then
+                    tmpVel = (closestEnem.Position - emberPos):Normalized() * 15
+                end
+                local newEmber = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.FIRE_MIND, 0, emberPos, tmpVel, player)
+                newEmber:ToTear().Scale = 0.8
+                newEmber.CollisionDamage = 2 + math.min(18, math.ceil(player.Damage * 0.75))
+                newEmber:GetData().PST_ember = true
+                SFXManager():Play(SoundEffect.SOUND_CANDLE_LIGHT, 0.8, 2, false, 0.9 + 0.4 * math.random())
+
+                PSTAVessel.fusilladeEmbers = PSTAVessel.fusilladeEmbers - 1
+            end
+        end
+    end
+
     -- Mod: petrification aura
     local tmpMod = PST:getTreeSnapshotMod("petriAura", 0)
     if tmpMod > 0 and (roomFrame % 30) == 0 then
-        local nearbyEnems = Isaac.FindInRadius(player.Position, 100, EntityPartition.ENEMY)
+        local nearbyEnems = PSTAVessel:getNearbyEntities(player.Position, 100, EntityPartition.ENEMY)
         local affected = 0
         for _, tmpEnem in ipairs(nearbyEnems) do
-            local tmpNPC = tmpEnem:ToNPC()
-            if tmpNPC and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsActiveEnemy(false) and not EntityRef(tmpNPC).IsFriendly then
-                if 100 * math.random() < tmpMod then
-                    tmpNPC:AddFreeze(EntityRef(player), 45)
-                    affected = affected + 1
-                    if affected == 3 then break end
-                end
+            if 100 * math.random() < tmpMod then
+                tmpEnem:AddFreeze(EntityRef(player), 45)
+                affected = affected + 1
+                if affected == 3 then break end
             end
         end
     end
@@ -195,12 +236,62 @@ function PSTAVessel:onUpdate()
     if PST:getTreeSnapshotMod("dmgUntilKillProc", false) and PSTAVessel.modCooldowns.dmgUntilKill > 0 and roomFrame % 15 == 0 then
         PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
     end
+
+    -- Raging Energy node (Volcano elemental constellation)
+    if PSTAVessel.modCooldowns.ragingEnergy > 0 and PSTAVessel.modCooldowns.ragingEnergy % 3 == 0 then
+        for i=1,4 do
+            local tmpAng = (math.pi * 0.5) * i + PSTAVessel.spiralAbilityAng
+            local tmpVel = Vector(math.cos(tmpAng) * 10, math.sin(tmpAng) * 10)
+            local newFlame = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 0, player.Position, tmpVel, player)
+            newFlame.CollisionDamage = math.max(6, math.min(20, player.Damage))
+            newFlame:GetData().PST_mobDeathFire = true
+            newFlame:ToEffect().Timeout = 30
+            SFXManager():Play(SoundEffect.SOUND_BEAST_FIRE_RING, 0.6, 2, false, 0.9 + 0.3 * math.random())
+        end
+        PSTAVessel.spiralAbilityAng = PSTAVessel.spiralAbilityAng + 0.2
+    end
+
+    -- Snowstorm node (Blizzard elemental constellation)
+    if PSTAVessel.modCooldowns.blizzardSnowstorm > 0 and PSTAVessel.modCooldowns.blizzardSnowstorm % 3 == 0 then
+        for i=1,6 do
+            local tmpAng = (math.pi * 1/3) * i + PSTAVessel.spiralAbilityAng
+            local tmpVel = Vector(math.cos(tmpAng) * 10, math.sin(tmpAng) * 10)
+            local newShard = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.ICE, 0, player.Position, tmpVel, player)
+            newShard:ToTear().Scale = 2 - (1 - PSTAVessel.modCooldowns.blizzardSnowstorm / 60)
+            newShard:ToTear():AddTearFlags(TearFlags.TEAR_SLOW | TearFlags.TEAR_FREEZE)
+            newShard.CollisionDamage = math.max(6, math.min(20, player.Damage))
+            newShard:GetData().PST_snowstormShard = true
+            SFXManager():Play(SoundEffect.SOUND_FREEZE, 0.6, 2, false, 1.3 + 0.3 * math.random())
+        end
+        PSTAVessel.spiralAbilityAng = PSTAVessel.spiralAbilityAng + 0.2
+    end
+
+    if PSTAVessel.spiralAbilityAng >= math.pi * 2 then
+        PSTAVessel.spiralAbilityAng = PSTAVessel.spiralAbilityAng - math.pi * 2
+    end
+
+    -- Mod: slowing aura
+    if PST:getTreeSnapshotMod("slowingAura", false) and (roomFrame % 30) == 0 then
+        local nearbyEnems = PSTAVessel:getNearbyEntities(player.Position, 100 + PST:getTreeSnapshotMod("slowingAuraRadius", 0) * 2, EntityPartition.ENEMY)
+        for _, tmpEnem in ipairs(nearbyEnems) do
+            if math.random() < 0.9 then
+                tmpEnem:AddSlowing(EntityRef(player), 40, 0.8, Color(0.8, 0.8, 0.8, 1))
+            end
+        end
+    end
 end
 
 ---@param tear EntityTear
 function PSTAVessel:tearUpdate(tear)
+    -- Swordstorm sword tears
     if tear:GetData().swordstormOrbiter then
         local tearAng = math.atan(tear.Velocity.Y, tear.Velocity.X) + 4
+        tear:AddVelocity(Vector(-0.25 * math.cos(tearAng), -0.25 * math.sin(tearAng)))
+    end
+
+    -- Frozen enemy ice shards
+    if tear:GetData().PST_frozenMobIceShard then
+        local tearAng = math.atan(tear.Velocity.Y, tear.Velocity.X) + 8
         tear:AddVelocity(Vector(-0.25 * math.cos(tearAng), -0.25 * math.sin(tearAng)))
     end
 end

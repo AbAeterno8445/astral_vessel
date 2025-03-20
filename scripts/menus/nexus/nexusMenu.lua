@@ -162,10 +162,11 @@ function PSTAVessel:initNexusMenu()
                 local canActive = not self.hoveredItem.active or (self.hoveredItem.active and PSTAVessel.charActivesAllowed and not PSTAVessel:charHasStartingActive())
                 -- Can pick items of this quality
                 local canQuality = self.hoveredItem.qual <= PSTAVessel.charMaxQuality
+                local canQualityMax = PSTAVessel:charGetQualStartingQuant(self.hoveredItem.qual) <= PSTAVessel.charMaxPerQuality[self.hoveredItem.qual]
                 -- Whether starting item limit is reached
                 local canPick = #PSTAVessel.charStartItems < PSTAVessel.charMaxStartItems
 
-                if canAfford and canActive and canQuality and canPick and not PSTAVessel:charHasStartingItem(self.hoveredItem.item) then
+                if canAfford and canActive and canQuality and canQualityMax and canPick and not PSTAVessel:charHasStartingItem(self.hoveredItem.item) then
                     table.insert(PSTAVessel.charStartItems, {
                         item = self.hoveredItem.item,
                         active = self.hoveredItem.active,
@@ -347,9 +348,16 @@ function PSTAVessel:initNexusMenu()
                     end
 
                     -- Whether you can pick items of this quality
-                    local canQuality = self.hoveredItem.qual <= PSTAVessel.charMaxQuality
+                    local qual = self.hoveredItem.qual
+                    local canQuality = qual <= PSTAVessel.charMaxQuality
                     if not canQuality then
-                        table.insert(tmpLines, "{{ColorError}}Quality " .. self.hoveredItem.qual .. " items are locked.")
+                        table.insert(tmpLines, "{{ColorError}}Quality " .. qual .. " items are locked.")
+                    end
+
+                    -- Whether max items of this quality have been picked
+                    local canQualityMax = PSTAVessel:charGetQualStartingQuant(qual) <= PSTAVessel.charMaxPerQuality[qual]
+                    if not canQualityMax then
+                        table.insert(tmpLines, "{{ColorError}}Maximum quality " .. qual .. " items selected.")
                     end
 
                     -- Whether starting item limit is reached
@@ -358,7 +366,7 @@ function PSTAVessel:initNexusMenu()
                         table.insert(tmpLines, "{{ColorError}}You have reached the max amount of starting items!")
                     end
 
-                    if canAfford and canPick and canActive and canQuality and not hasStartingActive then
+                    if canAfford and canPick and canActive and canQuality and canQualityMax and not hasStartingActive then
                         table.insert(tmpLines, "Press Allocate to add this item to your starting items loadout.")
                     end
                 else

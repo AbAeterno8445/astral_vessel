@@ -9,25 +9,7 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
 
     -- Valid slot usage
     if slot ~= -1 then
-        -- Mod: % chance when using an active item with at least 2 charges to fire thin brimstone lasers at nearby enemies
-        local tmpMod = PST:getTreeSnapshotMod("baphometActiveLaser", 0)
-        if tmpMod > 0 and isNormalCharge and player:GetActiveCharge(slot) >= 2 and 100 * math.random() < tmpMod then
-            local nearbyEnems = Isaac.FindInRadius(player.Position, 120, EntityPartition.ENEMY)
-            if #nearbyEnems > 0 then
-                local extraCharges = player:GetActiveCharge(slot) - 2
-                for _=1,math.min(#nearbyEnems + 1, extraCharges + 1) do
-                    for _, tmpEnem in ipairs(nearbyEnems) do
-                        local tmpNPC = tmpEnem:ToNPC()
-                        if tmpNPC and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsActiveEnemy(false) and not EntityRef(tmpNPC).IsFriendly then
-                            local newLaser = player:FireBrimstone((tmpNPC.Position - player.Position):Normalized(), player, 0.9)
-                            newLaser:SetScale(0.5)
-                            break
-                        end
-                    end
-                    PST:shuffleList(nearbyEnems)
-                end
-            end
-        end
+        local usedCharges = player:GetActiveCharge(slot)
 
         -- Used by self
         if (useFlags & UseFlag.USE_OWNED) > 0 then
@@ -43,6 +25,36 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
                         PST:addModifiers({ spindownAngleKeep = { value = 0, set = true } }, true)
                     end
                 end
+            end
+
+            -- Mod: % chance when using an active item with at least 2 charges to fire thin brimstone lasers at nearby enemies
+            local tmpMod = PST:getTreeSnapshotMod("baphometActiveLaser", 0)
+            if tmpMod > 0 and isNormalCharge and usedCharges >= 2 and 100 * math.random() < tmpMod then
+                local nearbyEnems = Isaac.FindInRadius(player.Position, 120, EntityPartition.ENEMY)
+                if #nearbyEnems > 0 then
+                    local extraCharges = usedCharges - 2
+                    for _=1,math.min(#nearbyEnems + 1, extraCharges + 1) do
+                        for _, tmpEnem in ipairs(nearbyEnems) do
+                            local tmpNPC = tmpEnem:ToNPC()
+                            if tmpNPC and tmpNPC:IsVulnerableEnemy() and tmpNPC:IsActiveEnemy(false) and not EntityRef(tmpNPC).IsFriendly then
+                                local newLaser = player:FireBrimstone((tmpNPC.Position - player.Position):Normalized(), player, 0.9)
+                                newLaser:SetScale(0.5)
+                                break
+                            end
+                        end
+                        PST:shuffleList(nearbyEnems)
+                    end
+                end
+            end
+
+            -- Raging Energy node (Volcano elemental constellation)
+            if PST:getTreeSnapshotMod("ragingEnergy", false) and isNormalCharge and usedCharges >= 2 then
+                PSTAVessel.modCooldowns.ragingEnergy = usedCharges * 10
+            end
+
+            -- Snowstorm node (Blizzard elemental constellation)
+            if PST:getTreeSnapshotMod("blizzardSnowstorm", false) and isNormalCharge and usedCharges >= 2 then
+                PSTAVessel.modCooldowns.blizzardSnowstorm = usedCharges * 10
             end
         end
     end
