@@ -245,7 +245,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     -- Mod: % chance to spread poison to nearby enemies when hitting poisoned enemies
                     tmpMod = PST:getTreeSnapshotMod("viperPoisonSpread", 0)
                     if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) and 100 * math.random() < tmpMod then
-                        local nearbyEnems = PSTAVessel:getNearbyEntities(target.Position, 90, EntityPartition.ENEMY)
+                        local nearbyEnems = PSTAVessel:getNearbyNPCs(target.Position, 90, EntityPartition.ENEMY)
                         for _, tmpEnem in ipairs(nearbyEnems) do
                             if tmpEnem.InitSeed ~= target.InitSeed then
                                 tmpEnem:AddPoison(EntityRef(srcPlayer), math.max(45, tmpEnem:GetPoisonDamageTimer()), math.min(15, srcPlayer.Damage / 2))
@@ -282,6 +282,21 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     -- Mod: % chance for enemies to leave a fire on death (burns on hit)
                     if (source.Entity and source.Entity:GetData().PST_mobDeathFire) and target:GetBurnCountdown() == 0 then
                         target:AddBurn(EntityRef(srcPlayer), 100, math.min(20, srcPlayer.Damage / 2))
+                    end
+
+                    -- Mod: % chance per battery item you have to fire a homing electric tear when hitting enemies
+                    tmpMod = PST:getTreeSnapshotMod("batteryItemElecTear", 0)
+                    if tmpMod > 0 and PSTAVessel.modCooldowns.batteryItemElecTear == 0 then
+                        local batteryItems = 0
+                        for _, tmpItem in ipairs(PSTAVessel.batteryItems) do
+                            batteryItems = batteryItems + srcPlayer:GetCollectibleNum(tmpItem, true)
+                        end
+                        if batteryItems > 0 and 100 * math.random() < tmpMod * batteryItems then
+                            local tmpVel = (target.Position - srcPlayer.Position):Normalized() * 10
+                            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BLUE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                            newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_JACOBS)
+                            PSTAVessel.modCooldowns.batteryItemElecTear = 60
+                        end
                     end
                 end
             end

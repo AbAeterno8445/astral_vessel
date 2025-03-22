@@ -14,7 +14,9 @@ PSTAVessel.modCooldowns = {
     ragingEnergy = 0,
     frozenMobTearBuff = 0,
     blizzardSnowstorm = 0,
-    viperineLash = 0
+    viperineLash = 0,
+    batterySpeedBuff = 0,
+    batteryItemElecTear = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0
@@ -23,7 +25,8 @@ PSTAVessel.updateTrackers = {
     eternalHearts = 0,
     redHearts = 0,
     soulHearts = 0,
-    blackHearts = 0
+    blackHearts = 0,
+    primarySlotCharge = 0
 }
 PSTAVessel.floorFirstUpdate = false
 PSTAVessel.roomFirstFire = false
@@ -300,6 +303,22 @@ PSTAVessel.knifeItems = {
     CollectibleType.COLLECTIBLE_MOMS_KNIFE, CollectibleType.COLLECTIBLE_SACRIFICIAL_DAGGER, CollectibleType.COLLECTIBLE_BACKSTABBER,
     CollectibleType.COLLECTIBLE_KNIFE_PIECE_1, CollectibleType.COLLECTIBLE_KNIFE_PIECE_2, CollectibleType.COLLECTIBLE_BETRAYAL,
     CollectibleType.COLLECTIBLE_VENTRICLE_RAZOR, CollectibleType.COLLECTIBLE_DARK_ARTS, CollectibleType.COLLECTIBLE_POINTY_RIB
+}
+PSTAVessel.batteryItems = {
+    CollectibleType.COLLECTIBLE_BATTERY_PACK, CollectibleType.COLLECTIBLE_4_5_VOLT, CollectibleType.COLLECTIBLE_BATTERY,
+    CollectibleType.COLLECTIBLE_9_VOLT, CollectibleType.COLLECTIBLE_CAR_BATTERY, CollectibleType.COLLECTIBLE_CHARGED_BABY,
+    CollectibleType.COLLECTIBLE_JUMPER_CABLES, CollectibleType.COLLECTIBLE_JACOBS_LADDER
+}
+PSTAVessel.crimsonBloomID = Isaac.GetEntityVariantByName("Crimson Bloom")
+PSTAVessel.azureBloomID = Isaac.GetEntityVariantByName("Azure Bloom")
+PSTAVessel.onyxBloomID = Isaac.GetEntityVariantByName("Onyx Bloom")
+PSTAVessel.calcifiedBloomID = Isaac.GetEntityVariantByName("Calcified Bloom")
+PSTAVessel.eternalBloomID = Isaac.GetEntityVariantByName("Eternal Bloom")
+PSTAVessel.rotBloomID = Isaac.GetEntityVariantByName("Rotbloom")
+PSTAVessel.gildedBloomID = Isaac.GetEntityVariantByName("Gilded Bloom")
+PSTAVessel.lifebloomsList = {
+    PSTAVessel.crimsonBloomID, PSTAVessel.azureBloomID, PSTAVessel.onyxBloomID, PSTAVessel.calcifiedBloomID, PSTAVessel.eternalBloomID,
+    PSTAVessel.rotBloomID, PSTAVessel.gildedBloomID
 }
 
 -- Corpse Raiser summon choices {entity type, variant, max summons, {anim1, anim2, ...}}

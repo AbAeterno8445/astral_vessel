@@ -109,7 +109,7 @@ end
 ---@param radius number
 ---@param partition EntityPartition
 ---@return EntityNPC[]
-function PSTAVessel:getNearbyEntities(pos, radius, partition)
+function PSTAVessel:getNearbyNPCs(pos, radius, partition)
     local enemList = {}
     local nearbyEnems = Isaac.FindInRadius(pos, radius, partition)
     for _, tmpEnem in ipairs(nearbyEnems) do
@@ -125,7 +125,7 @@ end
 ---@param radius number
 ---@return EntityNPC|nil
 function PSTAVessel:getClosestEnemy(pos, radius)
-    local enemList = PSTAVessel:getNearbyEntities(pos, radius, EntityPartition.ENEMY)
+    local enemList = PSTAVessel:getNearbyNPCs(pos, radius, EntityPartition.ENEMY)
     local closest = nil
     local closestDist = 1000
     for _, tmpEnem in ipairs(enemList) do

@@ -32,6 +32,7 @@ function PSTAVessel:onNewRoom()
         PSTAVessel.updateTrackers.redHearts = player:GetHearts()
         PSTAVessel.updateTrackers.soulHearts = player:GetSoulHearts()
         PSTAVessel.updateTrackers.blackHearts = PSTAVessel:GetBlackHeartCount(player)
+        PSTAVessel.updateTrackers.primarySlotCharge = player:GetTotalActiveCharge(ActiveSlot.SLOT_PRIMARY)
     end
 
     -- Versus screen sprite color
@@ -147,6 +148,24 @@ function PSTAVessel:onNewRoom()
                 local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 20)
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, tmpPos, Vector.Zero, nil)
             end
+        -- Secret Room
+        elseif roomType == RoomType.ROOM_SECRET then
+            -- Mod: % chance for secret rooms to additionally contain a Black Lotus, up to twice per run
+            local tmpMod = PST:getTreeSnapshotMod("secretBlackLotus", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("secretBlackLotusProcs", 0) < 2 and 100 * math.random() < tmpMod then
+                local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20, true)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_BLACK_LOTUS, tmpPos, Vector.Zero, nil)
+                PST:addModifiers({ secretBlackLotusProcs = 1 }, true)
+            end
+        -- Super Secret Room
+        elseif roomType == RoomType.ROOM_SUPERSECRET then
+            -- Mod: % chance for super secret rooms to additionally contain an Eden's blessing, once per run
+            local tmpMod = PST:getTreeSnapshotMod("superSecretEdenBlessing", 0)
+            if tmpMod > 0 and not PST:getTreeSnapshotMod("superSecretEdenBlessingProc", false) and 100 * math.random() < tmpMod then
+                local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20, true)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_EDENS_BLESSING, tmpPos, Vector.Zero, nil)
+                PST:addModifiers({ superSecretEdenBlessingProc = true }, true)
+            end
         end
     end
 
@@ -193,5 +212,16 @@ function PSTAVessel:onNewRoom()
     -- Life Insured node (God Of Fortune mercantile constellation)
     if PST:getTreeSnapshotMod("lifeInsuredProc", false) then
         PST:addModifiers({ lifeInsuredProc = false }, true)
+    end
+
+    -- Calcified Lifeblooms node (Flower mundane constellation) - Remove spawned friendly bonies
+    if PST:getTreeSnapshotMod("calcifiedLifeblooms", false) then
+        local tmpBonies = Isaac.FindByType(EntityType.ENTITY_BONY, 0, 0)
+        for i=#tmpBonies,1,-1 do
+            local tmpBony = tmpBonies[i]
+            if tmpBony:GetData().PST_bloomBony then
+                tmpBony:Remove()
+            end
+        end
     end
 end

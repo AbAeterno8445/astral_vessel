@@ -21,7 +21,8 @@ local constTreeBanks = {
     [PSTAVConstellationType.DEMONIC] = include("scripts.constellationTrees.demonicTreeBank"),
     [PSTAVConstellationType.OCCULT] = include("scripts.constellationTrees.occultTreeBank"),
     [PSTAVConstellationType.MERCANTILE] = include("scripts.constellationTrees.mercantileTreeBank"),
-    [PSTAVConstellationType.ELEMENTAL] = include("scripts.constellationTrees.elementalTreeBank")
+    [PSTAVConstellationType.ELEMENTAL] = include("scripts.constellationTrees.elementalTreeBank"),
+    [PSTAVConstellationType.MUNDANE] = include("scripts.constellationTrees.mundaneTreeBank")
 }
 
 function PSTAVessel:initVesselTree()
@@ -153,6 +154,17 @@ function PSTAVessel:initVesselTree()
         return true
     end
     PST:addExtraNodeReqFunc("avesselConstNodeReqs", PSTAVessel_constNodeReqs)
+
+    -- Menu-opening nodes
+    PST:addMenuNode("Vessel-Shaping", PSTAVessel.AppearanceMenuID)
+    PST:addMenuNode("Stellar Nexus", PSTAVessel.NexusMenuID)
+    -- Constellation tree nodes
+    for _, tmpType in pairs(PSTAVConstellationType) do
+        PST:addTreeOpenNode(tmpType .. " Constellations", "Astral Vessel " .. tmpType)
+    end
+    -- Submenu-opening nodes
+    PST:addSubmenuOpenNode("Vessel Loadouts", PSTAVessel.loadoutSubmenuID)
+    PST:addSubmenuOpenNode("Corpse Raiser", PSTAVessel.corpseRaiserSubmenuID)
 
     -- Init constellation trees
     for tmpType, treeData in pairs(constTreeBanks) do

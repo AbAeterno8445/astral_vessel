@@ -1,0 +1,10 @@
+<entities anm2root="gfx/" version="5">
+    <!-- Lifebloom flowers -->
+    <entity anm2path="effects/avessel_crimsonbloom.anm2" id="1000" variant="2200" name="Crimson Bloom" />
+    <entity anm2path="effects/avessel_azurebloom.anm2" id="1000" variant="2201" name="Azure Bloom" />
+    <entity anm2path="effects/avessel_onyxbloom.anm2" id="1000" variant="2202" name="Onyx Bloom" />
+    <entity anm2path="effects/avessel_calcifiedbloom.anm2" id="1000" variant="2203" name="Calcified Bloom" />
+    <entity anm2path="effects/avessel_eternalbloom.anm2" id="1000" variant="2204" name="Eternal Bloom" />
+    <entity anm2path="effects/avessel_rotbloom.anm2" id="1000" variant="2205" name="Rotbloom" />
+    <entity anm2path="effects/avessel_goldbloom.anm2" id="1000" variant="2206" name="Gilded Bloom" />
+</entities>

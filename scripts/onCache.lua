@@ -48,6 +48,15 @@ function PSTAVessel:onCache(player, cacheFlag)
         if tmpMod > 0 then
             dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod
         end
+
+        -- Mod: +% damage per charge on your current active item
+        tmpMod = PST:getTreeSnapshotMod("activeChargeDmg", 0)
+        if tmpMod > 0 then
+            local currentCharges = player:GetTotalActiveCharge(ActiveSlot.SLOT_PRIMARY)
+            if currentCharges and currentCharges > 0 then
+                dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod * currentCharges
+            end
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: +% tears per angel item you have
@@ -89,6 +98,12 @@ function PSTAVessel:onCache(player, cacheFlag)
         -- Mod: +% speed and tears when killing poisoned enemies
         tmpMod = PST:getTreeSnapshotMod("poisonVialKillBuff", 0)
         if tmpMod > 0 and PSTAVessel.modCooldowns.poisonVialKillBuff > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
+        end
+
+        -- Mod: +% temporary speed when picking up any battery
+        tmpMod = PST:getTreeSnapshotMod("batterySpeedBuff", 0)
+        if tmpMod > 0 and PSTAVessel.modCooldowns.batterySpeedBuff > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
         end
     end
@@ -152,7 +167,7 @@ function PSTAVessel:onCache(player, cacheFlag)
 
     elseif cacheFlag == CacheFlag.CACHE_SPEED then
         -- MOVEMENT SPEED
-        tmpMod = PST:getTreeSnapshotMod("speed", 0) + dynamicMods.speed + allstats
+        tmpMod = dynamicMods.speed + allstats
         local tmpMult = 1 + allstatsPerc / 100
         tmpMult = tmpMult + dynamicMods.speedPerc / 100
         player.MoveSpeed = (player.MoveSpeed + tmpMod / 2) * math.max(0.05, tmpMult)

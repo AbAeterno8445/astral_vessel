@@ -101,18 +101,27 @@ function PSTAVessel:onPickup(pickup, collider, low, forced)
                     local tearVel = Vector(math.cos(tearAng) * 7, math.sin(tearAng) * 7)
                     local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.COIN, 0, pickup.Position, tearVel, player)
                     newTear:ToTear():AddTearFlags(TearFlags.TEAR_GREED_COIN)
-                    newTear.CollisionDamage = 1 + math.max(11, player.Damage / 2)
+                    newTear.CollisionDamage = 1 + math.min(11, player.Damage / 2)
 
                     if coinWorth[pickup.SubType] then
                         if coinWorth[pickup.SubType] >= 10 then
                             newTear.Color = Color(1, 1, 1, 1, 0.5, 0.5, 0.5)
-                            newTear.CollisionDamage = 10 + math.max(20, math.ceil(player.Damage * 1.5))
+                            newTear.CollisionDamage = 10 + math.min(20, math.ceil(player.Damage * 1.5))
                         elseif coinWorth[pickup.SubType] >= 5 then
                             newTear.Color = Color(0.1, 0.1, 0.1, 1)
-                            newTear.CollisionDamage = 3 + math.max(13, player.Damage)
+                            newTear.CollisionDamage = 3 + math.min(13, player.Damage)
                         end
                     end
                 end
+            end
+        -- Battery pickup
+        elseif pickup.Variant == PickupVariant.PICKUP_LIL_BATTERY then
+            -- Mod: +% temporary speed when picking up any battery
+            if PST:getTreeSnapshotMod("batterySpeedBuff", 0) > 0 then
+                if PSTAVessel.modCooldowns.batterySpeedBuff == 0 then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                end
+                PSTAVessel.modCooldowns.batterySpeedBuff = 450
             end
         end
     end
@@ -170,6 +179,12 @@ function PSTAVessel:onPickupInit(pickup, firstSpawn)
                     end
                 end
             end
+        end
+
+        -- Mod: % chance to convert dropped pills into their horse pill version
+        tmpMod = PST:getTreeSnapshotMod("horsePillConv", 0)
+        if tmpMod > 0 and pickup.Variant == PickupVariant.PICKUP_PILL and 100 * math.random() < tmpMod then
+            pickup:Morph(pickup.Type, pickup.Variant, pickup.SubType | PillColor.PILL_GIANT_FLAG, true)
         end
     end
 end

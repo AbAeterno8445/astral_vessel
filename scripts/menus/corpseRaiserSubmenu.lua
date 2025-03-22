@@ -1,4 +1,4 @@
-PSTAVessel.corpseRaiserSubmenuID = "loadouts"
+PSTAVessel.corpseRaiserSubmenuID = "corpseRaiser"
 
 function PSTAVessel:initCorpseRaiserSubmenu()
     local corpseRaiserSubmenu = {

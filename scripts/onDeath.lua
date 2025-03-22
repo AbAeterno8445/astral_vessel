@@ -155,6 +155,14 @@ function PSTAVessel:onDeath(entity)
                     end
                 end
             end
+
+            -- Mod: % chance for bosses/champions to drop a pill on death, up to 3 per floor
+            tmpMod = PST:getTreeSnapshotMod("bossChampPill", 0)
+            if tmpMod > 0 and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) and PST:getTreeSnapshotMod("bossChampPillProcs", 0) < 3 and
+            100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, entity.Position, RandomVector() * 3, nil)
+                PST:addModifiers({ bossChampPillProcs = 1 }, true)
+            end
         end
     end
 

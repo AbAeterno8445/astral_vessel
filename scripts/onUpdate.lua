@@ -49,6 +49,13 @@ function PSTAVessel:onUpdate()
                 PST:createFloatTextFX("Dark Decay", Vector.Zero, Color(0.3, 0.3, 0.3, 1), 0.13, 120, true)
                 SFXManager():Play(SoundEffect.SOUND_DEATH_CARD)
             end
+
+            -- Mod: % chance to spawn a random pill when entering a floor past the first
+            tmpMod = PST:getTreeSnapshotMod("floorRandomPill", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos() - Vector(60, 60), 20, true)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, tmpPos, Vector.Zero, nil)
+            end
         end
     end
 
@@ -63,6 +70,81 @@ function PSTAVessel:onUpdate()
                     newCarrionMob.Color = Color(0.4, 0.2, 0.75, 1)
                     newCarrionMob:AddCharmed(EntityRef(player), -1)
                     newCarrionMob:GetData().PST_carrionHarvestMob = true
+                end
+            end
+        end
+
+        -- Mod: % chance to turn a random rock into a tinted rock, up to twice per floor
+        local tmpMod = PST:getTreeSnapshotMod("tintedRockDiscover", 0)
+        if tmpMod > 0 and room:IsFirstVisit() and PST:getTreeSnapshotMod("tintedRockDiscoverProcs", 0) < 2 and 100 * math.random() < tmpMod then
+            for i=0,room:GetGridSize() do
+                local tmpGridEnt = room:GetGridEntity(i)
+                if tmpGridEnt and tmpGridEnt:GetType() == GridEntityType.GRID_ROCK then
+                    tmpGridEnt:Destroy(true)
+                    room:SpawnGridEntity(i, GridEntityType.GRID_ROCKT, 0)
+                    PST:addModifiers({ tintedRockDiscoverProcs = 1 }, true)
+                    break
+                end
+            end
+        end
+
+        -- Room has monsters
+        if room:GetAliveEnemiesCount() > 0 then
+            local maxBlooms = 15
+            -- Crimson Lifeblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("crimsonLifeblooms", false) then
+                local bloomSpawns = math.min(maxBlooms, player:GetHearts())
+                for _=1,bloomSpawns do
+                    local tmpPos = room:GetRandomPosition(40)
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.crimsonBloomID, 0, tmpPos, Vector.Zero, nil)
+                end
+            end
+            -- Azure Lifeblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("azureLifeblooms", false) then
+                local bloomSpawns = math.min(maxBlooms, player:GetSoulHearts() - PSTAVessel:GetBlackHeartCount(player))
+                for _=1,bloomSpawns do
+                    local tmpPos = room:GetRandomPosition(40)
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.azureBloomID, 0, tmpPos, Vector.Zero, nil)
+                end
+            end
+            -- Onyx Lifeblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("onyxLifeblooms", false) then
+                local bloomSpawns = math.min(maxBlooms, PSTAVessel:GetBlackHeartCount(player))
+                for _=1,bloomSpawns do
+                    local tmpPos = room:GetRandomPosition(40)
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.onyxBloomID, 0, tmpPos, Vector.Zero, nil)
+                end
+            end
+            -- Calcified Lifeblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("calcifiedLifeblooms", false) then
+                local bloomSpawns = math.min(5, player:GetBoneHearts())
+                for _=1,bloomSpawns do
+                    local tmpPos = room:GetRandomPosition(40)
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.calcifiedBloomID, 0, tmpPos, Vector.Zero, nil)
+                end
+            end
+            -- Eternal Lifeblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("eternalLifeblooms", false) and player:GetEternalHearts() then
+                local tmpPos = room:GetRandomPosition(40)
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.eternalBloomID, 0, tmpPos, Vector.Zero, nil)
+            end
+            -- Rotblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("rotblooms", false) then
+                local bloomSpawns = math.min(maxBlooms, player:GetRottenHearts())
+                for _=1,bloomSpawns do
+                    local tmpPos = room:GetRandomPosition(40)
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.rotBloomID, 0, tmpPos, Vector.Zero, nil)
+                end
+            end
+            -- Gilded Lifeblooms node (Flower mundane constellation)
+            if PST:getTreeSnapshotMod("gildedLifeblooms", false) then
+                local bloomSpawns = math.min(maxBlooms, player:GetGoldenHearts())
+                if player:GetHealthType() == HealthType.COIN then
+                    bloomSpawns = math.min(maxBlooms, bloomSpawns + math.ceil(player:GetMaxHearts() / 2))
+                end
+                for _=1,bloomSpawns do
+                    local tmpPos = room:GetRandomPosition(40)
+                    Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.gildedBloomID, 0, tmpPos, Vector.Zero, nil)
                 end
             end
         end
@@ -99,12 +181,26 @@ function PSTAVessel:onUpdate()
                 if modName == "frozenMobTearBuff" then
                     PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
                 end
+                -- Mod: +% temporary speed when picking up any battery
+                if modName == "batterySpeedBuff" then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                end
             end
         end
     end
 
     -- Heart update checks
     PSTAVessel:onUpdateHeartChecks(player)
+
+    -- Primary active slot charge update tracker
+    if PSTAVessel.updateTrackers.primarySlotCharge ~= player:GetTotalActiveCharge(ActiveSlot.SLOT_PRIMARY) then
+        -- Mod: +% damage per charge on your current active item
+        if PST:getTreeSnapshotMod("activeChargeDmg", 0) > 0 then
+            PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+        end
+
+        PSTAVessel.updateTrackers.primarySlotCharge = player:GetTotalActiveCharge(ActiveSlot.SLOT_PRIMARY)
+    end
 
     -- Player firing
     local plInput = player:GetShootingInput()
@@ -180,7 +276,7 @@ function PSTAVessel:onUpdate()
         elseif PSTAVessel.modCooldowns.meteorEmber <= 30 then
             -- Fire embers in a slightly delayed sequence
             if PSTAVessel.modCooldowns.meteorEmber % 3 == 0 and PSTAVessel.fusilladeEmbers > 0 then
-                local nearbyEnems = PSTAVessel:getNearbyEntities(player.Position, 200, EntityPartition.ENEMY)
+                local nearbyEnems = PSTAVessel:getNearbyNPCs(player.Position, 200, EntityPartition.ENEMY)
                 local closestEnem = nil
                 local closestDist = 1000
                 for _, tmpEnem in ipairs(nearbyEnems) do
@@ -212,7 +308,7 @@ function PSTAVessel:onUpdate()
     -- Mod: petrification aura
     local tmpMod = PST:getTreeSnapshotMod("petriAura", 0)
     if tmpMod > 0 and (roomFrame % 30) == 0 then
-        local nearbyEnems = PSTAVessel:getNearbyEntities(player.Position, 100, EntityPartition.ENEMY)
+        local nearbyEnems = PSTAVessel:getNearbyNPCs(player.Position, 100, EntityPartition.ENEMY)
         local affected = 0
         for _, tmpEnem in ipairs(nearbyEnems) do
             if 100 * math.random() < tmpMod then
@@ -272,7 +368,7 @@ function PSTAVessel:onUpdate()
 
     -- Mod: slowing aura
     if PST:getTreeSnapshotMod("slowingAura", false) and (roomFrame % 30) == 0 then
-        local nearbyEnems = PSTAVessel:getNearbyEntities(player.Position, 100 + PST:getTreeSnapshotMod("slowingAuraRadius", 0) * 2, EntityPartition.ENEMY)
+        local nearbyEnems = PSTAVessel:getNearbyNPCs(player.Position, 100 + PST:getTreeSnapshotMod("slowingAuraRadius", 0) * 2, EntityPartition.ENEMY)
         for _, tmpEnem in ipairs(nearbyEnems) do
             if math.random() < 0.9 then
                 tmpEnem:AddSlowing(EntityRef(player), 40, 0.8, Color(0.8, 0.8, 0.8, 1))

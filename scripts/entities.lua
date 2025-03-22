@@ -1,3 +1,5 @@
+include("scripts.lifeblooms")
+
 ---@param npc EntityNPC
 function PSTAVessel:onNPCUpdate(npc)
     -- Mod: +% tears for 6 seconds whenever a friendly undead monster is summoned
@@ -32,7 +34,7 @@ function PSTAVessel:effectUpdate(effect)
         local frameCount = Game():GetFrameCount()
         if frameCount % 10 == 0 then
             local player = PST:getPlayer()
-            local nearbyEnems = PSTAVessel:getNearbyEntities(effect.Position, 110, EntityPartition.ENEMY)
+            local nearbyEnems = PSTAVessel:getNearbyNPCs(effect.Position, 110, EntityPartition.ENEMY)
             local closest = nil
             local closestDist = 1000
             for _, tmpEnem in ipairs(nearbyEnems) do
@@ -59,12 +61,17 @@ function PSTAVessel:effectUpdate(effect)
         local frameCount = Game():GetFrameCount()
         if frameCount % 15 == 0 then
             local player = PST:getPlayer()
-            local nearbyEnems = PSTAVessel:getNearbyEntities(effect.Position, 60, EntityPartition.ENEMY)
+            local nearbyEnems = PSTAVessel:getNearbyNPCs(effect.Position, 60, EntityPartition.ENEMY)
             for _, tmpEnem in ipairs(nearbyEnems) do
                 tmpEnem:TakeDamage(1, DamageFlag.DAMAGE_POISON_BURN, EntityRef(player), 0)
-                tmpEnem:AddPoison(EntityRef(player), 75, math.min(10, player.Damage))
+                if not tmpEnem:HasEntityFlags(EntityFlag.FLAG_POISON) then
+                    tmpEnem:AddPoison(EntityRef(player), 75, math.min(10, player.Damage))
+                end
             end
         end
+    -- Crimson Bloom
+    elseif PSTAVessel:arrHasValue(PSTAVessel.lifebloomsList, effect.Variant) then
+        PSTAVessel:effectLifebloomUpdate(effect)
     else
         ---@type EntityPlayer
         local player = PST:getPlayer()

@@ -78,6 +78,11 @@ function PSTAVessel:onNewRun(isContinued)
             player:AddMaxHearts(2)
             player:AddHearts(2)
         end
+
+        -- Smelted Myosotis node (Flower mundane constellation)
+        if PST:getTreeSnapshotMod("smeltedMyosotis", false) then
+            player:AddSmeltedTrinket(TrinketType.TRINKET_MYOSOTIS)
+        end
     end
 
     PSTAVessel:onNewLevel()

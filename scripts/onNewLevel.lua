@@ -71,5 +71,15 @@ function PSTAVessel:onNewLevel()
         }, true)
     end
 
+    -- Mod: % chance for bosses/champions
+    if PST:getTreeSnapshotMod("bossChampPillProcs", 0) > 0 then
+        PST:addModifiers({ bossChampPillProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to convert rocks to tinted rocks, up to twice per floor
+    if PST:getTreeSnapshotMod("tintedRockDiscoverProcs", 0) > 0 then
+        PST:addModifiers({ tintedRockDiscoverProcs = { value = 0, set = true } }, true)
+    end
+
     PSTAVessel.floorFirstUpdate = true
 end
