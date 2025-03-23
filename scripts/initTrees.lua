@@ -22,7 +22,9 @@ local constTreeBanks = {
     [PSTAVConstellationType.OCCULT] = include("scripts.constellationTrees.occultTreeBank"),
     [PSTAVConstellationType.MERCANTILE] = include("scripts.constellationTrees.mercantileTreeBank"),
     [PSTAVConstellationType.ELEMENTAL] = include("scripts.constellationTrees.elementalTreeBank"),
-    [PSTAVConstellationType.MUNDANE] = include("scripts.constellationTrees.mundaneTreeBank")
+    [PSTAVConstellationType.MUNDANE] = include("scripts.constellationTrees.mundaneTreeBank"),
+    --[PSTAVConstellationType.MUTAGENIC] = include("scripts.constellationTrees.mutagenicTreeBank"),
+    [PSTAVConstellationType.COSMIC] = include("scripts.constellationTrees.cosmicTreeBank")
 }
 
 function PSTAVessel:initVesselTree()
@@ -103,7 +105,7 @@ function PSTAVessel:initVesselTree()
                 if itemCfg then
                     local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
 		            if itemName == "StringTable::InvalidKey" then itemName = "Unknown Item" end
-                    table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolor.LIGHTBLUE1})
+                    table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolors.LIGHTBLUE1})
                 end
             end
             return { name = descName, description = newDesc }

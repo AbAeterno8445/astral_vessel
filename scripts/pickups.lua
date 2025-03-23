@@ -186,6 +186,30 @@ function PSTAVessel:onPickupInit(pickup, firstSpawn)
         if tmpMod > 0 and pickup.Variant == PickupVariant.PICKUP_PILL and 100 * math.random() < tmpMod then
             pickup:Morph(pickup.Type, pickup.Variant, pickup.SubType | PillColor.PILL_GIANT_FLAG, true)
         end
+
+        -- Collectibles
+        if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+            local itemRerolled = false
+            -- Mod: % chance for spawned items to be rerolled into an item from a different pool
+            tmpMod = PST:getTreeSnapshotMod("randPoolItems", 0)
+            if tmpMod > 0 and not PSTAVessel:arrHasValue(PST.progressionItems, pickup.SubType) and 100 * math.random() < tmpMod then
+                local randPool = Game():GetItemPool():GetRandomPool(RNG(math.random(100000)))
+                ---@diagnostic disable-next-line: param-type-mismatch
+                local newItem = Game():GetItemPool():GetCollectible(randPool)
+                pickup:Morph(pickup.Type, pickup.Variant, newItem, true)
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, nil)
+                itemRerolled = true
+            end
+
+            -- Mod: % chance to reroll spawned items into a random red item
+            tmpMod = PST:getTreeSnapshotMod("redItemConv", 0) / (2 ^ PST:getTreeSnapshotMod("redItemConvProcs", 0))
+            if tmpMod > 0 and not itemRerolled and not PSTAVessel:arrHasValue(PST.progressionItems, pickup.SubType) and 100 * math.random() < tmpMod then
+                local newItem = Game():GetItemPool():GetCollectible(ItemPoolType.POOL_ULTRA_SECRET)
+                pickup:Morph(pickup.Type, pickup.Variant, newItem, true)
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, nil)
+                itemRerolled = true
+            end
+        end
     end
 end
 
@@ -193,7 +217,9 @@ end
 function PSTAVessel:onPickupUpdate(pickup)
     -- Init pickup
     if pickup.FrameCount == 1 then
-        local isFirstSpawn = not pickup:GetData().PSTAVessel_init and not pickup:GetData().PST_duped
+        ---@type Room
+        local room = PST:getRoom()
+        local isFirstSpawn = not pickup:GetData().PSTAVessel_init and not pickup:GetData().PST_duped and (room:IsFirstVisit() or room:GetFrameCount() > 1)
         PSTAVessel:onPickupInit(pickup, isFirstSpawn)
         pickup:GetData().PSTAVessel_init = true
 

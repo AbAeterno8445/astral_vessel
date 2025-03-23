@@ -57,6 +57,15 @@ function PSTAVessel:onCache(player, cacheFlag)
                 dynamicMods.damagePerc = dynamicMods.damagePerc + tmpMod * currentCharges
             end
         end
+
+        -- Solar Scion node (Sun cosmic constellation) - Fire ring buff
+        if PSTAVessel.inSolarFireRing then
+            local tmpBonus = 20
+            if PST:getTreeSnapshotMod("solarScionBossDead", false) then
+                tmpBonus = 30
+            end
+            dynamicMods.damagePerc = dynamicMods.damagePerc + tmpBonus
+        end
     -- TEARS CACHE
     elseif cacheFlag == CacheFlag.CACHE_FIREDELAY then
         -- Mod: +% tears per angel item you have
@@ -106,6 +115,12 @@ function PSTAVessel:onCache(player, cacheFlag)
         if tmpMod > 0 and PSTAVessel.modCooldowns.batterySpeedBuff > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
         end
+
+        -- Mod: +% speed when first entering secret rooms
+        tmpMod = PST:getTreeSnapshotMod("secretRoomSpeedBuff", 0)
+        if tmpMod > 0 and PSTAVessel.modCooldowns.secretRoomSpeedBuff > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
+        end
     end
 
     -- Mod: +% all stats while you have eternal hearts
@@ -126,6 +141,27 @@ function PSTAVessel:onCache(player, cacheFlag)
         if (lvlCurses & (LevelCurse.CURSE_OF_LABYRINTH | LevelCurse.CURSE_OF_MAZE | LevelCurse.CURSE_OF_THE_LOST)) > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
         end
+    end
+
+    -- Lightless Maw node (Singularity cosmic constellation)
+    if PSTAVessel.modCooldowns.lightlessMaw > 0 then
+        if PSTAVessel.lightlessMawDmg > 0 then
+            dynamicMods.damagePerc = dynamicMods.damagePerc + math.min(25, PSTAVessel.lightlessMawDmg)
+        end
+        if PSTAVessel.lightlessMawLuckTears > 0 then
+            dynamicMods.luckPerc = dynamicMods.luckPerc + math.min(25, PSTAVessel.lightlessMawLuckTears)
+            dynamicMods.tearsPerc = dynamicMods.tearsPerc + math.min(25, PSTAVessel.lightlessMawLuckTears)
+        end
+        if PSTAVessel.lightlessMawSpeedRange > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + math.min(25, PSTAVessel.lightlessMawSpeedRange)
+            dynamicMods.rangePerc = dynamicMods.rangePerc + math.min(25, PSTAVessel.lightlessMawSpeedRange)
+        end
+    end
+
+    -- Lunar Scion node (Moon cosmic constellation)
+    if PSTAVessel.modCooldowns.lunarScion > 0 then
+        local tmpBonus = 5 + PST:getTreeSnapshotMod("lunarScionExtras", 0) * 2
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpBonus * PST:getTreeSnapshotMod("lunarScionStacks", 1)
     end
 
     ---- Stat modifier application ----
@@ -171,5 +207,16 @@ function PSTAVessel:onCache(player, cacheFlag)
         local tmpMult = 1 + allstatsPerc / 100
         tmpMult = tmpMult + dynamicMods.speedPerc / 100
         player.MoveSpeed = (player.MoveSpeed + tmpMod / 2) * math.max(0.05, tmpMult)
+
+        -- Mod: Spacefarer minimum speed
+        if PST:getTreeSnapshotMod("spacefarerMinSpdProc", false) then
+            tmpMod = PST:getTreeSnapshotMod("spacefarerMinSpd", 0)
+            if tmpMod > 0 then
+                local minSpeed = 0.8 + 0.03 * tmpMod
+                if player.MoveSpeed < minSpeed then
+                    player.MoveSpeed = minSpeed
+                end
+            end
+        end
     end
 end

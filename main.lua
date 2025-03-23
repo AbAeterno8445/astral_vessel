@@ -84,7 +84,23 @@ function PSTAVessel:initMod()
 
     -- Entity debug
     --[[PSTAVessel:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, function(self, entityType, variant, subtype)
-        print("Entity Spawn:", entityType, variant, subtype)
+        local tmpType = entityType
+        for typeName, typeID in pairs(EntityType) do
+            if typeID == entityType then
+                tmpType = typeName
+                break
+            end
+        end
+        local tmpVariant = variant
+        if entityType == EntityType.ENTITY_EFFECT then
+            for fxName, fxID in pairs(EffectVariant) do
+                if fxID == variant then
+                    tmpVariant = fxName
+                    break
+                end
+            end
+        end
+        print("Entity Spawn:", tmpType, tmpVariant, subtype)
     end)]]
 
     PSTAVessel:load()

@@ -1,3 +1,12 @@
+local curseIDs = {
+    LevelCurse.CURSE_OF_BLIND,
+    LevelCurse.CURSE_OF_DARKNESS,
+    LevelCurse.CURSE_OF_LABYRINTH,
+    LevelCurse.CURSE_OF_MAZE,
+    LevelCurse.CURSE_OF_THE_LOST,
+    LevelCurse.CURSE_OF_THE_UNKNOWN
+}
+
 function PSTAVessel:onNewLevel()
     if not PST.gameInit then return end
 
@@ -79,6 +88,72 @@ function PSTAVessel:onNewLevel()
     -- Mod: % chance to convert rocks to tinted rocks, up to twice per floor
     if PST:getTreeSnapshotMod("tintedRockDiscoverProcs", 0) > 0 then
         PST:addModifiers({ tintedRockDiscoverProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: Spacefarer min speed
+    if PST:getTreeSnapshotMod("spacefarerMinSpdProc", false) then
+        PST:addModifiers({ spacefarerMinSpdProc = false }, true)
+        PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+    end
+
+    -- Mod: % chance for champions to drop a cracked key on death
+    if PST:getTreeSnapshotMod("champCrackedKeyProcs", 0) > 0 then
+        PST:addModifiers({ champCrackedKeyProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: +% to a random stat for the current floor when entering red rooms
+    if PST:getTreeSnapshotMod("redRoomRandStat", 0) > 0 then
+        local statsList = {"damage", "luck", "speed", "tears", "shotSpeed", "range"}
+        local tmpModList = {}
+        for _, tmpStat in ipairs(statsList) do
+            tmpMod = PST:getTreeSnapshotMod("redRoomRandStat" .. tmpStat, 0)
+            if tmpMod > 0 then
+                tmpModList[tmpStat .. "Perc"] = -tmpMod
+                tmpModList["redRoomRandStat" .. tmpStat] = { value = 0, set = true }
+            end
+        end
+        PST:addModifiers(tmpModList, true)
+    end
+
+    -- Mod: % chance to replace a level curse with curse of darkness
+    tmpMod = PST:getTreeSnapshotMod("singularityDarkCurse", 0)
+    if tmpMod > 0 and 100 * math.random() < tmpMod * 15 then
+        local lvlCurses = level:GetCurses()
+        for _, tmpCurse in ipairs(curseIDs) do
+            if tmpCurse ~= LevelCurse.CURSE_OF_DARKNESS then
+                if (lvlCurses & tmpCurse) > 0 then
+                    level:RemoveCurses(tmpCurse)
+                    level:AddCurse(LevelCurse.CURSE_OF_DARKNESS, false)
+                    break
+                end
+            end
+        end
+    end
+
+    -- Mod: % chance for rocks in secret rooms to be replaced with tinted rocks, up to 3 times per floor
+    if PST:getTreeSnapshotMod("secretRoomTintedProcs", 0) > 0 then
+        PST:addModifiers({ secretRoomTintedProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Lunar Scion node (Moon cosmic constellation)
+    if PST:getTreeSnapshotMod("lunarScionExtras", 0) > 0 then
+        PST:addModifiers({ lunarScionExtras = { value = 0, set = true } }, true)
+    end
+    if PSTAVessel.modCooldowns.lunarScion > 0 then
+        PSTAVessel.modCooldowns.lunarScion = 0
+        PST:addModifiers({ lunarScionStacks = { value = 0, set = true } }, true)
+        PST:updateCacheDelayed()
+    end
+
+    -- Solar Scion node (Sun cosmic constellation)
+    if PST:getTreeSnapshotMod("solarScionBossDead", false) then
+        PST:addModifiers({ solarScionBossDead = false }, true)
+    end
+
+    -- Mod: % chance to gain Rock Bottom for the current floor when clearing the boss room without taking damage
+    if PST:getTreeSnapshotMod("sunRockBottomProc", false) then
+        player:RemoveCollectible(CollectibleType.COLLECTIBLE_ROCK_BOTTOM)
+        PST:addModifiers({ sunRockBottomProc = false })
     end
 
     PSTAVessel.floorFirstUpdate = true

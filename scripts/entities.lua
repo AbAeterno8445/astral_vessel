@@ -69,6 +69,94 @@ function PSTAVessel:effectUpdate(effect)
                 end
             end
         end
+    -- Lunar Scion node (Moon cosmic constellation) - Moonlight ray effect
+    elseif effect.Variant == PSTAVessel.lunarScionMoonlightID then
+        if not effect:GetData().PST_lunarRayDisappear then
+            if Game():GetFrameCount() % 15 == 0 then
+                -- Player nearby - trigger effect
+                if effect.Position:Distance(PST:getPlayer().Position) <= 30 then
+                    PST:addModifiers({ lunarScionStacks = 1 }, true)
+                    PST:updateCacheDelayed()
+                    PSTAVessel.modCooldowns.lunarScion = 300
+                    effect:GetData().PST_lunarRayDisappear = true
+                    effect:GetSprite():Play("Disappear")
+                    SFXManager():Play(SoundEffect.SOUND_HOLY, 0.4, 2, false, 1.3)
+                end
+                if PST:getRoom():GetAliveEnemiesCount() == 0 then
+                    effect:GetData().PST_lunarRayDisappear = true
+                    effect:GetSprite():Play("Disappear")
+                end
+            end
+        elseif effect:GetSprite():IsFinished() then
+            effect:Remove()
+        end
+    -- Solar Scion node (Sun cosmic constellation) - Fire ring effect
+    elseif effect.Variant == PSTAVessel.solarScionFireRingID then
+        effect.DepthOffset = -100
+        if not effect:GetData().PST_solarRingInit then
+            effect:GetSprite().PlaybackSpeed = 0.5
+            effect:GetData().PST_solarRingTarget = Game():GetRoom():GetRandomPosition(20)
+            effect:GetData().PST_solarRingInit = true
+            SFXManager():Play(SoundEffect.SOUND_FLAMETHROWER_START, 0.4, 0, false, 0.9)
+
+            local lightFX = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.LIGHT, 0, effect.Position, Vector.Zero, nil)
+            lightFX:ToEffect().SpriteScale = Vector(2, 2)
+            lightFX:ToEffect().Color = Color(0.9, 0.65, 0.2, 1)
+            effect:GetData().PST_solarRingLightFX = lightFX
+        elseif not effect:GetData().PST_solarRingFading then
+            local frameCount = Game():GetFrameCount()
+            if frameCount % 2 == 0 then
+                -- Ember FX particles
+                if not effect:GetData().PST_solarRingActive then
+                    for _=1,2 do
+                        local tmpAng = math.pi * 2 * math.random()
+                        local tmpSpawnPos = effect.Position + Vector(math.cos(tmpAng) * 60, math.sin(tmpAng) * 60)
+                        local tmpVel = Vector(math.cos(tmpAng + math.pi) * 5, math.sin(tmpAng + math.pi) * 5)
+                        Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.EMBER_PARTICLE, 0, tmpSpawnPos, tmpVel, nil)
+                    end
+                else
+                    for _=1,3 do
+                        local tmpAng = math.pi * 2 * math.random()
+                        local tmpSpawnPos = effect.Position + Vector(math.cos(tmpAng) * 40, math.sin(tmpAng) * 40)
+                        local tmpVel = Vector(math.cos(tmpAng + math.pi / 2) * 7, math.sin(tmpAng + math.pi / 2) * 7)
+                        local emberFX = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.EMBER_PARTICLE, 0, tmpSpawnPos, tmpVel, nil)
+                        emberFX:GetData().PST_solarRingEmberFX = true
+                    end
+
+                    -- Disappear on room clear
+                    if frameCount % 15 == 0 and PST:getRoom():GetAliveEnemiesCount() == 0 then
+                        effect:GetData().PST_solarRingFading = true
+                    end
+                end
+
+                -- Movement
+                local targetDist = effect.Position:Distance(effect:GetData().PST_solarRingTarget)
+                if targetDist > 25 then
+                    local tmpVel = (effect:GetData().PST_solarRingTarget - effect.Position):Normalized()
+                    effect:AddVelocity(tmpVel * 0.02)
+                else
+                    effect:GetData().PST_solarRingTarget = Game():GetRoom():GetRandomPosition(20)
+                end
+                if effect:GetData().PST_solarRingLightFX and effect:GetData().PST_solarRingLightFX:Exists() then
+                    effect:GetData().PST_solarRingLightFX.Position = effect.Position
+                end
+            end
+            -- Growing -> Active phase
+            if effect:GetSprite():IsFinished("Growing") then
+                effect:GetSprite().PlaybackSpeed = 1
+                effect:GetSprite():Play("Active", true)
+                effect:GetData().PST_solarRingActive = true
+                SFXManager():Play(SoundEffect.SOUND_FLAME_BURST, 0.7, 2, false, 1.2)
+            end
+        elseif effect:GetSprite().Color.A > 0 then
+            effect:GetSprite().Color.A = effect:GetSprite().Color.A - 0.05
+        else
+            effect:Remove()
+        end
+    -- Solar Scion fire ring ember particle
+    elseif effect:GetData().PST_solarRingEmberFX then
+        effect.Velocity = effect.Velocity * 0.95
+        SFXManager():Play(SoundEffect.SOUND_FIRE_BURN)
     -- Crimson Bloom
     elseif PSTAVessel:arrHasValue(PSTAVessel.lifebloomsList, effect.Variant) then
         PSTAVessel:effectLifebloomUpdate(effect)

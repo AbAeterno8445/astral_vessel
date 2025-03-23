@@ -33,7 +33,7 @@ function PSTAVessel:onRoomClear()
         end
     end
 
-    -- Mod: clearing room within 5 seconds has % chance to spawn a temporary incubus
+    -- Mod: clearing room within 5 seconds without taking damage has % chance to spawn a temporary incubus
     tmpMod = PST:getTreeSnapshotMod("roomClearIncubus", 0)
     if tmpMod > 0 and room:GetFrameCount() <= 150 and not playerGotHit and 100 * math.random() < tmpMod then
         if PSTAVessel.modCooldowns.roomClearIncubus == 0 then
@@ -56,6 +56,18 @@ function PSTAVessel:onRoomClear()
                 player:AddBlackHearts(2)
                 SFXManager():Play(SoundEffect.SOUND_UNHOLY)
             end
+        end
+
+        -- Mod: % chance to gain Rock Bottom for the current floor when clearing the boss room without taking damage
+        tmpMod = PST:getTreeSnapshotMod("sunRockBottomBossClear", 0)
+        if tmpMod > 0 and not playerGotHit and not player:HasCollectible(CollectibleType.COLLECTIBLE_ROCK_BOTTOM) and 100 * math.random() < tmpMod then
+            player:AddCollectible(CollectibleType.COLLECTIBLE_ROCK_BOTTOM)
+            PST:addModifiers({ sunRockBottomProc = true }, true)
+        end
+
+        -- Solar Scion node (Sun cosmic constellation)
+        if PST:getTreeSnapshotMod("solarScion", false) then
+            PST:addModifiers({ solarScionBossDead = true }, true)
         end
     end
 end

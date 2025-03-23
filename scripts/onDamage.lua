@@ -298,6 +298,20 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                             PSTAVessel.modCooldowns.batteryItemElecTear = 60
                         end
                     end
+
+                    -- Mod: % chance to create a black hole on hit
+                    local darkCursePresent = (Game():GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS) > 0
+                    tmpMod = PST:getTreeSnapshotMod("hitBlackHole", 0)
+                    if darkCursePresent then
+                        tmpMod = tmpMod * 2
+                    end
+                    if tmpMod > 0 and PSTAVessel.modCooldowns.hitBlackHole == 0 and 100 * math.random() < tmpMod then
+                        Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BLACK_HOLE, 0, target.Position, Vector.Zero, nil)
+                        PSTAVessel.modCooldowns.hitBlackHole = 900
+                        if darkCursePresent then
+                            PSTAVessel.modCooldowns.hitBlackHole = 450
+                        end
+                    end
                 end
             end
 
@@ -381,6 +395,11 @@ function PSTAVessel:onDamage(target, damage, flag, source)
             tmpMod = PST:getTreeSnapshotMod("explosionsBurn", 0)
             if tmpMod > 0 and (flag & DamageFlag.DAMAGE_EXPLOSION) > 0 and 100 * math.random() < tmpMod then
                 target:AddBurn(EntityRef(srcPlayer), 120, math.min(20, srcPlayer.Damage / 2))
+            end
+
+            -- Solar Scion node (Sun cosmic constellation)
+            if PST:getTreeSnapshotMod("solarScionBossDead", false) and PSTAVessel.inSolarFireRing then
+                target:AddBurn(EntityRef(srcPlayer), 90, math.min(20, srcPlayer.Damage / 2))
             end
 
             -- NPC checks

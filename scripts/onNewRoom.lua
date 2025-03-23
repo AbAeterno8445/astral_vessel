@@ -132,6 +132,33 @@ function PSTAVessel:onNewRoom()
                 end
                 PST:addModifiers({ astralAngleProc = -1 }, true)
             end
+
+            -- Mod: % chance for a random item in treasure rooms to cycle between it and a glitch item
+            tmpMod = PST:getTreeSnapshotMod("treasureGlitch", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local roomItems = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+                for _, tmpItem in ipairs(roomItems) do
+                    if not PSTAVessel:arrHasValue(PST.progressionItems, tmpItem.SubType) then
+                        local newGlitchItem = ProceduralItemManager.CreateProceduralItem(math.random(100000), 0)
+                        tmpItem:ToPickup():AddCollectibleCycle(newGlitchItem)
+                        break
+                    end
+                end
+            end
+
+            -- Mod: Spacefarer min speed
+            if PST:getTreeSnapshotMod("spacefarerMinSpd", 0) > 0 then
+                PST:addModifiers({ spacefarerMinSpdProc = true }, true)
+                PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+            end
+
+            -- Mod: % chance for treasure rooms to additionally contain a Telescope Lens, up to twice per run
+            tmpMod = PST:getTreeSnapshotMod("treasureTeleLens", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("treasureTeleLensProcs", 0) < 2 and 100 * math.random() < tmpMod then
+                local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 40)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_TELESCOPE_LENS, tmpPos, Vector.Zero, nil)
+                PST:addModifiers({ treasureTeleLensProcs = 1 }, true)
+            end
         -- Curse Room
         elseif roomType == RoomType.ROOM_CURSE then
             -- Mod: % chance for the curse room to contain an additional red chest
@@ -157,6 +184,34 @@ function PSTAVessel:onNewRoom()
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_BLACK_LOTUS, tmpPos, Vector.Zero, nil)
                 PST:addModifiers({ secretBlackLotusProcs = 1 }, true)
             end
+
+            -- Mod: +% speed for 50 seconds when first entering a secret room
+            tmpMod = PST:getTreeSnapshotMod("secretRoomSpeedBuff", 0)
+            if tmpMod > 0 then
+                if PSTAVessel.modCooldowns.secretRoomSpeedBuff == 0 then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                end
+                PSTAVessel.modCooldowns.secretRoomSpeedBuff = 1500
+            end
+
+            -- Mod: % chance for secret rooms to additionally contain a blue item, up to twice per run
+            tmpMod = PST:getTreeSnapshotMod("secretRoomBlueItem", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("secretRoomBlueItemProcs", 0) < 2 and 100 * math.random() < tmpMod then
+                local newItem = Game():GetItemPool():GetCollectibleFromList(PST.blueItemPool)
+                if newItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
+                    local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, tmpPos, Vector.Zero, nil)
+                    PST:addModifiers({ secretRoomBlueItemProcs = 1 }, true)
+                end
+            end
+
+            -- Lunar Scion node (Moon cosmic constellation)
+            if PST:getTreeSnapshotMod("lunarScion", false) then
+                PST:addModifiers({ lunarScionExtras = 1 }, true)
+                if PSTAVessel.modCooldowns.lunarScion > 0 then
+                    PST:updateCacheDelayed()
+                end
+            end
         -- Super Secret Room
         elseif roomType == RoomType.ROOM_SUPERSECRET then
             -- Mod: % chance for super secret rooms to additionally contain an Eden's blessing, once per run
@@ -165,6 +220,17 @@ function PSTAVessel:onNewRoom()
                 local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20, true)
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, CollectibleType.COLLECTIBLE_EDENS_BLESSING, tmpPos, Vector.Zero, nil)
                 PST:addModifiers({ superSecretEdenBlessingProc = true }, true)
+            end
+        -- Red Room
+        elseif PST:inRedRoom() then
+            -- Mod: +% to a random stat for the current floor when first entering a red room
+            local tmpMod = PST:getTreeSnapshotMod("redRoomRandStat", 0)
+            if tmpMod > 0 then
+                local randStat = PST:getRandomStat()
+                PST:addModifiers({
+                    [randStat .. "Perc"] = tmpMod,
+                    ["redRoomRandStat" .. randStat] = tmpMod
+                }, true)
             end
         end
     end
@@ -222,6 +288,27 @@ function PSTAVessel:onNewRoom()
             if tmpBony:GetData().PST_bloomBony then
                 tmpBony:Remove()
             end
+        end
+    end
+
+    -- Lunar Scion node (Moon cosmic constellation)
+    if PST:getTreeSnapshotMod("lunarScionProcs", 0) > 0 then
+        PST:addModifiers({ lunarScionProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Solar Scion node (Sun cosmic constellation)
+    if PST:getTreeSnapshotMod("solarScionProcs", 0) > 0 then
+        PST:addModifiers({ solarScionProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: +% all stats while in a boss or boss rush room
+    local tmpMod = PST:getTreeSnapshotMod("bossRoomAllstatPerc", 0)
+    if tmpMod > 0 then
+        local isBossRoom = (roomType == RoomType.ROOM_BOSS or roomType == RoomType.ROOM_BOSSRUSH)
+        if isBossRoom and not PST:getTreeSnapshotMod("bossRoomAllstatPercProc", false) then
+            PST:addModifiers({ allstatsPerc = tmpMod, bossRoomAllstatPercProc = true }, true)
+        elseif not isBossRoom and PST:getTreeSnapshotMod("bossRoomAllstatPercProc", false) then
+            PST:addModifiers({ allstatsPerc = -tmpMod, bossRoomAllstatPercProc = false }, true)
         end
     end
 end

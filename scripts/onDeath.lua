@@ -141,6 +141,36 @@ function PSTAVessel:onDeath(entity)
             newCloud:ToEffect().Timeout = 150
         end
 
+        -- Lightless Maw node (Singularity cosmic constellation)
+        if PST:getTreeSnapshotMod("lightlessMaw", false) then
+            local blackHoles = Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.BLACK_HOLE)
+            local nearBlackHole = false
+            for _, tmpBlackHole in ipairs(blackHoles) do
+                if entity.Position:Distance(tmpBlackHole.Position) <= 90 then
+                    nearBlackHole = true
+                    break
+                end
+            end
+            if nearBlackHole then
+                if entity:GetFearCountdown() > 0 or entity:GetBurnCountdown() > 0 or entity:HasEntityFlags(EntityFlag.FLAG_POISON) then
+                    PSTAVessel.lightlessMawDmg = PSTAVessel.lightlessMawDmg + 2
+                    PSTAVessel.modCooldowns.lightlessMaw = 450
+                    PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+                end
+                if entity:GetCharmedCountdown() > 0 or entity:GetBaitedCountdown() > 0 then
+                    PSTAVessel.lightlessMawLuckTears = PSTAVessel.lightlessMawLuckTears + 2
+                    PSTAVessel.modCooldowns.lightlessMaw = 450
+                    PST:updateCacheDelayed(CacheFlag.CACHE_LUCK | CacheFlag.CACHE_FIREDELAY)
+                end
+                if entity:GetSlowingCountdown() > 0 or entity:GetSpeedMultiplier() < 1 or entity:GetShrinkCountdown() > 0 or entity:GetMagnetizedCountdown() > 0 or
+                entity:HasEntityFlags(EntityFlag.FLAG_CONFUSION | EntityFlag.FLAG_BLEED_OUT | EntityFlag.FLAG_WEAKNESS) then
+                    PSTAVessel.lightlessMawSpeedRange = PSTAVessel.lightlessMawSpeedRange + 2
+                    PSTAVessel.modCooldowns.lightlessMaw = 450
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED | CacheFlag.CACHE_RANGE)
+                end
+            end
+        end
+
         -- NPC checks
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
@@ -162,6 +192,19 @@ function PSTAVessel:onDeath(entity)
             100 * math.random() < tmpMod then
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, entity.Position, RandomVector() * 3, nil)
                 PST:addModifiers({ bossChampPillProcs = 1 }, true)
+            end
+
+            -- Mod: % chance for champions to drop a cracked key on death, up to 3 per floor
+            tmpMod = PST:getTreeSnapshotMod("champCrackedKey", 0)
+            if tmpMod > 0 and tmpNPC:IsChampion() and PST:getTreeSnapshotMod("champCrackedKeyProcs", 0) < 3 and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, entity.Position, RandomVector() * 3, nil)
+                PST:addModifiers({ champCrackedKeyProcs = 1 }, true)
+            end
+
+            -- Mod: gain +% damage against final bosses when killing a boss enemy
+            tmpMod = PST:getTreeSnapshotMod("bossKillFinalDmg", 0)
+            if tmpMod > 0 and tmpNPC:IsBoss() and PST:getTreeSnapshotMod("bossKillFinalDmgProcs", 0) < 50 then
+                PST:addModifiers({ finalBossDmg = tmpMod, bossKillFinalDmgProcs = 1 }, true)
             end
         end
     end

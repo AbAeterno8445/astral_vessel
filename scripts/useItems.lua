@@ -25,6 +25,20 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
                         PST:addModifiers({ spindownAngleKeep = { value = 0, set = true } }, true)
                     end
                 end
+            -- Void
+            elseif itemType == CollectibleType.COLLECTIBLE_VOID then
+                -- Mod: % chance for void to regain charges when used
+                local tmpMod = PST:getTreeSnapshotMod("voidChargeRegain", 0)
+                if tmpMod > 0 then
+                    local chargeGain = 0
+                    for _=1,tmpMod do
+                        if math.random() < 0.12 then chargeGain = chargeGain + 1 end
+                        if chargeGain >= 6 then break end
+                    end
+                    if chargeGain > 0 then
+                        PSTAVessel.chargeGainProc = chargeGain
+                    end
+                end
             end
 
             -- Mod: % chance when using an active item with at least 2 charges to fire thin brimstone lasers at nearby enemies

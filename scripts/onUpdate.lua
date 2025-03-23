@@ -32,6 +32,12 @@ function PSTAVessel:onUpdate()
             SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN)
         end
 
+        -- Mod: +% speed after entering secret room
+        if PSTAVessel.modCooldowns.secretRoomSpeedBuff > 0 then
+            PSTAVessel.modCooldowns.secretRoomSpeedBuff = 0
+            PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+        end
+
         -- On first floor
         if PST:isFirstOrigStage() then
             -- Spindown Angle node (Dark Gambler occult constellation)
@@ -84,6 +90,21 @@ function PSTAVessel:onUpdate()
                     room:SpawnGridEntity(i, GridEntityType.GRID_ROCKT, 0)
                     PST:addModifiers({ tintedRockDiscoverProcs = 1 }, true)
                     break
+                end
+            end
+        end
+
+        -- Mod: % chance for rocks to be replaced with tinted rock in secret rooms, up to 3 times per floor
+        tmpMod = PST:getTreeSnapshotMod("secretRoomTinted", 0)
+        if tmpMod > 0 and room:IsFirstVisit() and room:GetType() == RoomType.ROOM_SECRET and PST:getTreeSnapshotMod("secretRoomTintedProcs", 0) < 3 then
+            for i=0,room:GetGridSize() do
+                if PST:getTreeSnapshotMod("secretRoomTintedProcs", 0) >= 3 then break end
+
+                local tmpGridEnt = room:GetGridEntity(i)
+                if tmpGridEnt and tmpGridEnt:GetType() == GridEntityType.GRID_ROCK and 100 * math.random() < tmpMod then
+                    tmpGridEnt:Destroy(true)
+                    room:SpawnGridEntity(i, GridEntityType.GRID_ROCKT, 0)
+                    PST:addModifiers({ secretRoomTintedProcs = 1 }, true)
                 end
             end
         end
@@ -185,6 +206,19 @@ function PSTAVessel:onUpdate()
                 if modName == "batterySpeedBuff" then
                     PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
                 end
+                -- Lightless Maw node (Singularity cosmic constellation)
+                if modName == "lightlessMaw" then
+                    PST:updateCacheDelayed()
+                end
+                -- Mod: +% speed when first entering secret rooms
+                if modName == "secretRoomSpeedBuff" then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                end
+                -- Lunar Scion node (Moon cosmic constellation)
+                if modName == "lunarScion" then
+                    PST:addModifiers({ lunarScionStacks = { value = 0, set = true } }, true)
+                    PST:updateCacheDelayed()
+                end
             end
         end
     end
@@ -246,8 +280,14 @@ function PSTAVessel:onUpdate()
                 local tmpTimer = 0
 
                 -- Mod: summon a purple flame every 4 seconds spent firing
-                if PST:getTreeSnapshotMod("ritualPurpleFlame", false) then
+                if modName == "ritualPurpleFlame" and PST:getTreeSnapshotMod("ritualPurpleFlame", false) then
                     tmpTimer = (4 - PST:getTreeSnapshotMod("ritualPurpleFlameDur", 0)) * 30
+                -- Mod: summon orbiting, piercing fearing tears
+                elseif modName == "singularityFearTears" and PST:getTreeSnapshotMod("singularityFearTears", 0) > 0 then
+                    tmpTimer = 30
+                    if (Game():GetLevel():GetCurses() & LevelCurse.CURSE_OF_DARKNESS) then
+                        tmpTimer = 15
+                    end
                 end
 
                 PSTAVessel.firingCooldowns[modName] = tmpTimer
@@ -256,13 +296,30 @@ function PSTAVessel:onUpdate()
 
                 if PSTAVessel.firingCooldowns[modName] == 0 then
                     -- Mod: summon a purple flame every 4 seconds spent firing
-                    if PST:getTreeSnapshotMod("ritualPurpleFlame", false) then
+                    if modName == "ritualPurpleFlame" and PST:getTreeSnapshotMod("ritualPurpleFlame", false) then
                         Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, player.Position, Vector.Zero, nil)
                         SFXManager():Play(SoundEffect.SOUND_FIREDEATH_HISS, 0.5, 2, false, 1.6)
                         local newFlame = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 1, player.Position, Vector.Zero, player)
                         newFlame:GetSprite():ReplaceSpritesheet(0, "gfx/effects/effect_005_fire_purple.png", true)
                         newFlame:GetData().PST_ritualPurpleFlame = true
                         newFlame:ToEffect().Timeout = 240
+                    -- Mod: summon orbiting, piercing fearing tears
+                    elseif modName == "singularityFearTears" and 100 * math.random() < PST:getTreeSnapshotMod("singularityFearTears", 0) then
+                        local initAng = (2 * math.pi * math.random())
+                        for i=1,2 do
+                            local tmpAng = initAng + math.pi * (i - 1)
+                            local tmpVel = Vector(math.cos(tmpAng) * 6, math.sin(tmpAng) * 6)
+                            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.DARK_MATTER, 0, player.Position, tmpVel, player)
+                            newTear:ToTear().Scale = 2
+                            newTear:ToTear():AddTearFlags(TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_FEAR)
+                            newTear:ToTear().Height = -60
+                            newTear:ToTear().FallingSpeed = 0.01
+                            newTear:ToTear().FallingAcceleration = -0.04
+                            newTear.CollisionDamage = math.min(40, player.Damage)
+                            Isaac.CreateTimer(function()
+                                newTear:ToTear():AddTearFlags(TearFlags.TEAR_ORBIT_ADVANCED)
+                            end, 5, 1, false)
+                        end
                     end
                 end
             end
@@ -372,6 +429,63 @@ function PSTAVessel:onUpdate()
         for _, tmpEnem in ipairs(nearbyEnems) do
             if math.random() < 0.9 then
                 tmpEnem:AddSlowing(EntityRef(player), 40, 0.8, Color(0.8, 0.8, 0.8, 1))
+            end
+        end
+    end
+
+    -- Mod: % chance to regain charges when using void
+    if PSTAVessel.chargeGainProc > 0 then
+        local tmpSlot = player:GetActiveItemSlot(CollectibleType.COLLECTIBLE_VOID)
+        if tmpSlot ~= -1 then
+            player:AddActiveCharge(PSTAVessel.chargeGainProc, tmpSlot, true, false, false)
+        end
+        PSTAVessel.chargeGainProc = 0
+    end
+
+    -- Lunar Scion node (Moon cosmic constellation)
+    if PST:getTreeSnapshotMod("lunarScion", false) and roomFrame % 30 == 0 and room:GetAliveEnemiesCount() > 0 then
+        local maxProcs = 2 + PST:getTreeSnapshotMod("lunarScionExtras", 0)
+        if room:GetType() == RoomType.ROOM_BOSS or room:GetType() == RoomType.ROOM_BOSSRUSH then
+            maxProcs = maxProcs + 1
+        end
+        if PST:getTreeSnapshotMod("lunarScionProcs", 0) < maxProcs then
+            local tmpChance = 5 + PST:getTreeSnapshotMod("lunarScionExtras", 0) * 3
+            if 100 * math.random() < tmpChance then
+                local tmpPos = room:FindFreePickupSpawnPosition(room:GetRandomPosition(20), 20)
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.lunarScionMoonlightID, 0, tmpPos, Vector.Zero, nil)
+            end
+        end
+    end
+
+    -- Solar Scion node (Sun cosmic constellation)
+    if PST:getTreeSnapshotMod("solarScion", false) then
+        if PST:getTreeSnapshotMod("solarScionProcs", 0) < 2 and roomFrame % 30 == 0 and room:GetAliveEnemiesCount() > 0 then
+            local tmpChance = 7
+            if PST:getTreeSnapshotMod("solarScionBossDead", false) then
+                tmpChance = 14
+            end
+            if 100 * math.random() < tmpChance then
+                local tmpPos = room:FindFreePickupSpawnPosition(room:GetRandomPosition(20), 20)
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.solarScionFireRingID, 0, tmpPos, Vector.Zero, nil)
+                PST:addModifiers({ solarScionProcs = 1 }, true)
+            end
+        end
+        -- Player near fire ring
+        if roomFrame % 10 == 0 then
+            local tmpFireRings = Isaac.FindByType(EntityType.ENTITY_EFFECT, PSTAVessel.solarScionFireRingID)
+            local withinRing = false
+            for _, tmpRing in ipairs(tmpFireRings) do
+                if tmpRing.Position:Distance(player.Position) <= 70 then
+                    withinRing = true
+                    break
+                end
+            end
+            if withinRing and not PSTAVessel.inSolarFireRing then
+                PSTAVessel.inSolarFireRing = true
+                PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
+            elseif not withinRing and PSTAVessel.inSolarFireRing then
+                PSTAVessel.inSolarFireRing = false
+                PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
             end
         end
     end

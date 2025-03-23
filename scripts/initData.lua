@@ -16,10 +16,15 @@ PSTAVessel.modCooldowns = {
     blizzardSnowstorm = 0,
     viperineLash = 0,
     batterySpeedBuff = 0,
-    batteryItemElecTear = 0
+    batteryItemElecTear = 0,
+    hitBlackHole = 0,
+    lightlessMaw = 0,
+    secretRoomSpeedBuff = 0,
+    lunarScion = 0
 }
 PSTAVessel.firingCooldowns = {
-    ritualPurpleFlame = 0
+    ritualPurpleFlame = 0,
+    singularityFearTears = 0
 }
 PSTAVessel.updateTrackers = {
     eternalHearts = 0,
@@ -37,6 +42,11 @@ PSTAVessel.fusilladeEmberAng = 0
 PSTAVessel.fusilladeEmberDist = 30
 PSTAVessel.fusilladeDelay = 70
 PSTAVessel.spiralAbilityAng = 0
+PSTAVessel.chargeGainProc = 0
+PSTAVessel.lightlessMawDmg = 0
+PSTAVessel.lightlessMawLuckTears = 0
+PSTAVessel.lightlessMawSpeedRange = 0
+PSTAVessel.inSolarFireRing = false
 
 PSTAVessel.charUnlocks = {}
 PSTAVessel.charLoadouts = {}
@@ -320,6 +330,9 @@ PSTAVessel.lifebloomsList = {
     PSTAVessel.crimsonBloomID, PSTAVessel.azureBloomID, PSTAVessel.onyxBloomID, PSTAVessel.calcifiedBloomID, PSTAVessel.eternalBloomID,
     PSTAVessel.rotBloomID, PSTAVessel.gildedBloomID
 }
+
+PSTAVessel.lunarScionMoonlightID = Isaac.GetEntityVariantByName("Lunar Scion Moonlight")
+PSTAVessel.solarScionFireRingID = Isaac.GetEntityVariantByName("Solar Scion Fire Ring")
 
 -- Corpse Raiser summon choices {entity type, variant, max summons, {anim1, anim2, ...}}
 PSTAVessel.corpseRaiserSummons1 = { -- Floors 5 and below

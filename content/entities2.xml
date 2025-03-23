@@ -7,4 +7,9 @@
     <entity anm2path="effects/avessel_eternalbloom.anm2" id="1000" variant="2204" name="Eternal Bloom" />
     <entity anm2path="effects/avessel_rotbloom.anm2" id="1000" variant="2205" name="Rotbloom" />
     <entity anm2path="effects/avessel_goldbloom.anm2" id="1000" variant="2206" name="Gilded Bloom" />
+
+    <!-- Lunar Scion moonlight ray -->
+    <entity anm2path="1000.039.001_moonlight.anm2" id="1000" variant="2210" name="Lunar Scion Moonlight" />
+    <!-- Solar Scion fire ring -->
+    <entity anm2path="effects/avessel_solarscion_firering.anm2" id="1000" variant="2211" name="Solar Scion Fire Ring" friction="0.99" />
 </entities>
