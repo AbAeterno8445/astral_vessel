@@ -2,7 +2,7 @@
 function PSTAVessel:treeRenderLate()
     if not PST then return end
 
-    if PST.treeScreen.open and PST.selectedMenuChar == PSTAVessel.charType then
+    if PST.treeScreen.open and PST.selectedMenuChar == PSTAVessel.vesselType then
         -- Render constellation affinity while on constellation trees
         for _, tmpType in pairs(PSTAVConstellationType) do
             local tmpTreeName = "Astral Vessel " .. tmpType

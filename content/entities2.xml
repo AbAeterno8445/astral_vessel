@@ -12,4 +12,9 @@
     <entity anm2path="1000.039.001_moonlight.anm2" id="1000" variant="2210" name="Lunar Scion Moonlight" />
     <!-- Solar Scion fire ring -->
     <entity anm2path="effects/avessel_solarscion_firering.anm2" id="1000" variant="2211" name="Solar Scion Fire Ring" friction="0.99" />
+
+    <!-- Soul of the Vessel soul stone -->
+    <entity anm2path="soul_of_the_vessel.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Soul of the Vessel" numGridCollisionPoints="24" shadowSize="16" stageHP="0" subtype="230" variant="300">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
 </entities>

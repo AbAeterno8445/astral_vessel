@@ -1,6 +1,6 @@
 function PSTAVessel:applyCostumes(clearOld)
     local player = Isaac.GetPlayer()
-    if (player:GetPlayerType() == PSTAVessel.charType) then
+    if (player:GetPlayerType() == PSTAVessel.vesselType) then
         if clearOld then player:ClearCostumes() end
 
         -- Apply custom face

@@ -6,4 +6,10 @@ function PSTAVessel:onUseCard(card, player, useFlags)
     if PST:getTreeSnapshotMod("astralAngle", false) and card == Card.CARD_REVERSE_STARS then
         PST:addModifiers({ astralAngleProc = { value = 2, set = true } }, true)
     end
+
+    -- Soul of the Vessel soul stone
+    if card == PSTAVessel.vesselSoulstoneID then
+        PST:sideArtiAddEnergy(200, true)
+        PST:triggerMeridion(PST:getRandomMeridion())
+    end
 end

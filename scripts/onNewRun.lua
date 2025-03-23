@@ -1,6 +1,6 @@
 function PSTAVessel:onNewRun(isContinued)
     local player = Isaac.GetPlayer()
-    local isVessel = (player:GetPlayerType() == PSTAVessel.charType)
+    local isVessel = (player:GetPlayerType() == PSTAVessel.vesselType)
     PSTAVessel.tmpHairSprite = nil
 
     -- Reset temporary trackers/timers
@@ -61,7 +61,12 @@ function PSTAVessel:onNewRun(isContinued)
 
         -- Extra XP unlock
         if PSTAVessel.charXPBonus > 0 then
-            PST:addModifiers({ xpbonus = PSTAVessel.charXPBonus }, true)
+            PST:addModifiers({ xpgain = PSTAVessel.charXPBonus }, true)
+        end
+
+        -- Extra Obols
+        if PSTAVessel.charObolBonus > 0 then
+            PST:addModifiers({ obolsFound = PSTAVessel.charObolBonus }, true)
         end
 
         -- Starting trinket

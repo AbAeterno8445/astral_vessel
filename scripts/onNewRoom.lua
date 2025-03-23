@@ -8,7 +8,7 @@ function PSTAVessel:onNewRoom()
     local firstVisit = room:IsFirstVisit()
 
     local player = Isaac.GetPlayer()
-    local isVessel = (player:GetPlayerType() == PSTAVessel.charType)
+    local isVessel = (player:GetPlayerType() == PSTAVessel.vesselType)
 
     if isVessel then
         -- Astral Vessel custom color application

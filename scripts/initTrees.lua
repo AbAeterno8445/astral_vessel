@@ -113,13 +113,16 @@ function PSTAVessel:initVesselTree()
         elseif descName == "Astral Vessel Unlocks" then
             local newDesc = {}
             local gameData = Isaac.GetPersistentGameData()
-            for achievementName, unlockData in pairs(PSTAVessel.unlocksData) do
-                local achievementID = Isaac.GetAchievementIdByName(achievementName)
-                local tmpColor = PST.kcolors.RED1
-                if achievementID ~= -1 and gameData:Unlocked(achievementID) then
-                    tmpColor = PST.kcolors.GREEN1
+            for _, achievementName in ipairs(PSTAVessel.unlocksDisplayOrder) do
+                local unlockData = PSTAVessel.unlocksData[achievementName]
+                if unlockData then
+                    local achievementID = Isaac.GetAchievementIdByName(achievementName)
+                    local tmpColor = PST.kcolors.RED1
+                    if achievementID ~= -1 and gameData:Unlocked(achievementID) then
+                        tmpColor = PST.kcolors.GREEN1
+                    end
+                    table.insert(newDesc, {unlockData.desc, tmpColor})
                 end
-                table.insert(newDesc, {unlockData.desc, tmpColor})
             end
             return { name = descName, description = newDesc }
         end
@@ -231,7 +234,11 @@ function PSTAVessel:calcConstellationAffinities()
             local tmpAffinity = 0
             for _, constData in pairs(typeAlloc) do
                 if constData.alloc and constData.tier then
-                    local constAffinity = math.floor(constData.alloc / constData.max * PSTAVessel.constelAffinityWorth[constData.tier])
+                    local constReq = constData.max * PSTAVessel.charConstAffinityReq
+                    local constAffinity = math.min(
+                        PSTAVessel.constelAffinityWorth[constData.tier],
+                        math.floor(constData.alloc / constReq * PSTAVessel.constelAffinityWorth[constData.tier])
+                    )
                     if not constData.affinity then
                         constData.affinity = constAffinity
                     end

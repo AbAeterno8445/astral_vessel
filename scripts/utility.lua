@@ -16,7 +16,7 @@ end
 
 function PSTAVessel:postPlayerUpdate(player)
     -- Custom hair color
-    if player:GetPlayerType() == PSTAVessel.charType and PSTAVessel.tmpHairSprite then
+    if player:GetPlayerType() == PSTAVessel.vesselType and PSTAVessel.tmpHairSprite then
         PSTAVessel.tmpHairSprite.Color = PSTAVessel.charHairColor
     end
 end
@@ -97,7 +97,7 @@ end
 
 ---@param player EntityPlayer
 function PSTAVessel:playerHealthType(player)
-    if player:GetPlayerType() == PSTAVessel.charType then
+    if player:GetPlayerType() == PSTAVessel.vesselType then
         -- Gold-Bound node (Greed mercantile constellation)
         if PST:getTreeSnapshotMod("goldBound", false) then
             return HealthType.COIN

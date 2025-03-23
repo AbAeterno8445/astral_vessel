@@ -1,0 +1,3 @@
+<pocketitems>
+    <card type="rune" pickup="230" gfx="soul_of_the_vessel.png" description="Cosmic geometries align sporadically" id="1" name="Soul of the Vessel" mimiccharge="4" hud="SoulOfTheVessel" achievement="AVesselSoul" />
+</pocketitems>

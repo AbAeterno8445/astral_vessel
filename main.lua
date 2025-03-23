@@ -41,6 +41,9 @@ function PSTAVessel:initMod()
         return
     end
 
+    -- Soul stone init
+    PST.playerSoulstones[PSTAVessel.vesselType] = PSTAVessel.vesselSoulstoneID
+
     PSTAVessel:initVesselTree()
     PSTAVessel:initAppearanceMenu()
     PSTAVessel:initNexusMenu()
@@ -53,6 +56,14 @@ function PSTAVessel:initMod()
         -- Constellation type colors
         for _, tmpType in pairs(PSTAVConstellationType) do
             EID:addColor("AVessel" .. tmpType, PSTAVessel.constelKColors[tmpType])
+        end
+
+        -- Soul of the Vessel soul stone
+        if PSTAVessel.vesselSoulstoneID ~= -1 then
+            EID:addCard(
+                PSTAVessel.vesselSoulstoneID,
+                "Triggers a random Sidereal Meridion's effect.#Generates 200 energy for your selected Meridion.#You can see Sidereal Meridions' effects in the Sidereal Tree once unlocked."
+            )
         end
     end
 

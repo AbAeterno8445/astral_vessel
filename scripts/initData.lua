@@ -1,4 +1,4 @@
-PSTAVessel.charType = Isaac.GetPlayerTypeByName("Astral Vessel")
+PSTAVessel.vesselType = Isaac.GetPlayerTypeByName("Astral Vessel")
 
 PSTAVessel.modCooldowns = {
     lightBeamHit = 0,
@@ -117,7 +117,28 @@ PSTAVessel.unlocksData = {
         reqs = {CompletionType.ULTRA_GREED},
         desc = "Defeat Ultra Greed: Permanent +10% XP gain with Astral Vessel.",
         func = function() PSTAVessel.charXPBonus = PSTAVessel.charXPBonus + 10 end
+    },
+    ["AVesselObols1"] = {
+        reqs = {CompletionType.ULTRA_GREEDIER},
+        desc = "Defeat Ultra Greedier: Permanent +12% obols dropped with Astral Vessel (expedition runs).",
+        func = function() PSTAVessel.charObolBonus = PSTAVessel.charObolBonus + 12 end
+    },
+    ["AVesselSoul"] = {
+        reqs = {
+            CompletionType.BEAST .. "hard", CompletionType.BLUE_BABY .. "hard", CompletionType.BOSS_RUSH .. "hard",
+            CompletionType.DELIRIUM .. "hard", CompletionType.HUSH .. "hard", CompletionType.ISAAC .. "hard",
+            CompletionType.LAMB .. "hard", CompletionType.MEGA_SATAN .. "hard", CompletionType.MOMS_HEART .. "hard",
+            CompletionType.MOTHER .. "hard", CompletionType.SATAN .. "hard", CompletionType.ULTRA_GREED,
+            CompletionType.ULTRA_GREEDIER
+        },
+        desc = "Obtain all hard completion marks: Unlock Soul of the Vessel soul stone.",
+        func = function() PSTAVessel.soulstoneUnlock = true end
     }
+}
+PSTAVessel.unlocksDisplayOrder = {
+    "AVesselExtraItem1", "AVesselLesser1", "AVesselLesser2", "AVesselActives", "AVesselQual3",
+    "AVesselExtraItem2", "AVesselGreater1", "AVesselEmpyrean1", "AVesselTrinkets", "AVesselTrinkets",
+    "AVesselExp1", "AVesselObols1", "AVesselSoul"
 }
 function PSTAVessel:updateUnlockData()
     PSTAVessel.charMaxStartItems = 2
@@ -128,6 +149,11 @@ function PSTAVessel:updateUnlockData()
     PSTAVessel.charTrinketAlloc = false
     PSTAVessel.charMaxConsts = {2, 1, 1}
     PSTAVessel.charXPBonus = 0
+    PSTAVessel.charObolBonus = 0
+    PSTAVessel.soulstoneUnlock = false
+
+    -- Allocation % for constellations to give their full affinity value
+    PSTAVessel.charConstAffinityReq = 0.8
 
     local gameData = Isaac.GetPersistentGameData()
     for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
@@ -333,6 +359,8 @@ PSTAVessel.lifebloomsList = {
 
 PSTAVessel.lunarScionMoonlightID = Isaac.GetEntityVariantByName("Lunar Scion Moonlight")
 PSTAVessel.solarScionFireRingID = Isaac.GetEntityVariantByName("Solar Scion Fire Ring")
+
+PSTAVessel.vesselSoulstoneID = Isaac.GetCardIdByName("SoulOfTheVessel")
 
 -- Corpse Raiser summon choices {entity type, variant, max summons, {anim1, anim2, ...}}
 PSTAVessel.corpseRaiserSummons1 = { -- Floors 5 and below
