@@ -38,7 +38,7 @@ function PSTAVessel:onNewRoom()
         -- 5: Player Portrait layer
         if tmpLayer:GetLayerID() == 5 then
             if isVessel then
-                tmpLayer:SetColor(PSTAVessel.charColor)
+                tmpLayer:SetColor(PSTAVessel:getRunVesselColor())
             else
                 tmpLayer:SetColor(Color(1, 1, 1, 1))
             end

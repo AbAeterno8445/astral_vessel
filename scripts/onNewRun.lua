@@ -10,10 +10,11 @@ function PSTAVessel:onNewRun(isContinued)
     for tmpCooldown, _ in pairs(PSTAVessel.modCooldowns) do
         PSTAVessel.modCooldowns[tmpCooldown] = 0
     end
+    PSTAVessel.updateTrackers.playerColor = tostring(Color())
 
     if isVessel then
         -- Astral Vessel custom color application
-        player:GetSprite().Color = PSTAVessel.charColor
+        player:GetSprite().Color = PSTAVessel:getRunVesselColor()
     end
 
     if isContinued then
@@ -35,6 +36,13 @@ function PSTAVessel:onNewRun(isContinued)
                 end
             end
         end
+
+        -- Snapshot loadout data for the run
+        PST:addModifiers({
+            vesselColor = {PSTAVessel.charColor.R, PSTAVessel.charColor.G, PSTAVessel.charColor.B},
+            vesselHairColor = {PSTAVessel.charHairColor.R, PSTAVessel.charHairColor.G, PSTAVessel.charHairColor.B},
+            vesselHair = PST:copyTable(PSTAVessel.charHair)
+        }, true)
 
         local itemPool = Game():GetItemPool()
         -- Starting item addition func

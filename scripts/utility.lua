@@ -14,10 +14,29 @@ function PSTAVessel:getColorStr(col)
     return tostring(PST:roundFloat(255 * (col / 2), 0))
 end
 
+local costumeLayers = {"body", "head"}
+---@param player EntityPlayer
 function PSTAVessel:postPlayerUpdate(player)
-    -- Custom hair color
-    if player:GetPlayerType() == PSTAVessel.vesselType and PSTAVessel.tmpHairSprite then
-        PSTAVessel.tmpHairSprite.Color = PSTAVessel.charHairColor
+    if player:GetPlayerType() == PSTAVessel.vesselType then
+        -- Custom hair color
+        if PSTAVessel.tmpHairSprite then
+            PSTAVessel.tmpHairSprite.Color = PSTAVessel:getRunVesselHairColor()
+        end
+
+        -- Player color update tracker
+        if player:GetPlayerType() == PSTAVessel.vesselType and PSTAVessel.updateTrackers.playerColor ~= tostring(PSTAVessel:getRunVesselColor()) then
+            local plColor = PSTAVessel:getRunVesselColor()
+            -- Astral Vessel custom color application
+            for _, tmpCostumeLayer in ipairs(costumeLayers) do
+                player:GetSprite():GetLayer(tmpCostumeLayer):SetColor(plColor)
+                local costumeSprites = player:GetCostumeSpriteDescs()
+                for _, tmpCostumeDesc in ipairs(costumeSprites) do
+                    local tmpLayer = tmpCostumeDesc:GetSprite():GetLayer(tmpCostumeLayer)
+                    if tmpLayer then tmpLayer:SetColor(plColor) end
+                end
+            end
+            PSTAVessel.updateTrackers.playerColor = tostring(player:GetSprite().Color)
+        end
     end
 end
 
@@ -136,4 +155,14 @@ function PSTAVessel:getClosestEnemy(pos, radius)
         end
     end
     return closest
+end
+
+function PSTAVessel:getRunVesselColor()
+    local tmpColor = PST:getTreeSnapshotMod("vesselColor", {1, 1, 1, 1})
+    return Color(table.unpack(tmpColor))
+end
+
+function PSTAVessel:getRunVesselHairColor()
+    local tmpColor = PST:getTreeSnapshotMod("vesselHairColor", {1, 1, 1, 1})
+    return Color(table.unpack(tmpColor))
 end

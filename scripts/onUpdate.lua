@@ -236,13 +236,6 @@ function PSTAVessel:onUpdate()
         PSTAVessel.updateTrackers.primarySlotCharge = player:GetTotalActiveCharge(ActiveSlot.SLOT_PRIMARY)
     end
 
-    -- Player color update tracker
-    if player:GetPlayerType() == PSTAVessel.vesselType and PSTAVessel.updateTrackers.playerColor ~= tostring(player:GetSprite().Color) then
-        -- Astral Vessel custom color application
-        player:GetSprite().Color = PSTAVessel.charColor
-        PSTAVessel.updateTrackers.playerColor = tostring(player:GetSprite().Color)
-    end
-
     -- Player firing
     local plInput = player:GetShootingInput()
 	local isShooting = plInput.X ~= 0 or plInput.Y ~= 0

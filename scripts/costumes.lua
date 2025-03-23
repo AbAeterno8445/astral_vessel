@@ -44,18 +44,19 @@ end
 
 local tmpHairSprites = {}
 function PSTAVessel:updateHairVariant(player)
-    if PSTAVessel.charHair then
+    local charHair = PST:getTreeSnapshotMod("vesselHair", nil)
+    if charHair then
         local tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath("gfx/characters/hair/astralvessel/hair_vessel.anm2"))
         if tmpCostumeID then
-            local tmpSpriteID = PSTAVessel.charHair.variant or PSTAVessel.charHair.path
+            local tmpSpriteID = charHair.variant or charHair.path
             if tmpSpriteID then
                 if not tmpHairSprites[tmpSpriteID] then
-                    tmpHairSprites[tmpSpriteID] = Sprite(PSTAVessel.charHair.path, true)
+                    tmpHairSprites[tmpSpriteID] = Sprite(charHair.path, true)
                 end
                 if tmpHairSprites[tmpSpriteID] and tmpHairSprites[tmpSpriteID]:GetLayer(0) then
                     local pngPath = tmpHairSprites[tmpSpriteID]:GetLayer(0):GetSpritesheetPath()
-                    if PSTAVessel.charHair.variant then
-                        pngPath = PSTAVessel.charHair.variant
+                    if charHair.variant then
+                        pngPath = charHair.variant
                     end
                     player:ReplaceCostumeSprite(tmpCostumeID, pngPath, 0)
                 end
