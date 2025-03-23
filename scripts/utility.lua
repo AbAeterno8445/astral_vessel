@@ -35,7 +35,7 @@ function PSTAVessel:postPlayerUpdate(player)
                     if tmpLayer then tmpLayer:SetColor(plColor) end
                 end
             end
-            PSTAVessel.updateTrackers.playerColor = tostring(player:GetSprite().Color)
+            PSTAVessel.updateTrackers.playerColor = tostring(plColor)
         end
     end
 end

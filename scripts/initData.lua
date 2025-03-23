@@ -295,6 +295,7 @@ PSTAVessel.facesList = {
     {path="gfx/characters/faces/astralvessel/face_isaac.anm2"},
     {path="gfx/characters/faces/astralvessel/face_isaac_nocry.anm2"},
     {path="gfx/characters/faces/astralvessel/face_3dollar.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_fruitcake.anm2"},
     {path="gfx/characters/faces/astralvessel/face_chaos.anm2"},
     {path="gfx/characters/faces/astralvessel/face_chaos_nobrows.anm2"},
     {path="gfx/characters/faces/astralvessel/face_euthanasia.anm2"},
@@ -325,13 +326,12 @@ PSTAVessel.facesList = {
     {path="gfx/characters/faces/astralvessel/face_thewiz.anm2"},
     {path="gfx/characters/faces/astralvessel/face_vampire.anm2"},
     {path="gfx/characters/faces/astralvessel/face_vampire_noblood.anm2"},
-    -- {path="gfx/characters/faces/astralvessel/face_dads_dip.anm2"}, -- FIEND FOLIO
-    -- TODO: blue baby face
-    -- TODO: check ouija board
-    -- TODO: chemical peel?
-    -- TODO: check delirious eye-only?
-    -- TODO: smb super fan
-    -- TODO: ball of tar
+    {path="gfx/characters/faces/astralvessel/face_bluebaby.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_chemicalpeel.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_smb.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_balloftar1.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_balloftar2.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_balloftar3.anm2"}
 }
 
 include("scripts.constellationsInitData")

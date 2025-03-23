@@ -125,9 +125,3 @@ end
 
 PSTAVessel:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PSTAVessel.load)
 PSTAVessel:AddCallback(ModCallbacks.MC_EXECUTE_CMD, PSTAVessel.onConsoleCMD)
-
---[[ Modifiers TODO list
-
-
-
-]]--

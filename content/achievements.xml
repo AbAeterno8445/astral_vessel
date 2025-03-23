@@ -9,8 +9,6 @@
     <achievement name="AVesselEmpyrean1" gfxback="avessel_Beast_Delirium.png" hidden="false" />
     <achievement name="AVesselTrinkets" gfxback="avessel_Mother.png" hidden="false" />
     <achievement name="AVesselExp1" gfxback="avessel_Ultra_Greed.png" hidden="false" />
-
-    <!-- TODO: get card sprites for these (+% obols and soul of the vessel unlock) -->
-    <achievement name="AVesselObols1" gfxback="avessel_Ultra_Greed.png" hidden="false" />
-    <achievement name="AVesselSoul" gfxback="avessel_Beast_Delirium.png" hidden="false" />
+    <achievement name="AVesselObols1" gfxback="avessel_Ultra_Greedier.png" hidden="false" />
+    <achievement name="AVesselSoul" gfxback="avessel_AllMarks.png" hidden="false" />
 </achievements>
