@@ -31,7 +31,8 @@ PSTAVessel.updateTrackers = {
     redHearts = 0,
     soulHearts = 0,
     blackHearts = 0,
-    primarySlotCharge = 0
+    primarySlotCharge = 0,
+    playerColor = Color()
 }
 PSTAVessel.floorFirstUpdate = false
 PSTAVessel.roomFirstFire = false

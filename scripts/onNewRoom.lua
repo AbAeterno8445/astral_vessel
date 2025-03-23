@@ -11,9 +11,6 @@ function PSTAVessel:onNewRoom()
     local isVessel = (player:GetPlayerType() == PSTAVessel.vesselType)
 
     if isVessel then
-        -- Astral Vessel custom color application
-        player:GetSprite().Color = PSTAVessel.charColor
-
         -- Astral Vessel hair color
         if PSTAVessel.charHair then
             for _, tmpCostume in ipairs(PST:getPlayer():GetCostumeSpriteDescs()) do
@@ -37,13 +34,13 @@ function PSTAVessel:onNewRoom()
 
     -- Versus screen sprite color
     local versusLayers = RoomTransition.GetVersusScreenSprite():GetAllLayers()
-    for _,l in ipairs(versusLayers) do
+    for _,tmpLayer in ipairs(versusLayers) do
         -- 5: Player Portrait layer
-        if l:GetLayerID() == 5 then
+        if tmpLayer:GetLayerID() == 5 then
             if isVessel then
-                l:SetColor(PSTAVessel.charColor)
+                tmpLayer:SetColor(PSTAVessel.charColor)
             else
-                l:SetColor(Color(1, 1, 1, 1))
+                tmpLayer:SetColor(Color(1, 1, 1, 1))
             end
             break
         end

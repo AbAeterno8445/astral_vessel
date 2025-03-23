@@ -11,6 +11,11 @@ function PSTAVessel:onNewRun(isContinued)
         PSTAVessel.modCooldowns[tmpCooldown] = 0
     end
 
+    if isVessel then
+        -- Astral Vessel custom color application
+        player:GetSprite().Color = PSTAVessel.charColor
+    end
+
     if isContinued then
         if isVessel then
             PSTAVessel:updateHairVariant(player)
