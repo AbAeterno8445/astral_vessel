@@ -208,9 +208,9 @@ PSTAVessel_loadEdenHair()
 
 ---- ACCESSORIES DATA
 PSTAVessel.accessoryList = {
-    {path="gfx/characters/accessories/accessory_cainseyepatch.anm2"},
-    {path="gfx/characters/accessories/accessory_judasfez.anm2"},
-    {path="gfx/characters/accessories/accessory_keepernoose.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_cainseyepatch.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_judasfez.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_keepernoose.anm2"},
     {path="gfx/characters/n014_Blindfold.anm2"},
     {item=CollectibleType.COLLECTIBLE_MY_REFLECTION},
     {item=CollectibleType.COLLECTIBLE_BLOOD_OF_THE_MARTYR},
@@ -223,7 +223,7 @@ PSTAVessel.accessoryList = {
     {item=CollectibleType.COLLECTIBLE_LUCKY_FOOT},
     {item=CollectibleType.COLLECTIBLE_CUPIDS_ARROW},
     {item=CollectibleType.COLLECTIBLE_DR_FETUS},
-    {path="gfx/characters/accessories/accessory_monocle.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_monocle.anm2"},
     {item=CollectibleType.COLLECTIBLE_STEAM_SALE},
     {item=CollectibleType.COLLECTIBLE_ROSARY},
     {item=CollectibleType.COLLECTIBLE_MARK},

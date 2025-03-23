@@ -11,6 +11,7 @@
     <costume anm2path="faces/astralvessel/face_isaac.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_isaac_nocry.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_3dollar.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_fruitcake.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_chaos.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_chaos_nobrows.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_euthanasia.anm2" type="none" priority="0" />
@@ -41,11 +42,27 @@
     <costume anm2path="faces/astralvessel/face_thewiz.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_vampire.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_vampire_noblood.anm2" type="none" priority="0" />
-    <costume anm2path="faces/astralvessel/face_dads_dip.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_bluebaby.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_chemicalpeel.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_smb.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_balloftar1.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_balloftar2.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/face_balloftar3.anm2" type="none" priority="0" />
 
     <!-- ACCESSORIES -->
     <costume anm2path="accessories/accessory_monocle.anm2" type="none" priority="0" />
     <costume anm2path="accessories/accessory_cainseyepatch.anm2" type="none" priority="0" />
     <costume anm2path="accessories/accessory_judasfez.anm2" type="none" priority="0" />
     <costume anm2path="accessories/accessory_keepernoose.anm2" type="none" priority="0" />
+
+    <!-- FIEND FOLIO -->
+    <!--
+    <costume anm2path="faces/astralvessel/fiend_folio/face_dads_dip.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/fiend_folio/face_isaac_dot_chr.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/fiend_folio/face_deadlydose.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/fiend_folio/face_twinkleofcontagion.anm2" type="none" priority="0" />
+    -->
+
+    <!-- EPIPHANY -->
+    <costume anm2path="faces/astralvessel/epiphany/face_technical_character.anm2" type="none" priority="0" />
 </costumes>

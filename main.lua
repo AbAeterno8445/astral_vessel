@@ -9,6 +9,7 @@ include("scripts.menus.appearance.appearanceMenu")
 include("scripts.menus.nexus.nexusMenu")
 include("scripts.menus.loadoutSubmenu")
 include("scripts.menus.corpseRaiserSubmenu")
+include("scripts.modCompat")
 
 include("scripts.costumes")
 include("scripts.treeRender")
@@ -49,6 +50,7 @@ function PSTAVessel:initMod()
     PSTAVessel:initNexusMenu()
     PSTAVessel:initLoadoutSubmenu()
     PSTAVessel:initCorpseRaiserSubmenu()
+    PSTAVessel:initModCompat()
     print("Initialized Astral Vessel v" .. PSTAVessel.version)
 
     -- EID
