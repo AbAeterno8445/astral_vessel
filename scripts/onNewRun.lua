@@ -57,12 +57,14 @@ function PSTAVessel:onNewRun(isContinued)
         -- Starting item loadout
         if #PSTAVessel.charStartItems > 0 then
             for _, startItem in ipairs(PSTAVessel.charStartItems) do
-                -- Walking Nullifier node (Voidborn cosmic constellation) - Don't add active items, spawn them as pedestals in first room
-                if PST:getTreeSnapshotMod("walkingNullifier", false) and startItem.active then
-                    local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos() + Vector(150, 40), 40)
-                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, startItem.item, tmpPos, Vector.Zero, nil)
-                else
-                    PSTAVessel_addStartItem(startItem.item)
+                if not startItem.cannotAfford then
+                    -- Walking Nullifier node (Voidborn cosmic constellation) - Don't add active items, spawn them as pedestals in first room
+                    if PST:getTreeSnapshotMod("walkingNullifier", false) and startItem.active then
+                        local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos() + Vector(150, 40), 40)
+                        Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, startItem.item, tmpPos, Vector.Zero, nil)
+                    else
+                        PSTAVessel_addStartItem(startItem.item)
+                    end
                 end
             end
         end

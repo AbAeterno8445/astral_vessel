@@ -39,6 +39,8 @@ function PSTAVessel:load()
         PSTAVessel:switchLoadout(decoded.currentLoadout)
     end
     PSTAVessel:sanitizeTrees()
+    PSTAVessel:updateUnlockData()
+    PSTAVessel:calcConstellationAffinities()
 end
 
 -- Save variables thrown 'as-is'

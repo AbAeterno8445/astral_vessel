@@ -175,8 +175,7 @@ function PSTAVessel:initNexusMenu()
                         spentType = currentType,
                         qual = self.hoveredItem.qual
                     })
-                    if not PSTAVessel.constelAlloc[currentType].spent then PSTAVessel.constelAlloc[currentType].spent = 0 end
-                    PSTAVessel.constelAlloc[currentType].spent = PSTAVessel.constelAlloc[currentType].spent + itemCost
+                    PSTAVessel:calcConstellationAffinities()
                     SFXManager():Play(SoundEffect["SOUND_POWERUP" .. math.max(1, math.min(3, self.hoveredItem.qual))], 0.8)
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
@@ -196,17 +195,15 @@ function PSTAVessel:initNexusMenu()
                     for i, startItem in ipairs(PSTAVessel.charStartItems) do
                         if tmpItem.item == startItem.item and startItem.spentType == currentType then
                             removeIdx = i
-                            PSTAVessel.constelAlloc[currentType].spent = math.max(0, PSTAVessel.constelAlloc[currentType].spent - startItem.spent)
                             break
                         end
                     end
                 else
-                    local spentType = tmpItem.spentType
-                    PSTAVessel.constelAlloc[spentType].spent = math.max(0, PSTAVessel.constelAlloc[spentType].spent - tmpItem.spent)
                     removeIdx = self.invSelected
                 end
                 if removeIdx then
                     table.remove(PSTAVessel.charStartItems, removeIdx)
+                    PSTAVessel:calcConstellationAffinities()
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 end
             end
@@ -479,6 +476,7 @@ function PSTAVessel:initNexusMenu()
             local tmpFrame = 0
             if startItem then
                 tmpFrame = 1
+                if startItem.cannotAfford then tmpFrame = 3 end
             end
             if itemIdx > PSTAVessel.charMaxStartItems then
                 tmpFrame = 2
@@ -513,6 +511,10 @@ function PSTAVessel:initNexusMenu()
                         "Obtained with: " .. startItem.spent .. " " .. startItem.spentType .. " Affinity.",
                         "Press Respec to refund this item choice."
                     }
+                    if startItem and startItem.cannotAfford then
+                        table.insert(itemDesc, 2, {"This item won't be granted when starting a run.", PST.kcolors.RED1})
+                        table.insert(itemDesc, 2, {"You can no longer afford this item with your current total affinity.", PST.kcolors.RED1})
+                    end
                     local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
 		            if itemName == "StringTable::InvalidKey" then itemName = "Unknown Item" end
                     tScreen:DrawNodeBox(itemName, itemDesc, tmpDescX, tmpDescY, true)

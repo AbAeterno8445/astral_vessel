@@ -159,7 +159,7 @@ function PSTAVessel:updateUnlockData()
     PSTAVessel.ingrainedUnlock = false
 
     -- Allocation % for constellations to give their full affinity value
-    PSTAVessel.charConstAffinityReq = 0.8
+    PSTAVessel.charConstAffinityReq = 0.75
 
     local gameData = Isaac.GetPersistentGameData()
     for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do

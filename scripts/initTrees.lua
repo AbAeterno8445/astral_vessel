@@ -54,7 +54,8 @@ function PSTAVessel:initVesselTree()
             table.insert(newDesc, "Tier: " .. PSTAVessel.constelTierNames[constTier])
             -- Allocation affinity
             local constAffinity = PSTAVessel.constelAffinityWorth[constTier]
-            table.insert(newDesc, "Fully allocating this constellation will grant you " .. constAffinity .. " " .. constType .. " Affinity.")
+            local allocPerc = PSTAVessel.charConstAffinityReq * 100
+            table.insert(newDesc, "Allocating " .. allocPerc .. "% of this constellation will grant you " .. constAffinity .. " " .. constType .. " Affinity.")
             if isAllocated then
                 local constName = string.sub(extraData.node.name, 16)
                 local constAllocData = PSTAVessel.constelAlloc[constType][constName]
@@ -106,7 +107,14 @@ function PSTAVessel:initVesselTree()
                 if itemCfg then
                     local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
 		            if itemName == "StringTable::InvalidKey" then itemName = "Unknown Item" end
-                    table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolors.LIGHTBLUE1})
+
+                    local affordExtra = ""
+                    local tmpColor = PST.kcolors.LIGHTBLUE1
+                    if tmpItem.cannotAfford then
+                        affordExtra = " (Cannot afford)"
+                        tmpColor = PST.kcolors.RED1
+                    end
+                    table.insert(newDesc, {"Starting item: " .. itemName .. affordExtra, tmpColor})
                 end
             end
             return { name = descName, description = newDesc }
@@ -189,10 +197,9 @@ function PSTAVessel:initVesselTree()
         PST.treeScreen.treeAliases[tmpTreeName] = "Astral Vessel"
         PST.treeScreen.treeNameAliases[tmpTreeName] = "Constellations (" .. tmpType .. ")"
     end
-
-    PSTAVessel:calcConstellationAffinities()
 end
 
+-- Re-calculates total affinity for each constellation type. Also remove starting items if no longer affordable from changes in affinity
 function PSTAVessel:calcConstellationAffinities()
     PSTAVessel.tiersAlloc = {0, 0, 0}
     PSTAVessel.charTrinketAlloc = false
@@ -258,6 +265,30 @@ function PSTAVessel:calcConstellationAffinities()
             end
             typeAlloc.affinity = tmpAffinity
             typeAlloc.spent = 0
+        end
+    end
+
+    -- Check if starting items are still affordable, and tag as not affordable if not
+    local tmpSpent = {}
+    for i=#PSTAVessel.charStartItems,1,-1 do
+        local startItem = PSTAVessel.charStartItems[i]
+        if startItem and startItem.spentType then
+            local tmpType = startItem.spentType
+            PSTAVessel.charStartItems[i].cannotAfford = nil
+
+            if not tmpSpent[tmpType] then
+                tmpSpent[tmpType] = 0
+            end
+            tmpSpent[tmpType] = tmpSpent[tmpType] + startItem.spent
+
+            local typeAff = PSTAVessel.constelAlloc[tmpType]
+            if typeAff and typeAff.affinity and tmpSpent[tmpType] > typeAff.affinity then
+                tmpSpent[tmpType] = tmpSpent[tmpType] - startItem.spent
+                PSTAVessel.charStartItems[i].cannotAfford = true
+            else
+                if not PSTAVessel.constelAlloc[tmpType].spent then PSTAVessel.constelAlloc[tmpType].spent = 0 end
+                PSTAVessel.constelAlloc[tmpType].spent = PSTAVessel.constelAlloc[tmpType].spent + startItem.spent
+            end
         end
     end
 end

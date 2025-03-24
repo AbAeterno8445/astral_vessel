@@ -51,7 +51,6 @@ function PSTAVessel:initMod()
     PSTAVessel:initLoadoutSubmenu()
     PSTAVessel:initCorpseRaiserSubmenu()
     PSTAVessel:initModCompat()
-    PSTAVessel:updateUnlockData()
     print("Initialized Astral Vessel v" .. PSTAVessel.version)
 
     -- EID
