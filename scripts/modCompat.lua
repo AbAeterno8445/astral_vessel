@@ -140,6 +140,10 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addFFItem("WRONG_WARP", {PSTAVConstellationType.COSMIC})
         PSTAVessel_addFFItem("HEDONISTS_COOKBOOK", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addFFItem("SCULPTED_PEPPER", {PSTAVConstellationType.ELEMENTAL})
+
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, FiendFolio.ITEM.COLLECTIBLE.DADS_BATTERY)
+        table.insert(PSTAVessel.batteryItems, FiendFolio.ITEM.COLLECTIBLE.X10BZZT)
     end
 
     -- Epiphany
@@ -396,6 +400,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("Miracle Mallet", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
         PSTAVessel_addRevItem("DELETED ERHU", {PSTAVConstellationType.COSMIC})
         PSTAVessel_addRevItem("Mohgwyn's Spear", {PSTAVConstellationType.DEMONIC})
+
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Electrodynamics"))
     end
 
     -- Reverie: MGO
@@ -434,6 +441,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("D58", {PSTAVConstellationType.MERCANTILE}, 6)
         PSTAVessel_addRevItem("Quantum Peach", {PSTAVConstellationType.DIVINE})
         PSTAVessel_addRevItem("Sonic Screwdriver", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUNDANE})
+
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Cucumber Battery"))
     end
 
     -- Repentance Plus! (mod)
@@ -838,6 +848,8 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addEclItem("Babylon Candle", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.COSMIC})
         PSTAVessel_addEclItem("Lux Aeterna", {PSTAVConstellationType.DIVINE})
 
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Battery Bombs"))
     end
 
     -- Lost and Forgotten
@@ -945,6 +957,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addLnfItem("Red Mass", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addLnfItem("Dynamite", {PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addLnfItem("Tube Milk", {PSTAVConstellationType.MUNDANE})
+
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Robot's Battery"))
     end
 
     -- Community Remix
@@ -1057,6 +1072,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addReItem("Shattered Orb", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addReItem("Mirror Key", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.COSMIC})
         PSTAVessel_addReItem("Dice Dice", {PSTAVConstellationType.MERCANTILE})
+
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Battery Acid"))
     end
 
     -- Kicks and Giggles
@@ -1350,6 +1368,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addTtrItem("The Maelstrom", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.COSMIC})
         PSTAVessel_addTtrItem("Lil Abyss", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.COSMIC})
         PSTAVessel_addTtrItem("The Sword", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.COSMIC})
+
+        -- Battery Items
+        table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Overcharged Battery"))
     end
 
     -- Sewing Machine
