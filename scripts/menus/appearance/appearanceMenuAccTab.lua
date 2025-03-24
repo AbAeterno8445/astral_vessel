@@ -9,6 +9,18 @@ bubbleSpr:SetFrame("Default", 0)
 local blankHeadSpr = Sprite("gfx/ui/astralvessel/head_blank.anm2", true)
 blankHeadSpr:Play("Default")
 
+local kcolorRedFaded = KColor(1, 0.6, 0.6, 0.5)
+
+local layerAlias = {
+    glow = "Glow",
+    body = "Body",
+    body0 = "Body 0", body1 = "Body 1",
+    head = "Head",
+    head0 = "Head 0", head1 = "Head 1", head2 = "Head 2", head3 = "Head 3", head4 = "Head 4", head5 = "Head 5",
+    top0 = "Top",
+    extra = "Extra"
+}
+
 local function PSTAVessel_getWheelItemAng(idx, angleOffset)
     local drawAng = idx * ((2 * math.pi) / accWheelTotal) + angleOffset
     return drawAng
@@ -205,4 +217,35 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
     tmpStr = "Press Q / Shift+Q to quickly select next/previous equipped accessory."
     tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
     PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
+
+    -- Layer conflicts + display
+    local totalLayers = {}
+    for i, tmpAcc in ipairs(PSTAVessel.accessoryList) do
+        -- Add to total layers if selected (for conflicts)
+        if tmpAcc.costumeSprite and PST:arrHasValue(PSTAVessel.charAccessories, i) then
+            for _, tmpLayer in ipairs(tmpAcc.costumeSprite:GetAllLayers()) do
+                local layerName = tmpLayer:GetName()
+                if layerAlias[layerName] then
+                    if not totalLayers[layerName] then totalLayers[layerName] = 0 end
+                    totalLayers[layerName] = totalLayers[layerName] + 1
+                end
+            end
+        end
+    end
+    local layerConflicts = {}
+    for layerName, layerTotal in pairs(totalLayers) do
+        if layerTotal > 1 then table.insert(layerConflicts, layerName) end
+    end
+    if #layerConflicts > 0 then
+        tmpStr = "Layer Conflicts!"
+        tmpTextX = tmpDrawX - 170
+        tmpTextY = tmpDrawY - 100
+        PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, kcolorRedFaded)
+
+        for _, tmpLayerName in ipairs(layerConflicts) do
+            tmpStr = "-> " .. (layerAlias[tmpLayerName] or tmpLayerName)
+            tmpTextY = tmpTextY + 14
+            PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, kcolorRedFaded)
+        end
+    end
 end

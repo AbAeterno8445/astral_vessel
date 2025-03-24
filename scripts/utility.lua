@@ -15,6 +15,7 @@ function PSTAVessel:getColorStr(col)
 end
 
 local costumeLayers = {"body", "head"}
+local extraAnimOldColor = nil
 ---@param player EntityPlayer
 function PSTAVessel:postPlayerUpdate(player)
     if player:GetPlayerType() == PSTAVessel.vesselType then
@@ -24,15 +25,23 @@ function PSTAVessel:postPlayerUpdate(player)
         end
 
         -- Astral Vessel custom color application
-        if player:GetPlayerType() == PSTAVessel.vesselType then
-            local plColor = PSTAVessel:getRunVesselColor()
-            for _, tmpCostumeLayer in ipairs(costumeLayers) do
-                player:GetSprite():GetLayer(tmpCostumeLayer):SetColor(plColor)
-                local costumeSprites = player:GetCostumeSpriteDescs()
-                for _, tmpCostumeDesc in ipairs(costumeSprites) do
-                    local tmpLayer = tmpCostumeDesc:GetSprite():GetLayer(tmpCostumeLayer)
-                    if tmpLayer then tmpLayer:SetColor(plColor) end
-                end
+        local plColor = PSTAVessel:getRunVesselColor()
+        if not player:IsExtraAnimationFinished() then
+            if not extraAnimOldColor then
+                local extraColor = player:GetSprite():GetLayer("extra"):GetColor()
+                extraAnimOldColor = Color(extraColor.R, extraColor.G, extraColor.B, extraColor.A, extraColor.RO, extraColor.GO, extraColor.BO)
+            end
+            player:GetSprite():GetLayer("extra"):SetColor(plColor)
+        elseif extraAnimOldColor then
+            player:GetSprite():GetLayer("extra"):SetColor(extraAnimOldColor)
+            extraAnimOldColor = nil
+        end
+        for _, tmpCostumeLayer in ipairs(costumeLayers) do
+            player:GetSprite():GetLayer(tmpCostumeLayer):SetColor(plColor)
+            local costumeSprites = player:GetCostumeSpriteDescs()
+            for _, tmpCostumeDesc in ipairs(costumeSprites) do
+                local tmpLayer = tmpCostumeDesc:GetSprite():GetLayer(tmpCostumeLayer)
+                if tmpLayer then tmpLayer:SetColor(plColor) end
             end
         end
     end
