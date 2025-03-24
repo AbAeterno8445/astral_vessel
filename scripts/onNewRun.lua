@@ -48,6 +48,10 @@ function PSTAVessel:onNewRun(isContinued)
         local function PSTAVessel_addStartItem(item)
             player:AddCollectible(item)
             itemPool:RemoveCollectible(item)
+            -- Decrease transformation counters
+            for _, tmpForm in pairs(PlayerForm) do
+                player:IncrementPlayerFormCounter(tmpForm, -1)
+            end
         end
 
         -- Starting item loadout
