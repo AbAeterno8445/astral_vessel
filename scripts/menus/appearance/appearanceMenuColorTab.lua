@@ -69,4 +69,9 @@ function PSTAVessel:appearanceMenuColorTab(appearanceMenu, tScreen)
         tmpColor = PST.kcolors.BLUE1
     end
     PST.normalFont:DrawString("Blue: " .. PSTAVessel:getColorStr(PSTAVessel.charColor.B), tmpDrawX, tmpDrawY, tmpColor)
+
+    local tmpStr = "Press Shift + V to rotate the character preview."
+    tmpTextX = tScreen.screenW / 2 - PST.miniFont:GetStringWidth(tmpStr) / 2
+    tmpTextY = tScreen.screenH / 2 + 70
+    PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.WHITE)
 end

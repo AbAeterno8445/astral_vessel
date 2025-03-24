@@ -15,10 +15,10 @@ local layerHierarchy = {
     extra = 13
 }
 local function PSTAVessel_layerHierarchySort(a, b)
-    local layerA = a.sprite:GetLayer(0):GetName()
-    local layerB = b.sprite:GetLayer(0):GetName()
-    return (layerHierarchy[layerA] or 14) < (layerHierarchy[layerB] or 14)
+    return (a[3] or 14) < (b[3] or 14)
 end
+
+local charDirs = {"Down", "Left", "Up", "Right"}
 
 function PSTAVessel:initAppearanceMenu()
     local appearanceMenu = {
@@ -33,6 +33,8 @@ function PSTAVessel:initAppearanceMenu()
         hairTabSel = 1,
         faceTabSel = 1,
         accTabSel = 1,
+
+        currentCharDir = 1,
 
         inputOverrides = {
             PSTKeybind.TREE_PAN_DOWN, PSTKeybind.TREE_PAN_LEFT, PSTKeybind.TREE_PAN_RIGHT, PSTKeybind.TREE_PAN_UP,
@@ -102,6 +104,12 @@ function PSTAVessel:initAppearanceMenu()
             self:OnSwitchTab()
         end
 
+        -- Input: Shift + V, rotate character
+        if PST:isKeybindActive(PSTKeybind.CENTER_CAMERA) then
+            self.currentCharDir = self.currentCharDir + 1
+            if self.currentCharDir > 4 then self.currentCharDir = 1 end
+        end
+
         -- Input: Nums (for tab switching)
         for i=1,#self.tabs do
             if PST:isKeybindActive(PSTKeybind["NUM" .. tostring(i)]) then
@@ -122,23 +130,25 @@ function PSTAVessel:initAppearanceMenu()
         local tmpDrawX = tScreen.screenW / 2
         local tmpDrawY = tScreen.screenH / 2
 
+        local charDir = charDirs[self.currentCharDir]
+
+        local renderList = {}
+        local layerList = {}
+
         -- Draw character
         self.charSprite.Color = PSTAVessel.charColor
-        self.charSprite:SetFrame("WalkDown", 0)
-        self.charSprite:Render(Vector(tmpDrawX, tmpDrawY))
-        self.charSprite:SetFrame("HeadDown", 0)
-        self.charSprite:Render(Vector(tmpDrawX, tmpDrawY))
+        table.insert(layerList, {self.charSprite, "Head" .. charDir, "head"})
+        table.insert(layerList, {self.charSprite, "Walk" .. charDir, "body"})
 
         -- Render chosen face
         if PSTAVessel.charFace then
             if not PSTAVessel.charFace.sprite and PSTAVessel.charFace.path ~= "none" then
                 PSTAVessel.charFace.sprite = Sprite(PSTAVessel.charFace.path, true)
-                PSTAVessel.charFace.sprite:SetFrame("HeadDown", 0)
             end
             local pickedFaceSprite = PSTAVessel.charFace.sprite
             if pickedFaceSprite then
                 pickedFaceSprite.Color.A = 1
-                pickedFaceSprite:Render(Vector(tmpDrawX, tmpDrawY))
+                table.insert(renderList, {pickedFaceSprite, "Head" .. charDir})
             end
         end
         -- Render accessories
@@ -149,7 +159,6 @@ function PSTAVessel:initAppearanceMenu()
                     if not tmpAcc.costumeSprite and not tmpAcc.sprite and not tmpAcc.item then
                         if tmpAcc.path and tmpAcc.path ~= "none" then
                             tmpAcc.sprite = Sprite(tmpAcc.path, true)
-                            tmpAcc.sprite:SetFrame("HeadDown", 0)
                         end
                     elseif tmpAcc.item then
                         local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpAcc.item)
@@ -162,13 +171,11 @@ function PSTAVessel:initAppearanceMenu()
                     end
                     if tmpAcc.costumeSprite then
                         tmpAcc.costumeSprite.Color.A = 1
-                        tmpAcc.costumeSprite:SetFrame("WalkDown", 0)
-                        tmpAcc.costumeSprite:Render(Vector(tmpDrawX, tmpDrawY))
-                        tmpAcc.costumeSprite:SetFrame("HeadDown", 0)
-                        tmpAcc.costumeSprite:Render(Vector(tmpDrawX, tmpDrawY))
+                        table.insert(renderList, {tmpAcc.costumeSprite, "Walk" .. charDir})
+                        table.insert(renderList, {tmpAcc.costumeSprite, "Head" .. charDir})
                     elseif tmpAcc.sprite then
                         tmpAcc.sprite.Color.A = 1
-                        tmpAcc.sprite:Render(Vector(tmpDrawX, tmpDrawY))
+                        table.insert(renderList, {tmpAcc.sprite, "ShopIdle"})
                     end
                 end
             end
@@ -180,12 +187,45 @@ function PSTAVessel:initAppearanceMenu()
                 if PSTAVessel.charHair.variant then
                     PSTAVessel.charHair.sprite:ReplaceSpritesheet(0, PSTAVessel.charHair.variant, true)
                 end
-                PSTAVessel.charHair.sprite:SetFrame("HeadDown", 0)
             end
             local pickedHairSprite = PSTAVessel.charHair.sprite
             if pickedHairSprite then
                 pickedHairSprite.Color = PSTAVessel.charHairColor
-                pickedHairSprite:Render(Vector(tmpDrawX, tmpDrawY))
+                table.insert(renderList, {pickedHairSprite, "Head" .. charDir})
+            end
+        end
+
+        --[[
+            1. All sprites to be rendered are added to renderList
+            2. Go through all sprites, and for every layer that exists, add an entry to a new layerList, with
+            sprite + anim + layer to be rendered
+            3. Order layerList based on costume layer hierarchy
+            4. Go through the list in order, make all layers but the one to be rendered invisible in the sprite,
+            and render the sprite
+        ]]
+        for _, tmpSpriteData in ipairs(renderList) do
+            ---@type Sprite
+            local tmpSprite = tmpSpriteData[1]
+            for _, tmpLayer in ipairs(tmpSprite:GetAllLayers()) do
+                local layerName = tmpLayer:GetName()
+                if layerHierarchy[layerName] then
+                    table.insert(layerList, {tmpSprite, tmpSpriteData[2], layerName})
+                end
+            end
+        end
+        table.sort(layerList, PSTAVessel_layerHierarchySort)
+        for _, tmpLayerData in ipairs(layerList) do
+            -- Make all layers but the one to be drawn invisible
+            local spriteLayers = tmpLayerData[1]:GetAllLayers()
+            for _, tmpLayer in ipairs(spriteLayers) do
+                tmpLayer:SetVisible(tmpLayer:GetName() == tmpLayerData[3])
+            end
+            tmpLayerData[1]:SetFrame(tmpLayerData[2], 0)
+            tmpLayerData[1]:Render(Vector(tmpDrawX, tmpDrawY))
+
+            -- Return layers to normal
+            for _, tmpLayer in ipairs(spriteLayers) do
+                tmpLayer:SetVisible(true)
             end
         end
 
