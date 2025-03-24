@@ -1298,6 +1298,60 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addArItem("Geptameron", {PSTAVConstellationType.DIVINE})
     end
 
+    -- Tainted Treasure Rooms
+    if TaintedTreasure then
+        -- Items
+        local function PSTAVessel_addTtrItem(ttrItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(ttrItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Tainted Treasure Rooms item '" .. ttrItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Tainted Treasure Rooms")
+        end
+        PSTAVessel_addTtrItem("Atlas", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Bad Onion", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("Fork Bender", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addTtrItem("Yearning Page", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addTtrItem("Buzzing Magnets", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Clandestine Card", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addTtrItem("Glad Bombs", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Dionysius", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addTtrItem("Consecration", {PSTAVConstellationType.DIVINE})
+        PSTAVessel_addTtrItem("No Options", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("Steamy Surprise", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addTtrItem("Skeleton Lock", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("Salt of Magnesium", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("Whore of Galilee", {PSTAVConstellationType.DIVINE})
+        PSTAVessel_addTtrItem("Eternal Candle", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addTtrItem("Overstock", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addTtrItem("Spider Freak", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addTtrItem("Bugulon Super Fan", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addTtrItem("Arrowhead", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("White Belt", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("D-Pad", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addTtrItem("The War Maiden", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Basilisk", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Poisoned Dart", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("Colored Contacts", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("The Reaper", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("ATG in a Jar", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Dryad's Blessing", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Broodmind", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addTtrItem("Tech Organelle", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Gazemaster", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("Seared Club", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("The Leviathan", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Ravenous", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Sorrowful Shallot", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Overcharged Battery", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Blue Canary", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addTtrItem("Wormwood", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Maelstrom", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("Lil Abyss", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addTtrItem("The Sword", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.COSMIC})
+    end
+
     -- Sewing Machine
     if SewnMod then
         -- Items
