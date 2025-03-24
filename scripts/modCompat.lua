@@ -144,6 +144,10 @@ function PSTAVessel:initModCompat()
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, FiendFolio.ITEM.COLLECTIBLE.DADS_BATTERY)
         table.insert(PSTAVessel.batteryItems, FiendFolio.ITEM.COLLECTIBLE.X10BZZT)
+
+        -- Knife Items
+        table.insert(PSTAVessel.knifeItems, FiendFolio.ITEM.COLLECTIBLE.YOUR_ETERNAL_REWARD)
+        table.insert(PSTAVessel.knifeItems, FiendFolio.ITEM.COLLECTIBLE.DEVILS_DAGGER)
     end
 
     -- Epiphany
@@ -222,6 +226,10 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addEpItem("SURPRISE_BOX", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUNDANE})
         PSTAVessel_addEpItem("SAVAGE_CHAINS", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addEpItem("PORTABLE_DICE_MACHINE", {PSTAVConstellationType.MERCANTILE})
+
+        -- Knife items
+        table.insert(PSTAVessel.knifeItems, Epiphany.Item.DESCENT.ID)
+        table.insert(PSTAVessel.knifeItems, Epiphany.Item.OLD_KNIFE.ID)
     end
 
     -- Reverie
@@ -403,6 +411,11 @@ function PSTAVessel:initModCompat()
 
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Electrodynamics"))
+
+        -- Knife Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Psycho Knife"))
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Dagger of Servants"))
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Yamanba's Chopper"))
     end
 
     -- Reverie: MGO
@@ -444,6 +457,9 @@ function PSTAVessel:initModCompat()
 
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Cucumber Battery"))
+
+        -- Knife Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Silver Knife"))
     end
 
     -- Repentance Plus! (mod)
@@ -505,6 +521,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRepItem("Cheese Grater", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addRepItem("Bag of Jewels", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MERCANTILE})
         PSTAVessel_addRepItem("We Need To Go Sideways", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.COSMIC})
+
+        -- Knife Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Ceremonial Blade"))
     end
 
     -- Revelations
@@ -960,6 +979,10 @@ function PSTAVessel:initModCompat()
 
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Robot's Battery"))
+
+        -- Battery Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Plastic Knife"))
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Small Knives"))
     end
 
     -- Community Remix
@@ -1037,6 +1060,10 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addCrItem("Moldy D6", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addCrItem("Communion Wine", {PSTAVConstellationType.DIVINE})
         PSTAVessel_addCrItem("Twin Candles", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+
+        -- Knife Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Misericorde"))
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Ceremonial Blade"))
     end
 
     -- Reshaken Vol 1
