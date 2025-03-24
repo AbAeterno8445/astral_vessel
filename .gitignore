@@ -2,6 +2,7 @@
 *.xcf
 releases/
 ideas/
+thumbnail/
 *.exe
 *.exe.lnk
 disable.it

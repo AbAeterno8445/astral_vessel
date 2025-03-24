@@ -51,7 +51,7 @@ PSTAVessel.inSolarFireRing = false
 PSTAVessel.charUnlocks = {}
 PSTAVessel.charLoadouts = {}
 PSTAVessel.currentLoadout = "1"
-PSTAVessel.maxLoadouts = 15
+PSTAVessel.maxLoadouts = 25
 PSTAVessel.accessoryLimit = 5
 
 -- Character save data (for loadouts)
