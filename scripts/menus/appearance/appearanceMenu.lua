@@ -129,8 +129,6 @@ function PSTAVessel:initAppearanceMenu()
         self.charSprite:SetFrame("HeadDown", 0)
         self.charSprite:Render(Vector(tmpDrawX, tmpDrawY))
 
-        local renderList = {}
-
         -- Render chosen face
         if PSTAVessel.charFace then
             if not PSTAVessel.charFace.sprite and PSTAVessel.charFace.path ~= "none" then
@@ -141,7 +139,6 @@ function PSTAVessel:initAppearanceMenu()
             if pickedFaceSprite then
                 pickedFaceSprite.Color.A = 1
                 pickedFaceSprite:Render(Vector(tmpDrawX, tmpDrawY))
-                --table.insert(renderList, {sprite = pickedFaceSprite, frame = "HeadDown"})
             end
         end
         -- Render accessories
@@ -167,14 +164,11 @@ function PSTAVessel:initAppearanceMenu()
                         tmpAcc.costumeSprite.Color.A = 1
                         tmpAcc.costumeSprite:SetFrame("WalkDown", 0)
                         tmpAcc.costumeSprite:Render(Vector(tmpDrawX, tmpDrawY))
-                        --table.insert(renderList, {sprite = tmpAcc.costumeSprite, frame = "WalkDown"})
                         tmpAcc.costumeSprite:SetFrame("HeadDown", 0)
                         tmpAcc.costumeSprite:Render(Vector(tmpDrawX, tmpDrawY))
-                        --table.insert(renderList, {sprite = tmpAcc.costumeSprite, frame = "HeadDown"})
                     elseif tmpAcc.sprite then
                         tmpAcc.sprite.Color.A = 1
                         tmpAcc.sprite:Render(Vector(tmpDrawX, tmpDrawY))
-                        --table.insert(renderList, {sprite = tmpAcc.sprite, frame = "ShopIdle"})
                     end
                 end
             end
@@ -192,15 +186,8 @@ function PSTAVessel:initAppearanceMenu()
             if pickedHairSprite then
                 pickedHairSprite.Color = PSTAVessel.charHairColor
                 pickedHairSprite:Render(Vector(tmpDrawX, tmpDrawY))
-                --table.insert(renderList, {sprite = pickedHairSprite, frame = "HeadDown"})
             end
         end
-
-        --[[table.sort(renderList, PSTAVessel_layerHierarchySort)
-        for _, tmpRender in ipairs(renderList) do
-            tmpRender.sprite:SetFrame(tmpRender.frame, 0)
-            tmpRender.sprite:Render(Vector(tmpDrawX, tmpDrawY))
-        end]]
 
         -- Tab-specific rendering
         if self.currentTab == 1 then

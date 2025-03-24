@@ -11,7 +11,8 @@ local AVesselTree = [[
 "23": "{\"pos\":[0,-4],\"type\":5000,\"size\":\"Large\",\"name\":\"Vessel-Shaping\",\"description\":[\"Once allocated, press Allocate to access a menu that allows customizing\",\"Astral Vessel's appearance.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "25": "{\"pos\":[0,-3],\"type\":5063,\"size\":\"Large\",\"name\":\"Astral Vessel Unlocks\",\"description\":[\"\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "26": "{\"pos\":[0,-5],\"type\":5001,\"size\":\"Large\",\"name\":\"Vessel Loadouts\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to switch between different\",\"loadouts.\",\"Loadouts store your customization settings.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"27": "{\"pos\":[0,0],\"type\":5002,\"size\":\"Large\",\"name\":\"Stellar Nexus\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to pick your starting items.\",\"Items are divided into categories matching constellation types, and require affinity with\",\"those constellations to choose.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}"
+"27": "{\"pos\":[0,0],\"type\":5002,\"size\":\"Large\",\"name\":\"Stellar Nexus\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to pick your starting items.\",\"Items are divided into categories matching constellation types, and require affinity with\",\"those constellations to choose.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}",
+"28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
 }
 ]]
 
@@ -125,6 +126,13 @@ function PSTAVessel:initVesselTree()
                 end
             end
             return { name = descName, description = newDesc }
+        -- Ingrained Power node requirement
+        elseif descName == "Ingrained Power" then
+            local newDesc = {table.unpack(tmpDescription)}
+            if not PSTAVessel.ingrainedUnlock then
+                table.insert(newDesc, {"Locked. Check the Unlocks node for more info.", PST.kcolors.RED1})
+            end
+            return { name = descName, description = newDesc }
         end
     end
     PST:addExtraNodeDescFunc("avesselConst", PSTAVessel_constNodeDesc)
@@ -149,6 +157,9 @@ function PSTAVessel:initVesselTree()
                 if tmpAllocData and tmpAllocData.affinity and tmpAllocData.affinity >= affinityReq and tierAllocTotal < PSTAVessel.charMaxConsts[reqs.vesselConstTier] then
                     return true
                 end
+                return false
+            end
+            if reqs.vesselIngrained and not PSTAVessel.ingrainedUnlock then
                 return false
             end
         end

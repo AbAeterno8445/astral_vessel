@@ -11,4 +11,5 @@
     <achievement name="AVesselExp1" gfxback="avessel_Ultra_Greed.png" hidden="false" />
     <achievement name="AVesselObols1" gfxback="avessel_Ultra_Greedier.png" hidden="false" />
     <achievement name="AVesselSoul" gfxback="avessel_AllMarks.png" hidden="false" />
+    <achievement name="AVesselIngrained" gfxback="avessel_Ingrained.png" hidden="false" />
 </achievements>

@@ -31,8 +31,7 @@ PSTAVessel.updateTrackers = {
     redHearts = 0,
     soulHearts = 0,
     blackHearts = 0,
-    primarySlotCharge = 0,
-    playerColor = Color()
+    primarySlotCharge = 0
 }
 PSTAVessel.floorFirstUpdate = false
 PSTAVessel.roomFirstFire = false
@@ -134,12 +133,17 @@ PSTAVessel.unlocksData = {
         },
         desc = "Obtain all hard completion marks: Unlock Soul of the Vessel soul stone.",
         func = function() PSTAVessel.soulstoneUnlock = true end
+    },
+    ["AVesselIngrained"] = {
+        reqs = {"lvl100"},
+        desc = "Reach level 100: Can now Allocate the 'Ingrained Power' node, which smelts your starting trinket.",
+        func = function() PSTAVessel.ingrainedUnlock = true end
     }
 }
 PSTAVessel.unlocksDisplayOrder = {
     "AVesselExtraItem1", "AVesselLesser1", "AVesselLesser2", "AVesselActives", "AVesselQual3",
-    "AVesselExtraItem2", "AVesselGreater1", "AVesselEmpyrean1", "AVesselTrinkets", "AVesselTrinkets",
-    "AVesselExp1", "AVesselObols1", "AVesselSoul"
+    "AVesselExtraItem2", "AVesselGreater1", "AVesselEmpyrean1", "AVesselTrinkets", "AVesselExp1",
+    "AVesselObols1", "AVesselSoul", "AVesselIngrained"
 }
 function PSTAVessel:updateUnlockData()
     PSTAVessel.charMaxStartItems = 2
@@ -152,6 +156,7 @@ function PSTAVessel:updateUnlockData()
     PSTAVessel.charXPBonus = 0
     PSTAVessel.charObolBonus = 0
     PSTAVessel.soulstoneUnlock = false
+    PSTAVessel.ingrainedUnlock = false
 
     -- Allocation % for constellations to give their full affinity value
     PSTAVessel.charConstAffinityReq = 0.8

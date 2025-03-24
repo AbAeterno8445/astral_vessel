@@ -101,6 +101,14 @@ function PSTAVessel:appearanceMenuFaceTab(appearanceMenu, tScreen)
         PSTAVessel.charFace = PSTAVessel.facesList[appearanceMenu.faceTabSel]
     end
 
+    -- Display mod source
+    if PSTAVessel.charFace.sourceMod then
+        local tmpStr = "Face granted by this mod: " .. PSTAVessel.charFace.sourceMod
+        tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 2
+        tmpTextY = tmpDrawY + 54
+        PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.LIGHTBLUE1)
+    end
+
     -- Selection bubble
     bubbleSpr:Render(Vector(tmpDrawX, tmpDrawY - faceWheelRad - 18))
 end

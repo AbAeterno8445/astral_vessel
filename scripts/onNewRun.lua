@@ -10,7 +10,6 @@ function PSTAVessel:onNewRun(isContinued)
     for tmpCooldown, _ in pairs(PSTAVessel.modCooldowns) do
         PSTAVessel.modCooldowns[tmpCooldown] = 0
     end
-    PSTAVessel.updateTrackers.playerColor = tostring(Color())
 
     if isVessel then
         -- Astral Vessel custom color application

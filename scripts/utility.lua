@@ -23,10 +23,9 @@ function PSTAVessel:postPlayerUpdate(player)
             PSTAVessel.tmpHairSprite.Color = PSTAVessel:getRunVesselHairColor()
         end
 
-        -- Player color update tracker
-        if player:GetPlayerType() == PSTAVessel.vesselType and PSTAVessel.updateTrackers.playerColor ~= tostring(PSTAVessel:getRunVesselColor()) then
+        -- Astral Vessel custom color application
+        if player:GetPlayerType() == PSTAVessel.vesselType then
             local plColor = PSTAVessel:getRunVesselColor()
-            -- Astral Vessel custom color application
             for _, tmpCostumeLayer in ipairs(costumeLayers) do
                 player:GetSprite():GetLayer(tmpCostumeLayer):SetColor(plColor)
                 local costumeSprites = player:GetCostumeSpriteDescs()
@@ -35,7 +34,6 @@ function PSTAVessel:postPlayerUpdate(player)
                     if tmpLayer then tmpLayer:SetColor(plColor) end
                 end
             end
-            PSTAVessel.updateTrackers.playerColor = tostring(plColor)
         end
     end
 end
@@ -70,9 +68,9 @@ function PSTAVessel:strSplit(str, delimiter)
 end
 
 -- Completion events tracking and unlocks
-function PSTAVessel:onCompletion(event)
+function PSTAVessel:onCompletion(event, noHard)
     PSTAVessel.charUnlocks[event] = true
-    if Game():IsHardMode() then
+    if Game():IsHardMode() and not noHard then
         PSTAVessel.charUnlocks[event .. "hard"] = true
     end
 

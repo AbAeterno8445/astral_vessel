@@ -17,18 +17,18 @@ function PSTAVessel:initModCompat()
     if Epiphany then
         -- Faces
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/epiphany/face_technical_character.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.facesList, {path="gfx/characters/costume_printer.anm2", sourceMod="Epiphany"})
 
         -- Accessories
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/costume_bad_company.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/costume_broken_halo.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/costume_crimson_bandana.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/costume_linen_shroud.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/costume_warm_coat.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/costume_woolen_cap.anm2", sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.BAD_COMPANY.ID, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.BROKEN_HALO.ID, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.CRIMSON_BANDANA.ID, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.LINEN_SHROUD.ID, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.WARM_COAT.ID, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.WOOLEN_CAP.ID, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.PRINTER.ID, sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/lost_d_extra.anm2", sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_cain_extra.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_judas_extra_1.anm2", sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_judas_1_extra.anm2", sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_keeper_extra.anm2", sourceMod="Epiphany"})
 
         -- Hairstyles
@@ -47,7 +47,6 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_t_isaac_01.anm2", sourceMod="Alternate Hairstyles"})
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_judas_01.anm2", sourceMod="Alternate Hairstyles"})
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_lazarus_01.anm2", sourceMod="Alternate Hairstyles"})
-        table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_lazarus2_01.anm2", sourceMod="Alternate Hairstyles"})
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_maggy_01.anm2", sourceMod="Alternate Hairstyles"})
     end
 

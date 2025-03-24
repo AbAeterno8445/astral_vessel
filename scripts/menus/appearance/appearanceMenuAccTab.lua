@@ -135,7 +135,7 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
 
                 local tmpAlpha = 1
                 if drawAng < 0 then
-                    tmpAlpha = 1 - math.abs(drawAng) / (math.pi * 0.3)
+                    tmpAlpha = 1 - math.abs(drawAng) / (math.pi)
                 elseif drawAng >= math.pi * 2 then
                     tmpAlpha = 1 - (drawAng - math.pi) / (math.pi * 2.5)
                 end
@@ -183,6 +183,14 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
     PST.miniFont:DrawString(accCounter, tmpTextX, tmpTextY, tmpColor)
 
     -- Texts
+    local selAcc = PSTAVessel.accessoryList[appearanceMenu.accTabSel]
+    if selAcc and selAcc.sourceMod then
+        local tmpStr = "Accessory granted by this mod: " .. selAcc.sourceMod
+        tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 2
+        tmpTextY = tmpDrawY + 62
+        PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.LIGHTBLUE1)
+    end
+
     local tmpStr = "Accessory layers might not be accurate to in-game display."
     tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
     tmpTextY = tmpDrawY + 80

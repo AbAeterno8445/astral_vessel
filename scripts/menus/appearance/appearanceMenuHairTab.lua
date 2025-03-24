@@ -159,6 +159,14 @@ function PSTAVessel:appearanceMenuHairTab(appearanceMenu, tScreen)
         PSTAVessel.charHair = PSTAVessel.hairstyles[appearanceMenu.hairTabSel]
     end
 
+    -- Display mod source
+    if PSTAVessel.charHair.sourceMod then
+        local tmpStr = "Hairstyle granted by this mod: " .. PSTAVessel.charHair.sourceMod
+        tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 2
+        tmpTextY = tmpDrawY + 54
+        PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.LIGHTBLUE1)
+    end
+
     -- Selection bubble
     bubbleSpr:Render(Vector(tmpDrawX, tmpDrawY - hairWheelRad - 18))
 
