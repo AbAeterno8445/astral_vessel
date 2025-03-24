@@ -84,7 +84,11 @@ function PSTAVessel:onNewRun(isContinued)
         -- Starting trinket
         local tmpMod = PST:getTreeSnapshotMod("vesselTrinket", 0)
         if tmpMod > 0 then
-            player:AddTrinket(tmpMod, false)
+            if not PST:getTreeSnapshotMod("ingrainedPower", false) then
+                player:AddTrinket(tmpMod, false)
+            else
+                player:AddSmeltedTrinket(tmpMod, false)
+            end
         end
 
         -- Dark Decay node (Archdemon demonic constellation)
