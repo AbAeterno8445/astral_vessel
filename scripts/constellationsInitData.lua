@@ -89,9 +89,16 @@ local tmpAddedItems = {}
 -- Add an item to the constellation pool
 ---@param itemType CollectibleType
 ---@param itemCategories PSTAVConstellationType[]
-function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost)
+function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost, sourceMod)
     local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
-    if itemCfg ~= -1 and not PSTAVessel:arrHasValue(tmpAddedItems, itemType) and itemCfg.Quality >= 0 and itemCfg.Quality <= 4 then
+    if not itemCfg or not itemType or itemType == -1 then
+        print("[Astral Vessel] Warning: attempted to add constellation item type -1.", "(" .. (extraCost or 0) .. ", " .. sourceMod .. ")")
+        local typesStr = ""
+        for _, tmpType in ipairs(itemCategories) do typesStr = typesStr .. tmpType .. " " end
+        print("   Constellation types:", typesStr)
+        return
+    end
+    if not PSTAVessel:arrHasValue(tmpAddedItems, itemType) and itemCfg.Quality >= 0 and itemCfg.Quality <= 4 then
         local newEntry = {
             item = itemType,
             types = itemCategories,
@@ -100,6 +107,7 @@ function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost)
         }
         if extraCost then newEntry.extraCost = extraCost end
         if itemCfg.Type == ItemType.ITEM_ACTIVE then newEntry.active = true end
+        if sourceMod then newEntry.sourceMod = sourceMod end
 
         local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
 		if itemName ~= "StringTable::InvalidKey" then newEntry.name = itemName end
@@ -267,7 +275,7 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_YUCK_HEART, {PSTAVConstellationType.MUTAGENIC}},
         {CollectibleType.COLLECTIBLE_TELEPATHY_BOOK},
         {CollectibleType.COLLECTIBLE_DULL_RAZOR},
-        {CollectibleType.COLLECTIBLE_CURSE_OF_THE_TOWER, nil, -8}
+        --{CollectibleType.COLLECTIBLE_CURSE_OF_THE_TOWER, nil, -8} -- TODO: consider affinity-granting items? Might need special handling
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.OCCULT)
 

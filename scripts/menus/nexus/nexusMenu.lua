@@ -2,6 +2,7 @@ PSTAVessel.NexusMenuID = "stellarNexus"
 
 local tabCols = 5
 local itemCols = 8
+local maxDescLineLen = 150
 
 function PSTAVessel:initNexusMenu()
     local nexusMenu = {
@@ -313,7 +314,25 @@ function PSTAVessel:initNexusMenu()
                 local desc = EID:getDescriptionObj(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, self.hoveredItem.item, nil, false)
 
                 -- Create full description table
-                local tmpLines = PSTAVessel:strSplit(desc.Description, '#')
+                local origLines = PSTAVessel:strSplit(desc.Description, '#')
+                local tmpLines = {}
+                -- Split lines that are too long
+                for _, tmpLine in ipairs(origLines) do
+                    while #tmpLine > maxDescLineLen do
+                        local cutPos = tmpLine:sub(1, maxDescLineLen):match(".*%s()")
+                        if cutPos then
+                            table.insert(tmpLines, tmpLine:sub(1, cutPos - 1))
+                            tmpLine = tmpLine:sub(cutPos + 1)
+                        else
+                            table.insert(tmpLine, tmpLine:sub(1, maxDescLineLen))
+                            tmpLine = tmpLine:sub(maxDescLineLen + 1)
+                        end
+                    end
+                    if #tmpLine > 0 then
+                        table.insert(tmpLines, tmpLine)
+                    end
+                end
+
                 table.insert(tmpLines, 1, desc.Name .. " {{Quality" .. self.hoveredItem.qual .. "}}")
                 -- Active item
                 local tmpItemTypeStr = ""
@@ -329,6 +348,10 @@ function PSTAVessel:initNexusMenu()
                     end
                 end
                 table.insert(tmpLines, 2, tmpItemTypeStr)
+                -- Source mod
+                if self.hoveredItem.sourceMod then
+                    table.insert(tmpLines, 2, "{{ColorTransform}}Source mod: " .. self.hoveredItem.sourceMod)
+                end
 
                 if not PSTAVessel:charHasStartingItem(self.hoveredItem.item) then
                     -- Afinity cost
@@ -378,7 +401,13 @@ function PSTAVessel:initNexusMenu()
                 -- Get longest line to get BG width
                 local longestLine = 0
                 for _, tmpLine in ipairs(tmpLines) do
-                    if EID:getStrWidth(tmpLine) > longestLine then longestLine = EID:getStrWidth(tmpLine) end
+                    local lineNoMarkup = tmpLine:gsub("{{.-}}", "")
+                    local lineTotalMarkups = 0
+                    for _ in tmpLine:gmatch("{{.-}}") do
+                        lineTotalMarkups = lineTotalMarkups + 1
+                    end
+                    local lineWidth = EID:getStrWidth(lineNoMarkup) + lineTotalMarkups * 11
+                    if lineWidth > longestLine then longestLine = lineWidth end
                 end
                 self.BGSprite.Color = Color(0.3, 0.3, 0.3, 1)
                 self:DrawUIBox(
