@@ -31,6 +31,11 @@ end
 
 -- Load mod data
 function PSTAVessel:load()
+    PSTAVessel:sanitizeTrees()
+    -- If Astral Vessel not initialized
+    if PST and not PST.modData.charData["Astral Vessel"] then
+        return
+    end
     local loadData = PSTAVessel:LoadData()
     if #loadData ~= 0 then
         local decoded = json.decode(loadData)
@@ -38,7 +43,6 @@ function PSTAVessel:load()
         PSTAVessel.charLoadouts = decoded.charLoadouts
         PSTAVessel:switchLoadout(decoded.currentLoadout)
     end
-    PSTAVessel:sanitizeTrees()
     PSTAVessel:updateUnlockData()
     PSTAVessel:calcConstellationAffinities()
 end
@@ -88,7 +92,6 @@ function PSTAVessel:saveLoadout()
     PSTAVessel.charLoadouts[PSTAVessel.currentLoadout] = newLoadout
 end
 
-local firstLoadDone = false
 -- Switch to the given loadout, loading its data
 function PSTAVessel:switchLoadout(loadoutID)
     if type(loadoutID) == "number" then
@@ -110,7 +113,7 @@ function PSTAVessel:switchLoadout(loadoutID)
             if newLoadout.charHair.variant then
                 PSTAVessel.charHair.variant = newLoadout.charHair.variant
             end
-            PSTAVessel.charHairColor = Color(newLoadout.charHairColor.R, newLoadout.charHairColor.G, newLoadout.charHairColor.B, 1)
+            PSTAVessel.charHairColor = Color(newLoadout.charHairColor[1], newLoadout.charHairColor[2], newLoadout.charHairColor[3], 1)
         end
         -- 3. Character face
         if newLoadout.charFace then
@@ -147,15 +150,13 @@ function PSTAVessel:switchLoadout(loadoutID)
                 -- Set base tree to new save
                 PST.modData.treeNodes["Astral Vessel " .. tmpType] = PSTAVessel:copyTable(newLoadout.constTrees[tmpType])
                 -- Get how many nodes are allocated in new save, and subtract SP accordingly
-                if firstLoadDone then
-                    tmpAllocated = 0
-                    for _, alloc in pairs(newLoadout.constTrees[tmpType]) do
-                        if alloc == 1 then
-                            tmpAllocated = tmpAllocated + 1
-                        end
+                tmpAllocated = 0
+                for _, alloc in pairs(newLoadout.constTrees[tmpType]) do
+                    if alloc == 1 then
+                        tmpAllocated = tmpAllocated + 1
                     end
-                    PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints - tmpAllocated
                 end
+                PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints - tmpAllocated
             else
                 -- Reset base tree if no data is loaded
                 PST.modData.treeNodes["Astral Vessel " .. tmpType] = {}

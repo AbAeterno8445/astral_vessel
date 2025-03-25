@@ -19,11 +19,6 @@ local extraAnimOldColor = nil
 ---@param player EntityPlayer
 function PSTAVessel:postPlayerUpdate(player)
     if player:GetPlayerType() == PSTAVessel.vesselType then
-        -- Custom hair color
-        if PSTAVessel.tmpHairSprite then
-            PSTAVessel.tmpHairSprite.Color = PSTAVessel:getRunVesselHairColor()
-        end
-
         -- Astral Vessel custom color application
         local plColor = PSTAVessel:getRunVesselColor()
         if not player:IsExtraAnimationFinished() then
@@ -43,6 +38,11 @@ function PSTAVessel:postPlayerUpdate(player)
                 local tmpLayer = tmpCostumeDesc:GetSprite():GetLayer(tmpCostumeLayer)
                 if tmpLayer then tmpLayer:SetColor(plColor) end
             end
+        end
+
+        -- Custom hair color
+        if PSTAVessel.tmpHairSprite then
+            PSTAVessel.tmpHairSprite.Color = PSTAVessel:getRunVesselHairColor()
         end
     end
 end

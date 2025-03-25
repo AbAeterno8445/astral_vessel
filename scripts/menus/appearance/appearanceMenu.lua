@@ -31,6 +31,7 @@ function PSTAVessel:initAppearanceMenu()
         -- Tab vals
         colorTabSel = 1,
         hairTabSel = 1,
+        hairTabColorSel = false,
         faceTabSel = 1,
         accTabSel = 1,
 
@@ -99,6 +100,7 @@ function PSTAVessel:initAppearanceMenu()
 
         -- Input: Change tab
         if PST:isKeybindActive(PSTKeybind.TREE_TAB) then
+            self.hairTabColorSel = false
             self.currentTab = self.currentTab + 1
             if self.currentTab > #self.tabs then self.currentTab = 1 end
             self:OnSwitchTab()

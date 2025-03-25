@@ -12,10 +12,11 @@ function PSTAVessel:onNewRoom()
 
     if isVessel then
         -- Astral Vessel hair color
-        if PSTAVessel.charHair then
+        local charHair = PST:getTreeSnapshotMod("vesselHair", nil)
+        if charHair then
             for _, tmpCostume in ipairs(PST:getPlayer():GetCostumeSpriteDescs()) do
                 local tmpSprite = tmpCostume:GetSprite()
-                if tmpSprite and tmpSprite:GetFilename() == PSTAVessel.charHair.path then
+                if tmpSprite and tmpSprite:GetFilename() == "gfx/characters/hair/astralvessel/hair_vessel.anm2" then
                     PSTAVessel.tmpHairSprite = tmpCostume:GetSprite()
                     break
                 end

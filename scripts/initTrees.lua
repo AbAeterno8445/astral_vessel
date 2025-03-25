@@ -101,15 +101,17 @@ function PSTAVessel:initVesselTree()
             newDesc = {table.unpack(tmpDescription)}
             table.insert(newDesc, {"Base constellation: " .. reqs.vesselBaseConst, PST.kcolors.LIGHTBLUE1})
 
-            for _, tmpType in pairs(PSTAVConstellationType) do
-                local baseConstData = PSTAVessel.constelAlloc[tmpType][reqs.vesselBaseConst]
-                if baseConstData then
-                    if baseConstData.cannotAfford then
-                        table.insert(newDesc, {"Constellation locked: not enough affinity from lower tier constellations to afford this one!", PST.kcolors.YELLOW1})
-                        table.insert(newDesc, {"To re-enable, allocate more nodes in lower tier constellations.", PST.kcolors.YELLOW1})
-                        table.insert(newDesc, {"Affinity and nodes from this constellation will not apply while locked.", PST.kcolors.YELLOW1})
+            if isAllocated then
+                for _, tmpType in pairs(PSTAVConstellationType) do
+                    local baseConstData = PSTAVessel.constelAlloc[tmpType][reqs.vesselBaseConst]
+                    if baseConstData then
+                        if baseConstData.cannotAfford then
+                            table.insert(newDesc, {"Constellation locked: not enough affinity from lower tier constellations to afford this one!", PST.kcolors.YELLOW1})
+                            table.insert(newDesc, {"To re-enable, allocate more nodes in lower tier constellations.", PST.kcolors.YELLOW1})
+                            table.insert(newDesc, {"Affinity and nodes from this constellation will not apply while locked.", PST.kcolors.YELLOW1})
+                        end
+                        break
                     end
-                    break
                 end
             end
         end

@@ -1,4 +1,3 @@
-local editingColor = false
 local tmpInputTimer = 0
 local tmpColorList = {"R", "G", "B"}
 local selColor = 1
@@ -22,19 +21,19 @@ function PSTAVessel:appMenuHairTabInput(appearanceMenu)
     -- Input: Directional keys (tap)
     if PST:isKeybindActive(PSTKeybind.TREE_PAN_UP) then
         -- UP
-        if editingColor then
+        if appearanceMenu.hairTabColorSel then
             selColor = selColor - 1
             if selColor <= 0 then selColor = 3 end
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_DOWN) then
         -- DOWN
-        if editingColor then
+        if appearanceMenu.hairTabColorSel then
             selColor = selColor + 1
             if selColor > 3 then selColor = 1 end
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT) then
         -- LEFT
-        if not editingColor then
+        if not appearanceMenu.hairTabColorSel then
             local add = -1
             if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
                 add = -7
@@ -49,7 +48,7 @@ function PSTAVessel:appMenuHairTabInput(appearanceMenu)
         end
     elseif PST:isKeybindActive(PSTKeybind.TREE_PAN_RIGHT) then
         -- RIGHT
-        if not editingColor then
+        if not appearanceMenu.hairTabColorSel then
             local add = 1
             if PST:isKeybindActive(PSTKeybind.PAN_FASTER, true) then
                 add = 7
@@ -67,7 +66,7 @@ function PSTAVessel:appMenuHairTabInput(appearanceMenu)
     end
 
     -- Input: Directional keys (held)
-    if tmpInputTimer == 0 and editingColor then
+    if tmpInputTimer == 0 and appearanceMenu.hairTabColorSel then
         if PST:isKeybindActive(PSTKeybind.TREE_PAN_LEFT, true) then
             -- LEFT
             local reduce = 0.01
@@ -95,7 +94,7 @@ function PSTAVessel:appMenuHairTabInput(appearanceMenu)
 
     -- Input: Q, switch to hair color
     if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
-        editingColor = not editingColor
+        appearanceMenu.hairTabColorSel = not appearanceMenu.hairTabColorSel
         SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7, 2, false, 1.15)
     end
 
@@ -176,24 +175,24 @@ function PSTAVessel:appearanceMenuHairTab(appearanceMenu, tScreen)
 
 
     -- Red
-    local tmpColor = editingColor and PST.kcolors.WHITE or tmpKColorWhiteFaded
-    if editingColor and selColor == 1 then
+    local tmpColor = appearanceMenu.hairTabColorSel and PST.kcolors.WHITE or tmpKColorWhiteFaded
+    if appearanceMenu.hairTabColorSel and selColor == 1 then
         tmpColor = PST.kcolors.RED1
     end
     PST.normalFont:DrawString("Red: " .. PSTAVessel:getColorStr(PSTAVessel.charHairColor.R), tmpTextX, tmpTextY, tmpColor)
     tmpTextY = tmpTextY + 18
 
     -- Green
-    tmpColor = editingColor and PST.kcolors.WHITE or tmpKColorWhiteFaded
-    if editingColor and selColor == 2 then
+    tmpColor = appearanceMenu.hairTabColorSel and PST.kcolors.WHITE or tmpKColorWhiteFaded
+    if appearanceMenu.hairTabColorSel and selColor == 2 then
         tmpColor = PST.kcolors.GREEN1
     end
     PST.normalFont:DrawString("Green: " .. PSTAVessel:getColorStr(PSTAVessel.charHairColor.G), tmpTextX, tmpTextY, tmpColor)
     tmpTextY = tmpTextY + 18
 
     -- Blue
-    tmpColor = editingColor and PST.kcolors.WHITE or tmpKColorWhiteFaded
-    if editingColor and selColor == 3 then
+    tmpColor = appearanceMenu.hairTabColorSel and PST.kcolors.WHITE or tmpKColorWhiteFaded
+    if appearanceMenu.hairTabColorSel and selColor == 3 then
         tmpColor = PST.kcolors.BLUE1
     end
     PST.normalFont:DrawString("Blue: " .. PSTAVessel:getColorStr(PSTAVessel.charHairColor.B), tmpTextX, tmpTextY, tmpColor)

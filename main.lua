@@ -115,14 +115,13 @@ function PSTAVessel:initMod()
         end
         print("Entity Spawn:", tmpType, tmpVariant, subtype)
     end)]]
-
-    PSTAVessel:load()
 end
 PSTAVessel:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, PSTAVessel.initMod)
 
 -- Re-init on luamod (PST already present)
 if PST and not initFlag then
     PSTAVessel:initMod()
+    PSTAVessel:load()
 end
 
 PSTAVessel:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PSTAVessel.load)
