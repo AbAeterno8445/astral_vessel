@@ -1416,6 +1416,99 @@ function PSTAVessel:initModCompat()
         PSTAVessel:addConstellationItem(Isaac.GetItemIdByName("Digital Pony"), {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MUNDANE, PSTAVConstellationType.COSMIC}, 0, "Malware & Spam")
     end
 
+    -- Lazy Mattpack
+    if MattPack then
+        -- Items
+        local function PSTAVessel_addMatItem(matItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(matItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Lazy Mattpack item '" .. matItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Lazy Mattpack")
+        end
+        PSTAVessel_addMatItem("Alt Rock", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addMatItem("Tech Omega", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addMatItem("Mutant Mycelium", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addMatItem("Tech 5090", {PSTAVConstellationType.ELEMENTAL})
+
+        -- Knife Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Kitchen Knife"))
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Knife Bender"))
+    end
+
+    -- Bael
+    if BaelMOD then
+        -- Items
+        local function PSTAVessel_addCatItem(catItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(catItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Bael item '" .. catItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Bael")
+        end
+        PSTAVessel_addCatItem("The Left Finger", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Surgical Doll", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Squishy Friend", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Emblem", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addCatItem("Cat's Candle", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Cat's Nugget", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Top", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Option", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Cat's Bed", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Laxative", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Foot", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Bean", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Glasses", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Onion", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Mushroom", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Sawblade", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Cat's Skeleton", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Scaredy Cat", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addCatItem("Cat Piss", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Mask", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Cat's Colony", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Candy", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Prey", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Cat's Pact", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addCatItem("Cat's Feast", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Contagion", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Missile", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addCatItem("Dark Catter", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addCatItem("Cat's Blood", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Locket", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DIVINE})
+        PSTAVessel_addCatItem("Cat's Contraband", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Egg", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Jellybean", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Ipecat", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addCatItem("Cat's Cash", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Cat's Cold", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Puzzle", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Belt", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat Squish Toy", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Gacha", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Cat's Home", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addCatItem("Cat-aracts", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat Tar", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addCatItem("Cat's Bell", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DIVINE})
+        PSTAVessel_addCatItem("Cat's Tomb", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addCatItem("Guppy's Skeleton", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Dark Cube", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Coin on a String", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Cat Boy Jr.", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addCatItem("Gamblers Flesh", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Tombmates", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+
+        PSTAVessel_addCatItem("Cat's Nickel", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Cat's Reward", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DIVINE})
+        PSTAVessel_addCatItem("Cat's Polygon", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addCatItem("Cat's Vigor", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addCatItem("Cat's Master Key", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Razor", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addCatItem("Cat's Skin", {PSTAVConstellationType.OCCULT})
+    end
+
     -- Alternate Hairstyles
     if Isaac.GetCostumeIdByPath("gfx/characters/extrahair_bethany_01.anm2") ~= -1 then
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_bethany_01.anm2", sourceMod="Alternate Hairstyles"})
