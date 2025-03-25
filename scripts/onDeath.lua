@@ -30,7 +30,7 @@ function PSTAVessel:onDeath(entity)
         end
 
         -- Mod: % chance for enemies to drop a vanishing 1/2 heart on death
-        tmpMod = PST:getTreeSnapshotMod("tempSoulOnKill", 0)
+        tmpMod = PST:getTreeSnapshotMod("tempHeartOnDeath", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             local newHeart = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF, entity.Position, RandomVector() * 3, nil)
             newHeart:ToPickup().Timeout = 60

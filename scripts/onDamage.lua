@@ -414,6 +414,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                         local tmpPos = srcPlayer.Position + Vector(30 * math.cos(randAng), 30 * math.sin(randAng))
                         local tmpVel = (target.Position - tmpPos):Normalized() * (7 + 0.5 * math.random())
                         local newSword = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, tmpPos, tmpVel, srcPlayer)
+                        newSword:ToTear():AddTearFlags(TearFlags.TEAR_ACCELERATE)
                         newSword.CollisionDamage = math.min(25, srcPlayer.Damage / 2)
                         newSword:GetData().vesselPalaSword = true
                         PSTAVessel.modCooldowns.palaChampSwords = 90

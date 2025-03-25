@@ -182,6 +182,7 @@ function PSTAVessel:initVesselTree()
         if reqs and reqs.vesselBaseConst then
             PSTAVessel:calcConstellationAffinities()
         end
+        PSTAVessel:save()
     end
     PST:addNodeAllocCallback("avesselConstNodeAlloc", 2, PSTAVessel_onConstNodeAlloc)
 

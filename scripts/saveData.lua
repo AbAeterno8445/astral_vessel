@@ -42,6 +42,10 @@ function PSTAVessel:load()
         PSTAVessel.charUnlocks = decoded.charUnlocks or {}
         PSTAVessel.charLoadouts = decoded.charLoadouts
         PSTAVessel:switchLoadout(decoded.currentLoadout)
+    else
+        PSTAVessel.charUnlocks = {}
+        PSTAVessel.charLoadouts = {}
+        PSTAVessel:switchLoadout("1")
     end
     PSTAVessel:updateUnlockData()
     PSTAVessel:calcConstellationAffinities()
@@ -156,7 +160,7 @@ function PSTAVessel:switchLoadout(loadoutID)
                         tmpAllocated = tmpAllocated + 1
                     end
                 end
-                PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints - tmpAllocated
+                PST.modData.charData["Astral Vessel"].skillPoints = math.max(0, PST.modData.charData["Astral Vessel"].skillPoints - tmpAllocated)
             else
                 -- Reset base tree if no data is loaded
                 PST.modData.treeNodes["Astral Vessel " .. tmpType] = {}
