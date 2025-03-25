@@ -30,7 +30,17 @@ function PSTAVessel:onNewRun(isContinued)
             if PST.trees[tmpTree] then
                 for nodeID, node in pairs(PST.trees[tmpTree]) do
                     if PST:isNodeAllocated(tmpTree, nodeID) then
-                        PST:addModifiers(node.modifiers, true)
+                        local applyNode = true
+                        -- Check if node's constellation is locked (unaffordable)
+                        if node.reqs and node.reqs.vesselBaseConst then
+                            local baseConstData = PSTAVessel.constelAlloc[tmpType][node.reqs.vesselBaseConst]
+                            if baseConstData and baseConstData.cannotAfford then
+                                applyNode = false
+                            end
+                        end
+                        if applyNode then
+                            PST:addModifiers(node.modifiers, true)
+                        end
                     end
                 end
             end

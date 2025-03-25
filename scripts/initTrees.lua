@@ -15,6 +15,10 @@ local AVesselTree = [[
 }
 ]]
 
+local bubbleSpr = Sprite("gfx/ui/astralvessel/selection_bubble.anm2", true)
+bubbleSpr.Color.A = 0.8
+bubbleSpr:SetFrame("Default", 3)
+
 -- Constellation trees
 local constTreeBanks = {
     [PSTAVConstellationType.DIVINE] = include("scripts.constellationTrees.divineTreeBank"),
@@ -61,9 +65,14 @@ function PSTAVessel:initVesselTree()
                 if constAllocData then
                     table.insert(newDesc, "Allocated nodes: " .. (constAllocData.alloc or 0) .. "/" .. constAllocData.max)
                     table.insert(newDesc, constType .. " Affinity gained: " .. (constAllocData.affinity or 0) .. "/" .. constAffinity)
+                    if constAllocData.cannotAfford then
+                        table.insert(newDesc, {"Constellation locked: not enough affinity from lower tier constellations to afford this one!", PST.kcolors.YELLOW1})
+                        table.insert(newDesc, {"To re-enable, allocate more nodes in lower tier constellations.", PST.kcolors.YELLOW1})
+                        table.insert(newDesc, {"Affinity and nodes from this constellation will not apply while locked.", PST.kcolors.YELLOW1})
+                    end
                 end
             else
-                local affinityReq = PSTAVessel:getConstellationAffinityCost(reqs.vesselConstTier)
+                local affinityReq = PSTAVessel:getConstTierAffinityCost(reqs.vesselConstTier)
                 local tmpAllocData = PSTAVessel.constelAlloc[constType]
                 if tmpAllocData then
                     -- Affinity check
@@ -86,21 +95,42 @@ function PSTAVessel:initVesselTree()
 
             return { name = descName, description = newDesc }
         end
+        -- Constellation nodes
+        local newDesc
+        if reqs and reqs.vesselBaseConst then
+            newDesc = {table.unpack(tmpDescription)}
+            table.insert(newDesc, {"Base constellation: " .. reqs.vesselBaseConst, PST.kcolors.LIGHTBLUE1})
+
+            for _, tmpType in pairs(PSTAVConstellationType) do
+                local baseConstData = PSTAVessel.constelAlloc[tmpType][reqs.vesselBaseConst]
+                if baseConstData then
+                    if baseConstData.cannotAfford then
+                        table.insert(newDesc, {"Constellation locked: not enough affinity from lower tier constellations to afford this one!", PST.kcolors.YELLOW1})
+                        table.insert(newDesc, {"To re-enable, allocate more nodes in lower tier constellations.", PST.kcolors.YELLOW1})
+                        table.insert(newDesc, {"Affinity and nodes from this constellation will not apply while locked.", PST.kcolors.YELLOW1})
+                    end
+                    break
+                end
+            end
+        end
         -- Starting trinket node limitation msg
-        local mods = extraData.node.mods
+        local mods = extraData.node.modifiers
         if mods and mods.vesselTrinket then
-            local newDesc = {table.unpack(tmpDescription)}
+            if not newDesc then
+                newDesc = {table.unpack(tmpDescription)}
+            end
             if PSTAVessel.charTrinketAlloc then
                 table.insert(newDesc, {"You already have a starting trinket node allocated!", PST.kcolors.RED1})
             elseif not PSTAVessel.charTrinketsAllowed then
                 table.insert(newDesc, {"Starting Trinket nodes are locked. Check the 'Unlocks' node in the main tree.", PST.kcolors.RED1})
             end
-
-            return { name = descName, description = newDesc}
+        end
+        if newDesc then
+            return { name = descName, description = newDesc }
         end
         -- Stellar Nexus starting items display
         if descName == "Stellar Nexus" then
-            local newDesc = {table.unpack(tmpDescription)}
+            newDesc = {table.unpack(tmpDescription)}
             for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
                 if itemCfg then
@@ -119,7 +149,7 @@ function PSTAVessel:initVesselTree()
             return { name = descName, description = newDesc }
         -- Astral Vessel Unlocks info
         elseif descName == "Astral Vessel Unlocks" then
-            local newDesc = {}
+            newDesc = {}
             local gameData = Isaac.GetPersistentGameData()
             for _, achievementName in ipairs(PSTAVessel.unlocksDisplayOrder) do
                 local unlockData = PSTAVessel.unlocksData[achievementName]
@@ -135,7 +165,7 @@ function PSTAVessel:initVesselTree()
             return { name = descName, description = newDesc }
         -- Ingrained Power node requirement
         elseif descName == "Ingrained Power" then
-            local newDesc = {table.unpack(tmpDescription)}
+            newDesc = {table.unpack(tmpDescription)}
             if not PSTAVessel.ingrainedUnlock then
                 table.insert(newDesc, {"Locked. Check the Unlocks node for more info.", PST.kcolors.RED1})
             end
@@ -158,7 +188,7 @@ function PSTAVessel:initVesselTree()
         local reqs = node.reqs
         if reqs then
             if reqs.vesselConstType and reqs.vesselConstTier and reqs.vesselConstTier > 1 then
-                local affinityReq = PSTAVessel:getConstellationAffinityCost(reqs.vesselConstTier)
+                local affinityReq = PSTAVessel:getConstTierAffinityCost(reqs.vesselConstTier)
                 local tierAllocTotal = PSTAVessel.tiersAlloc[reqs.vesselConstTier]
                 local tmpAllocData = PSTAVessel.constelAlloc[reqs.vesselConstType]
                 if tmpAllocData and tmpAllocData.affinity and tmpAllocData.affinity >= affinityReq and tierAllocTotal < PSTAVessel.charMaxConsts[reqs.vesselConstTier] then
@@ -170,13 +200,41 @@ function PSTAVessel:initVesselTree()
                 return false
             end
         end
-        local mods = node.mods
+        local mods = node.modifiers
         if mods and mods.vesselTrinket and (PSTAVessel.charTrinketAlloc or not PSTAVessel.charTrinketsAllowed) then
             return false
         end
         return true
     end
     PST:addExtraNodeReqFunc("avesselConstNodeReqs", PSTAVessel_constNodeReqs)
+
+    -- Node extra drawing funcs
+    local function PSTAVessel_nodeExtraDrawing(node, x, y, isAllocated)
+        if isAllocated then
+            for _, tmpType in pairs(PSTAVConstellationType) do
+                if node.name == tmpType .. " Constellations" then
+                    local z = PST.treeScreen.zoomScale
+                    PST.miniFont:DrawStringScaled(tostring(PSTAVessel.constelAlloc[tmpType].affinity or 0), x + 5 * z, y + 5 * z, z, z, PSTAVessel.constelKColors[tmpType])
+                end
+                if node.reqs and (node.reqs.vesselBaseConst or node.reqs.vesselConstTier) then
+                    local baseConst
+                    if node.reqs.vesselBaseConst then
+                        baseConst = PSTAVessel.constelAlloc[tmpType][node.reqs.vesselBaseConst]
+                    elseif node.reqs.vesselConstTier then
+                        local constName = string.sub(node.name, 16)
+                        baseConst = PSTAVessel.constelAlloc[tmpType][constName]
+                    end
+                    if baseConst and baseConst.cannotAfford then
+                        if bubbleSpr.Scale.X ~= PST.treeScreen.zoomScale then
+                            bubbleSpr.Scale = Vector(PST.treeScreen.zoomScale, PST.treeScreen.zoomScale)
+                        end
+                        bubbleSpr:Render(Vector(x, y))
+                    end
+                end
+            end
+        end
+    end
+    PST:addNodeDrawExtraFunc("avesselNodeDraw", PSTAVessel_nodeExtraDrawing)
 
     -- Menu-opening nodes
     PST:addMenuNode("Vessel-Shaping", PSTAVessel.AppearanceMenuID)
@@ -248,21 +306,49 @@ function PSTAVessel:calcConstellationAffinities()
             end
 
             -- Calculate per-constellation + total affinity for this constellation type
-            local tmpAffinity = 0
+            local totalAffinity = 0
+            local function PSTAVessel_getConstellationAff(constData)
+                local constReq = constData.max * PSTAVessel.charConstAffinityReq
+                local constAffinity = math.min(
+                    PSTAVessel.constelAffinityWorth[constData.tier],
+                    math.floor((constData.alloc or 0) / constReq * PSTAVessel.constelAffinityWorth[constData.tier])
+                )
+                if not constData.affinity then
+                    constData.affinity = constAffinity
+                end
+                return constAffinity
+            end
+            -- Sum Lesser constellations' affinity
             for _, constData in pairs(typeAlloc) do
-                if constData.alloc and constData.tier then
-                    local constReq = constData.max * PSTAVessel.charConstAffinityReq
-                    local constAffinity = math.min(
-                        PSTAVessel.constelAffinityWorth[constData.tier],
-                        math.floor(constData.alloc / constReq * PSTAVessel.constelAffinityWorth[constData.tier])
-                    )
-                    if not constData.affinity then
-                        constData.affinity = constAffinity
-                    end
-                    tmpAffinity = tmpAffinity + constAffinity
+                if constData.tier and constData.tier == 1 then
+                    totalAffinity = totalAffinity + PSTAVessel_getConstellationAff(constData)
                 end
             end
-            typeAlloc.affinity = tmpAffinity
+            -- Sum greater constellations' affinity, if affordable - tag as unaffordable if not
+            for _, constData in pairs(typeAlloc) do
+                if constData.tier and constData.tier == 2 then
+                    constData.cannotAfford = nil
+                    local tmpCost = PSTAVessel:getConstTierAffinityCost(constData.tier)
+                    if totalAffinity < tmpCost then
+                        constData.cannotAfford = true
+                    else
+                        totalAffinity = totalAffinity + PSTAVessel_getConstellationAff(constData)
+                    end
+                end
+            end
+            -- Sum empyrean constellations' affinity, if affordable - tag as unaffordable if not
+            for _, constData in pairs(typeAlloc) do
+                if constData.tier and constData.tier == 3 then
+                    constData.cannotAfford = nil
+                    local tmpCost = PSTAVessel:getConstTierAffinityCost(constData.tier)
+                    if totalAffinity < tmpCost then
+                        constData.cannotAfford = true
+                    else
+                        totalAffinity = totalAffinity + PSTAVessel_getConstellationAff(constData)
+                    end
+                end
+            end
+            typeAlloc.affinity = totalAffinity
             typeAlloc.spent = 0
         end
     end
@@ -292,7 +378,7 @@ function PSTAVessel:calcConstellationAffinities()
     end
 end
 
-function PSTAVessel:getConstellationAffinityCost(tier)
+function PSTAVessel:getConstTierAffinityCost(tier)
     if tier == 1 then return 0 end
     if tier == 2 then return PSTAVessel.constelAffinityWorth[1] end
     return PSTAVessel.constelAffinityWorth[1] + PSTAVessel.constelAffinityWorth[2]

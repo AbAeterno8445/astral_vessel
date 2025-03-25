@@ -129,7 +129,7 @@ function PSTAVessel:initConstellationItems()
     ---- DIVINE ----
     local tmpItems = {
         {CollectibleType.COLLECTIBLE_PASCHAL_CANDLE},
-        {CollectibleType.COLLECTIBLE_IMMACULATE_HEART},
+        --{CollectibleType.COLLECTIBLE_IMMACULATE_HEART},
         {CollectibleType.COLLECTIBLE_SPIRIT_SWORD},
         {CollectibleType.COLLECTIBLE_ACT_OF_CONTRITION},
         {CollectibleType.COLLECTIBLE_STAIRWAY},
@@ -543,4 +543,21 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_TELEPORT}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.COSMIC)
+
+    PSTAVessel:sortConstellationItems()
+end
+
+function PSTAVessel:sortConstellationItems()
+    for _, tmpTypeData in pairs(PSTAVessel.constelItems) do
+        for _, itemList in pairs(tmpTypeData) do
+            table.sort(itemList, function(a, b)
+                if not a.active and b.active then
+                    return true
+                elseif a.active and not b.active then
+                    return false
+                end
+                return false
+            end)
+        end
+    end
 end

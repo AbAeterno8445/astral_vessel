@@ -1522,5 +1522,6 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_maggy_01.anm2", sourceMod="Alternate Hairstyles"})
     end
 
+    PSTAVessel:sortConstellationItems()
     modCompatInit = true
 end
