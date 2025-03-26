@@ -150,6 +150,9 @@ function PSTAVessel:onNewRun(isContinued)
         end
     end
 
+    -- The Future compat
+    PSTAVessel:initFutureStevenDialogue()
+
     PSTAVessel:onNewLevel()
     PSTAVessel:onNewRoom()
     PSTAVessel:save()
