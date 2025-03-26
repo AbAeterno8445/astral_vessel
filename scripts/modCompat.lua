@@ -900,7 +900,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addLnfItem("Demon's Eye", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addLnfItem("Calotte", {PSTAVConstellationType.DIVINE})
         PSTAVessel_addLnfItem("Carrion", {PSTAVConstellationType.MUTAGENIC})
-        PSTAVessel_addLnfItem("Testament", {PSTAVConstellationType.DIVINE})
+        --PSTAVessel_addLnfItem("Testament", {PSTAVConstellationType.DIVINE}) -- Unsupported Quality level?
         PSTAVessel_addLnfItem("Champion Mush", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addLnfItem("Old Clock", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addLnfItem("Purple Skull", {PSTAVConstellationType.OCCULT})
@@ -980,9 +980,12 @@ function PSTAVessel:initModCompat()
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Robot's Battery"))
 
-        -- Battery Items
+        -- Knife Items
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Plastic Knife"))
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Small Knives"))
+
+        -- Questionnaire interaction for Vessel
+        LNF:AddQuestionnaireDrop(PSTAVessel.vesselType, EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, Isaac.GetTrinketIdByName("Arcane Obols 3"))
     end
 
     -- Community Remix
