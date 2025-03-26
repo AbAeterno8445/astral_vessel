@@ -96,6 +96,7 @@ function PSTAVessel:saveLoadout()
     PSTAVessel.charLoadouts[PSTAVessel.currentLoadout] = newLoadout
 end
 
+local firstLoadDone = false
 -- Switch to the given loadout, loading its data
 function PSTAVessel:switchLoadout(loadoutID)
     if type(loadoutID) == "number" then
@@ -139,16 +140,14 @@ function PSTAVessel:switchLoadout(loadoutID)
         local baseTree = PST.modData.treeNodes["Astral Vessel " .. tmpType]
         if baseTree then
             -- Get how many nodes are allocated for this tree in the current save
-            if firstLoadDone then
-                local tmpAllocated = 0
-                for _, alloc in pairs(baseTree) do
-                    if alloc == 1 then
-                        tmpAllocated = tmpAllocated + 1
-                    end
+            local tmpAllocated = 0
+            for _, alloc in pairs(baseTree) do
+                if alloc == 1 then
+                    tmpAllocated = tmpAllocated + 1
                 end
-                -- Reset skill points
-                PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints + tmpAllocated
             end
+            -- Reset skill points
+            PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints + tmpAllocated
 
             if newLoadout and newLoadout.constTrees and newLoadout.constTrees[tmpType] then
                 -- Set base tree to new save
@@ -166,6 +165,7 @@ function PSTAVessel:switchLoadout(loadoutID)
                 PST.modData.treeNodes["Astral Vessel " .. tmpType] = {}
             end
         end
+        PSTAVessel:sanitizeTrees()
         PST:save()
     end
 
