@@ -23,7 +23,8 @@ function PSTAVessel:save()
         version = PSTAVessel.version,
         charUnlocks = PSTAVessel.charUnlocks,
         currentLoadout = PSTAVessel.currentLoadout,
-        charLoadouts = PSTAVessel.charLoadouts
+        charLoadouts = PSTAVessel.charLoadouts,
+        lastVersion = PSTAVessel.version
     }
     PSTAVessel:SaveData(json.encode(modData))
     PSTAVessel:sanitizeTrees()
@@ -42,6 +43,8 @@ function PSTAVessel:load()
         PSTAVessel.charUnlocks = decoded.charUnlocks or {}
         PSTAVessel.charLoadouts = decoded.charLoadouts
         PSTAVessel:switchLoadout(decoded.currentLoadout)
+
+        PSTAVessel.lastVersion = decoded.lastVersion
     else
         PSTAVessel.charUnlocks = {}
         PSTAVessel.charLoadouts = {}
@@ -49,6 +52,12 @@ function PSTAVessel:load()
     end
     PSTAVessel:updateUnlockData()
     PSTAVessel:calcConstellationAffinities()
+
+    -- Version
+	if not PSTAVessel.lastVersion or PSTAVessel.lastVersion ~= PSTAVessel.version then
+		PSTAVessel.lastVersion = PSTAVessel.version
+		PSTAVessel.isNewVersion = true
+	end
 end
 
 -- Save variables thrown 'as-is'

@@ -11,13 +11,13 @@ local AVesselTree = [[
 "25": "{\"pos\":[0,-3],\"type\":5063,\"size\":\"Large\",\"name\":\"Astral Vessel Unlocks\",\"description\":[\"\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "26": "{\"pos\":[0,-5],\"type\":5001,\"size\":\"Large\",\"name\":\"Vessel Loadouts\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to switch between different\",\"loadouts.\",\"Loadouts store your customization, constellation and starting item settings.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "27": "{\"pos\":[0,0],\"type\":5002,\"size\":\"Large\",\"name\":\"Stellar Nexus\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to pick your starting items.\",\"Items are divided into categories matching constellation types, and require affinity with\",\"those constellations to choose.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}",
-"28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
+"28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
+"29": "{\"pos\":[-2,-4],\"type\":5239,\"size\":\"Large\",\"name\":\"Astral Vessel Changelog\",\"description\":[\"Press Allocate to open the changelog display.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
 }
 ]]
 
 local bubbleSpr = Sprite("gfx/ui/astralvessel/selection_bubble.anm2", true)
 bubbleSpr.Color.A = 0.8
-bubbleSpr:SetFrame("Default", 3)
 
 -- Constellation trees
 local constTreeBanks = {
@@ -172,6 +172,14 @@ function PSTAVessel:initVesselTree()
                 table.insert(newDesc, {"Locked. Check the Unlocks node for more info.", PST.kcolors.RED1})
             end
             return { name = descName, description = newDesc }
+        -- Changelog, new version
+        elseif descName == "Astral Vessel Changelog" then
+            newDesc = {table.unpack(tmpDescription)}
+            table.insert(newDesc, "Current version: " .. PSTAVessel.version)
+            if PSTAVessel.isNewVersion then
+                table.insert(newDesc, {"(New!)", PST.kcolors.LIGHTBLUE1})
+            end
+            return { name = descName, description = newDesc }
         end
     end
     PST:addExtraNodeDescFunc("avesselConst", PSTAVessel_constNodeDesc)
@@ -213,6 +221,7 @@ function PSTAVessel:initVesselTree()
 
     -- Node extra drawing funcs
     local function PSTAVessel_nodeExtraDrawing(node, x, y, isAllocated)
+        -- Constellation nodes, show corresponding affinity
         local z = PST.treeScreen.zoomScale
         if isAllocated then
             for _, tmpType in pairs(PSTAVConstellationType) do
@@ -231,13 +240,30 @@ function PSTAVessel:initVesselTree()
                         if bubbleSpr.Scale.X ~= PST.treeScreen.zoomScale then
                             bubbleSpr.Scale = Vector(PST.treeScreen.zoomScale, PST.treeScreen.zoomScale)
                         end
+                        bubbleSpr:SetFrame("Default", 3)
                         bubbleSpr:Render(Vector(x, y))
                     end
                 end
             end
         end
+        -- Vessel Loadouts node, show loadout ID
         if node.name == "Vessel Loadouts" then
             PST.miniFont:DrawStringScaled(tostring(PSTAVessel.currentLoadout or 1), x + 5 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
+        -- Changelog node, show version
+        elseif node.name == "Astral Vessel Changelog" then
+            PST.miniFont:DrawStringScaled(PSTAVessel.version, x - 7 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
+
+            -- Flash bubble on new version
+            if PSTAVessel.isNewVersion then
+                if bubbleSpr.Scale.X ~= PST.treeScreen.zoomScale then
+                    bubbleSpr.Scale = Vector(PST.treeScreen.zoomScale, PST.treeScreen.zoomScale)
+                end
+                local alphaFlash = PST.treeScreen.modules.nodeDrawingModule.alphaFlash
+                bubbleSpr.Color.A = alphaFlash
+                bubbleSpr:SetFrame("Default", 1)
+                bubbleSpr:Render(Vector(x, y))
+                bubbleSpr.Color.A = 1
+            end
         end
     end
     PST:addNodeDrawExtraFunc("avesselNodeDraw", PSTAVessel_nodeExtraDrawing)
@@ -245,6 +271,7 @@ function PSTAVessel:initVesselTree()
     -- Menu-opening nodes
     PST:addMenuNode("Vessel-Shaping", PSTAVessel.AppearanceMenuID)
     PST:addMenuNode("Stellar Nexus", PSTAVessel.NexusMenuID)
+    PST:addMenuNode("Astral Vessel Changelog", PSTAVessel.ChangelogMenuID)
     -- Constellation tree nodes
     for _, tmpType in pairs(PSTAVConstellationType) do
         PST:addTreeOpenNode(tmpType .. " Constellations", "Astral Vessel " .. tmpType)
