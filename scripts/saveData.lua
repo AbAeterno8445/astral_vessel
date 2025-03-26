@@ -85,12 +85,14 @@ function PSTAVessel:saveLoadout()
             newLoadout[tmpVar] = origVar
         end
     end
-    -- 6. Constellation trees
+    -- 6. Constellation trees & affinities
     newLoadout.constTrees = {}
+    newLoadout.constAffinities = {}
     for _, tmpType in pairs(PSTAVConstellationType) do
         if PST.modData.treeNodes["Astral Vessel " .. tmpType] then
             newLoadout.constTrees[tmpType] = PSTAVessel:copyTable(PST.modData.treeNodes["Astral Vessel " .. tmpType])
         end
+        newLoadout.constAffinities[tmpType] = PSTAVessel.constelAlloc[tmpType].affinity or 0
     end
 
     PSTAVessel.charLoadouts[PSTAVessel.currentLoadout] = newLoadout
@@ -147,7 +149,8 @@ function PSTAVessel:switchLoadout(loadoutID)
                 end
             end
             -- Reset skill points
-            PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints + tmpAllocated
+            local maxSP = PST.modData.charData["Astral Vessel"].level
+            PST.modData.charData["Astral Vessel"].skillPoints = math.min(maxSP, PST.modData.charData["Astral Vessel"].skillPoints + tmpAllocated)
 
             if newLoadout and newLoadout.constTrees and newLoadout.constTrees[tmpType] then
                 -- Set base tree to new save

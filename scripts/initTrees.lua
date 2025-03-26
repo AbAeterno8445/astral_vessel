@@ -137,7 +137,7 @@ function PSTAVessel:initVesselTree()
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
                 if itemCfg then
                     local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-		            if itemName == "StringTable::InvalidKey" then itemName = "Unknown Item" end
+		            if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
 
                     local affordExtra = ""
                     local tmpColor = PST.kcolors.LIGHTBLUE1
@@ -213,10 +213,10 @@ function PSTAVessel:initVesselTree()
 
     -- Node extra drawing funcs
     local function PSTAVessel_nodeExtraDrawing(node, x, y, isAllocated)
+        local z = PST.treeScreen.zoomScale
         if isAllocated then
             for _, tmpType in pairs(PSTAVConstellationType) do
                 if node.name == tmpType .. " Constellations" then
-                    local z = PST.treeScreen.zoomScale
                     PST.miniFont:DrawStringScaled(tostring(PSTAVessel.constelAlloc[tmpType].affinity or 0), x + 5 * z, y + 5 * z, z, z, PSTAVessel.constelKColors[tmpType])
                 end
                 if node.reqs and (node.reqs.vesselBaseConst or node.reqs.vesselConstTier) then
@@ -235,6 +235,9 @@ function PSTAVessel:initVesselTree()
                     end
                 end
             end
+        end
+        if node.name == "Vessel Loadouts" then
+            PST.miniFont:DrawStringScaled(tostring(PSTAVessel.currentLoadout or 1), x + 5 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
         end
     end
     PST:addNodeDrawExtraFunc("avesselNodeDraw", PSTAVessel_nodeExtraDrawing)

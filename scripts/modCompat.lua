@@ -12,6 +12,53 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_deadlydose.anm2", sourceMod="Fiend Folio"})
         ]]
 
+		-- Faces
+		table.insert(PSTAVessel.facesList, {path="gfx/characters/black_moon_evangelion.anm2", sourceMod="Fiend Folio"})
+
+		-- Accessories
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GMO_CORN, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.COOL_SUNGLASSES, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.FIENDS_HORN, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GOLEMS_ORB, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/sanguine_hook.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.FETAL_FIEND, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SECRET_STASH, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILLED_EGG, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SMALL_PIPE, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SMALL_WOOD, sourceMod="Fiend Folio"}) -- hehe - wooky		
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.MUSCA, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.MODEL_ROCKET, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.HAPPYHEAD_AXE, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.PENNY_ROLL, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.ROBOBABY3, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.NYX, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DICE_GOBLIN, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SPINDLE, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILS_DAGGER, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.X10KACHING, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.X10BATOOMKLING, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.MOMS_STOCKINGS, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.HOST_ON_TOAST, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.BOX_TOP, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SMASH_TROPHY, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GOLDSHI_LUNCH, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/sculpted_pepper.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.COMMUNITY_ACHIEVEMENT, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DADS_WALLET, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEIMOS, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.BRIDGE_BOMBS, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GLIZZY, sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/reimu_bow.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/explorers_hat.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/devils_harvest_revive.anm2", sourceMod="Fiend Folio"})
+
+		-- Hairstyles
+		table.insert(PSTAVessel.hairstyles, {path="gfx/characters/dads_postiche.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.hairstyles, {path="gfx/characters/excelsior.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.hairstyles, {path="gfx/characters/sanguine_hook_challenge.anm2", sourceMod="Fiend Folio"})
+
         -- Items
         local function PSTAVessel_addFFItem(ffItemName, types, extraCost)
             if not FiendFolio.ITEM.COLLECTIBLE[ffItemName] then
@@ -167,6 +214,7 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_cain_extra.anm2", sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_judas_1_extra.anm2", sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_keeper_extra.anm2", sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {path=Epiphany.birthday_costume, sourceMod="Epiphany"})
 
         -- Hairstyles
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/tarnished_eden_extra.anm2", sourceMod="Epiphany"})
@@ -1529,103 +1577,4 @@ function PSTAVessel:initModCompat()
     modCompatInit = true
 end
 
-function PSTAVessel:initFutureStevenDialogue()
-    if TheFuture then
-        local tfStevenDialogues = {
-            {"ouch... you hurt to look at",
-            "it's like i'm simultaneously staring",
-            "at everything and nothing",
-            "...",
-            "are you ai generated or something"},
-            {"you...",
-            "you reek of stardust",
-            "...",
-            "i don't have the greatest feeling about this one..."}
-        }
-        for _, tmpType in pairs(PSTAVConstellationType) do
-            local tmpAff = PSTAVessel.constelAlloc[tmpType].affinity
-            if tmpAff and tmpAff >= 30 then
-                -- Clean default lines
-                tfStevenDialogues = {}
-                if tmpType == PSTAVConstellationType.DIVINE then
-                    table.insert(tfStevenDialogues, {
-                        "aligned with the heavens are you?",
-                        "hmm...",
-                        "always found it interesting",
-                        "just how many kills you 'good-doers' rack up",
-                        "well, here's to more deaths under your belt"
-                    })
-                elseif tmpType == PSTAVConstellationType.DEMONIC then
-                    table.insert(tfStevenDialogues, {
-                        "another demon, yeah?",
-                        "so tell me, what's your gimmick?",
-                        "lasers? toxic blood? hellfire?",
-                        "or perhaps, something like *this*"
-                    })
-                elseif tmpType == PSTAVConstellationType.OCCULT then
-                    table.insert(tfStevenDialogues, {
-                        "do you ever stop and think...",
-                        "rituals are kinda lame?",
-                        "something about this ancient art",
-                        "of pretending to know what's happening"
-                    })
-                    table.insert(tfStevenDialogues, {
-                        "ritualist...",
-                        "you ever manage to summon...",
-                        "anything other than bad luck?"
-                    })
-                elseif tmpType == PSTAVConstellationType.MERCANTILE then
-                    table.insert(tfStevenDialogues, {
-                        "wherever do you hold all those coins?",
-                        "wait, don't tell me",
-                        "i don't really want to know"
-                    })
-                    table.insert(tfStevenDialogues, {
-                        "i bet your idea of a hard day's work",
-                        "is just counting your coins",
-                        "...perhaps you'd like a taste",
-                        "of some real hard work"
-                    })
-                elseif tmpType == PSTAVConstellationType.MUNDANE then
-                    table.insert(tfStevenDialogues, {
-                        "...",
-                        "...",
-                        "...it's like staring at drying paint",
-                        "perhaps you'd like to spice it up a smidge?"
-                    })
-                elseif tmpType == PSTAVConstellationType.MUTAGENIC then
-                    table.insert(tfStevenDialogues, {
-                        "eugh, grotesque...",
-                        "whatever happened to you?",
-                        "perhaps you'd like to search",
-                        "for some kind of cure here?"
-                    })
-                elseif tmpType == PSTAVConstellationType.ELEMENTAL then
-                    table.insert(tfStevenDialogues, {
-                        "mastery over the elements...",
-                        "something about this phrase",
-                        "makes it sound so unimpressive to me",
-                        "but i'm sure your talents won't go to waste",
-                        "where you're going next"
-                    })
-                elseif tmpType == PSTAVConstellationType.COSMIC then
-                    table.insert(tfStevenDialogues, {
-                        "spacefarer, you seem to be far from home",
-                        "but i'm sure you're used to it",
-                        "how about a journey...",
-                        "that takes you even farther from home"
-                    })
-                end
-            end
-        end
-        if PST.modData.charData["Astral Vessel"].level >= 100 then
-            table.insert(tfStevenDialogues, {
-                "that world-weary look...",
-                "like you've seen it all, and more",
-                "well, i highly doubt...",
-                "any of that was *this* cool"
-            })
-        end
-        TheFuture.ModdedCharacterDialogue["Astral Vessel"] = tfStevenDialogues[math.random(#tfStevenDialogues)]
-    end
-end
+include("scripts.modCompatSteven")
