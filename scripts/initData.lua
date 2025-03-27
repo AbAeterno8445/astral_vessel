@@ -20,7 +20,8 @@ PSTAVessel.modCooldowns = {
     hitBlackHole = 0,
     lightlessMaw = 0,
     secretRoomSpeedBuff = 0,
-    lunarScion = 0
+    lunarScion = 0,
+    vesselFliesSpeed = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0,
@@ -47,6 +48,8 @@ PSTAVessel.lightlessMawDmg = 0
 PSTAVessel.lightlessMawLuckTears = 0
 PSTAVessel.lightlessMawSpeedRange = 0
 PSTAVessel.inSolarFireRing = false
+PSTAVessel.vesselFliesSpeedBuff = 0
+PSTAVessel.roomBlueSpiderDeaths = 0
 
 PSTAVessel.charUnlocks = {}
 PSTAVessel.charLoadouts = {}
@@ -351,6 +354,13 @@ PSTAVessel.batteryItems = {
     CollectibleType.COLLECTIBLE_9_VOLT, CollectibleType.COLLECTIBLE_CAR_BATTERY, CollectibleType.COLLECTIBLE_CHARGED_BABY,
     CollectibleType.COLLECTIBLE_JUMPER_CABLES, CollectibleType.COLLECTIBLE_JACOBS_LADDER
 }
+-- Up to Q3
+PSTAVessel.mushroomItemsQ3 = {
+    CollectibleType.COLLECTIBLE_WAVY_CAP, CollectibleType.COLLECTIBLE_1UP, CollectibleType.COLLECTIBLE_MINI_MUSH,
+    CollectibleType.COLLECTIBLE_ODD_MUSHROOM_THIN, CollectibleType.COLLECTIBLE_ODD_MUSHROOM_LARGE, CollectibleType.COLLECTIBLE_BLUE_CAP,
+    CollectibleType.COLLECTIBLE_GODS_FLESH
+}
+
 PSTAVessel.crimsonBloomID = Isaac.GetEntityVariantByName("Crimson Bloom")
 PSTAVessel.azureBloomID = Isaac.GetEntityVariantByName("Azure Bloom")
 PSTAVessel.onyxBloomID = Isaac.GetEntityVariantByName("Onyx Bloom")

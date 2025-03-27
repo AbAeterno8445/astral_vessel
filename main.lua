@@ -85,6 +85,7 @@ function PSTAVessel:initMod()
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_PICKUP_COLLISION, PSTAVessel.onPickup)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_LEVEL_LAYOUT_GENERATED, PSTAVessel.onNewLevel)
     PSTAVessel:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, PSTAVessel.onCache)
+    PSTAVessel:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, PSTAVessel.onFamiliarInit)
     PSTAVessel:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, PSTAVessel.onRoomClear)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_PICKUP_SHOP_PURCHASE, PSTAVessel.onShopPurchase)
     PSTAVessel:AddCallback(ModCallbacks.MC_NPC_UPDATE, PSTAVessel.onNPCUpdate)
@@ -128,3 +129,29 @@ end
 
 PSTAVessel:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PSTAVessel.load)
 PSTAVessel:AddCallback(ModCallbacks.MC_EXECUTE_CMD, PSTAVessel.onConsoleCMD)
+
+--[[ Modifiers TODO list
+
+poopDip
+poopPickupOnKill
+poopRockReplace
+creepPoison
+poisonHitMucor
+exploShrooms
+ballistoCreepFlying
+fungalOverlord
+dupeRottenOnHit
+leprosyOrbital
+mutagenicTear
+mutagenicTearDelay
+shufflingForm
+blueSpiderDmgInherit
+blueSpiderSlowCreep
+blueSpiderPetriSlow
+causticBite
+blueFlyLocust
+flyFriendOnKill
+flyFriendHP
+suzerainOfFlies
+
+]]

@@ -164,6 +164,31 @@ function PSTAVessel:getClosestEnemy(pos, radius)
     return closest
 end
 
+---@param player EntityPlayer
+function PSTAVessel:getClotSubtypeFromHearts(player)
+    local clotWeights = {
+        player:GetHearts(),
+        player:GetSoulHearts() - PSTAVessel:GetBlackHeartCount(player),
+        PSTAVessel:GetBlackHeartCount(player),
+        player:GetEternalHearts(),
+        player:GetGoldenHearts(),
+        player:GetBoneHearts(),
+        player:GetRottenHearts()
+    }
+    local totalWeight = 0
+    for _, tmpWeight in ipairs(clotWeights) do
+        totalWeight = totalWeight + tmpWeight
+    end
+    local randWeight = math.random(totalWeight)
+    for i, tmpWeight in ipairs(clotWeights) do
+        randWeight = randWeight - tmpWeight
+        if randWeight <= 0 then
+            return i - 1
+        end
+    end
+    return 0
+end
+
 function PSTAVessel:getRunVesselColor()
     local tmpColor = PST:getTreeSnapshotMod("vesselColor", {1, 1, 1, 1})
     return Color(table.unpack(tmpColor))

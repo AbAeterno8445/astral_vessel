@@ -121,6 +121,11 @@ function PSTAVessel:onCache(player, cacheFlag)
         if tmpMod > 0 and PSTAVessel.modCooldowns.secretRoomSpeedBuff > 0 then
             dynamicMods.speedPerc = dynamicMods.speedPerc + tmpMod
         end
+
+        -- Mod: +% temporary speed when entering a room per blue fly you have
+        if PSTAVessel.modCooldowns.vesselFliesSpeed > 0 and PSTAVessel.vesselFliesSpeedBuff > 0 then
+            dynamicMods.speedPerc = dynamicMods.speedPerc + PSTAVessel.vesselFliesSpeedBuff
+        end
     end
 
     -- Mod: +% all stats while you have eternal hearts

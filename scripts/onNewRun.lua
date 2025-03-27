@@ -148,6 +148,15 @@ function PSTAVessel:onNewRun(isContinued)
             end
             PST:addModifiers(tmpStatList, true)
         end
+
+        -- Mod: +1% to a random stat per full red heart you have at the beginning
+        tmpMod = PST:getTreeSnapshotMod("amalgamHPStat", 0)
+        if tmpMod > 0 then
+            for _=1,math.floor(player:GetHearts() / 2) do
+                local randStat = PST:getRandomStat()
+                PST:addModifiers({ [randStat .. "Perc"] = tmpMod }, true)
+            end
+        end
     end
 
     -- The Future compat

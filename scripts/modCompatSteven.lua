@@ -157,6 +157,21 @@ local tfStevenEmpyreanDialogues = {
             "wait",
             "why am i telling YOU this"
         }
+    },
+    ["Abomination"] = {
+        {
+            "come on, hideous monster",
+            "do your worst"
+        }
+    },
+    ["Baphomet"] = {
+        {
+            "hey there... cliff-faced as usual, i see",
+            "...wait",
+            "wait wait wait no",
+            "this is the wrong script",
+            "dammit... there goes my bonus"
+        }
     }
 }
 
@@ -184,7 +199,6 @@ function PSTAVessel:initFutureStevenDialogue()
             end
             for constName, _ in pairs(PSTAVessel.constelAlloc[tmpType]) do
                 if tfStevenEmpyreanDialogues[constName] then
-                    print("added", constName, "to steven npc")
                     for _, tmpLines in ipairs(tfStevenEmpyreanDialogues[constName]) do
                         table.insert(tfStevenDialogues, tmpLines)
                     end

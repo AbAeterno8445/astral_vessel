@@ -219,6 +219,10 @@ function PSTAVessel:onUpdate()
                     PST:addModifiers({ lunarScionStacks = { value = 0, set = true } }, true)
                     PST:updateCacheDelayed()
                 end
+                -- Mod: +% temporary speed when entering a room per blue fly you have
+                if modName == "vesselFliesSpeed" then
+                    PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+                end
             end
         end
     end

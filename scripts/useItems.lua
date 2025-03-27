@@ -70,6 +70,16 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
             if PST:getTreeSnapshotMod("blizzardSnowstorm", false) and isNormalCharge and usedCharges >= 2 then
                 PSTAVessel.modCooldowns.blizzardSnowstorm = usedCharges * 10
             end
+
+            -- Mod: % chance to spawn flies when using an active item
+            tmpMod = PST:getTreeSnapshotMod("vesselFliesOnActive", 0)
+            if tmpMod > 0 then
+                for _=1,tmpMod do
+                    if math.random() < 0.1 then
+                        player:AddBlueFlies(math.random(3), player.Position, nil)
+                    end
+                end
+            end
         end
     end
 end

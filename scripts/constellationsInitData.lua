@@ -143,7 +143,7 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_HOLY_LIGHT},
         {CollectibleType.COLLECTIBLE_CENSER},
         {CollectibleType.COLLECTIBLE_SERAPHIM},
-        {CollectibleType.COLLECTIBLE_ANGELIC_PRISM},
+        --{CollectibleType.COLLECTIBLE_ANGELIC_PRISM},
         {CollectibleType.COLLECTIBLE_TRISAGION},
         {CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES},
         {CollectibleType.COLLECTIBLE_GENESIS},

@@ -69,5 +69,24 @@ function PSTAVessel:onRoomClear()
         if PST:getTreeSnapshotMod("solarScion", false) then
             PST:addModifiers({ solarScionBossDead = true }, true)
         end
+
+        -- Mod: % chance for an additional rotten heart to drop when clearing the boss room without taking damage
+        tmpMod = PST:getTreeSnapshotMod("amalgamRottenOnBoss", 0)
+        if tmpMod > 0 and not playerGotHit and 100 * math.random() < tmpMod then
+            local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20, true)
+            Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN, tmpPos, Vector.Zero, nil)
+        end
+    -- Challenge room clear
+    elseif roomType == RoomType.ROOM_CHALLENGE then
+        -- Mod: % chance to spawn a random mushroom item (up to quality 3) when completing a challenge room without getting hit, up to twice per run
+        tmpMod = PST:getTreeSnapshotMod("mushOnChallClear", 0)
+        if tmpMod > 0 and not playerGotHit and PST:getTreeSnapshotMod("mushOnChallClearProcs", 0) < 2 and 100 * math.random() < tmpMod then
+            local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 40, true)
+            local newItem = Game():GetItemPool():GetCollectibleFromList(PSTAVessel.mushroomItemsQ3)
+            if newItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, tmpPos, Vector.Zero, nil)
+                PST:addModifiers({ mushOnChallClear = 1 }, true)
+            end
+        end
     end
 end

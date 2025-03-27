@@ -12,7 +12,8 @@ local AVesselTree = [[
 "26": "{\"pos\":[0,-5],\"type\":5001,\"size\":\"Large\",\"name\":\"Vessel Loadouts\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to switch between different\",\"loadouts.\",\"Loadouts store your customization, constellation and starting item settings.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "27": "{\"pos\":[0,0],\"type\":5002,\"size\":\"Large\",\"name\":\"Stellar Nexus\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to pick your starting items.\",\"Items are divided into categories matching constellation types, and require affinity with\",\"those constellations to choose.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}",
 "28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"29": "{\"pos\":[-2,-4],\"type\":5239,\"size\":\"Large\",\"name\":\"Astral Vessel Changelog\",\"description\":[\"Press Allocate to open the changelog display.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
+"29": "{\"pos\":[-2,-4],\"type\":5239,\"size\":\"Large\",\"name\":\"Astral Vessel Changelog\",\"description\":[\"Press Allocate to open the changelog display.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
+"30": "{\"pos\":[2,-1],\"type\":5062,\"size\":\"Large\",\"name\":\"Mutagenic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mutagenic Constellations tree.\",\"This tree contains nodes that grant mutation/disease themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
 }
 ]]
 
@@ -27,7 +28,7 @@ local constTreeBanks = {
     [PSTAVConstellationType.MERCANTILE] = include("scripts.constellationTrees.mercantileTreeBank"),
     [PSTAVConstellationType.ELEMENTAL] = include("scripts.constellationTrees.elementalTreeBank"),
     [PSTAVConstellationType.MUNDANE] = include("scripts.constellationTrees.mundaneTreeBank"),
-    --[PSTAVConstellationType.MUTAGENIC] = include("scripts.constellationTrees.mutagenicTreeBank"),
+    [PSTAVConstellationType.MUTAGENIC] = include("scripts.constellationTrees.mutagenicTreeBank"),
     [PSTAVConstellationType.COSMIC] = include("scripts.constellationTrees.cosmicTreeBank")
 }
 

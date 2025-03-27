@@ -184,3 +184,16 @@ function PSTAVessel:effectUpdate(effect)
         end
     end
 end
+
+---@param familiar EntityFamiliar
+function PSTAVessel:onFamiliarInit(familiar)
+    -- Blue spider
+    if familiar.Variant == FamiliarVariant.BLUE_SPIDER then
+        -- Mod: whenever a blue spider is spawned, % chance to spawn an additional one, up to 4x per room
+        local tmpMod = PST:getTreeSnapshotMod("spiderDupe", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("spiderDupeProcs", 0) < 4 and 100 * math.random() < tmpMod then
+            Game():GetPlayer(0):ThrowBlueSpider(familiar.Position, RandomVector() * 30)
+            PST:addModifiers({ spiderDupeProcs = 1 }, true)
+        end
+    end
+end

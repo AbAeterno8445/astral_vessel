@@ -203,14 +203,9 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
         PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.LIGHTBLUE1)
     end
 
-    local tmpStr = "Accessory layers might not be accurate to in-game display."
+    local tmpStr = "Bear in mind certain costumes might override each other in-game."
     tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
-    tmpTextY = tmpDrawY + 80
-    PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
-    tmpTextY = tmpTextY + 10
-
-    tmpStr = "Bear in mind certain costumes might override each other in-game."
-    tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
+    tmpTextY = tmpTextY + 90
     PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
     tmpTextY = tmpTextY + 10
 

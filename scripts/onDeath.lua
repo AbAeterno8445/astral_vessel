@@ -6,6 +6,12 @@ function PSTAVessel:onDeath(entity)
 
     local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
 
+    -- Blue spider death
+    if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == FamiliarVariant.BLUE_SPIDER then
+        print("+1")
+        PSTAVessel.roomBlueSpiderDeaths = PSTAVessel.roomBlueSpiderDeaths + 1
+    end
+
     if entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
     PST:getRoom():GetFrameCount() > 1 and not isFrozen then
         -- Mom death procs
@@ -171,6 +177,34 @@ function PSTAVessel:onDeath(entity)
             end
         end
 
+        -- Mod: % chance for enemies to leave a hovering Mucormycosis tear on death
+        tmpMod = PST:getTreeSnapshotMod("mucorOnDeath", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SPORE, 0, entity.Position, Vector.Zero, player)
+            newTear:ToTear():AddTearFlags(TearFlags.TEAR_SPORE)
+            newTear:ToTear().FallingAcceleration = -0.1
+            newTear:ToTear().FallingSpeed = -0.1
+            newTear:ToTear().Height = -20
+            Isaac.CreateTimer(function()
+                if newTear and newTear:Exists() then
+                    newTear:ToTear().FallingSpeed = 0
+                    newTear:ToTear().FallingAcceleration = 0.2
+                end
+            end, 150, 1, false)
+        end
+
+        -- Mod: % chance to spawn a clot when killing an enemy, up to 3 per room, up to 5 max present
+        tmpMod = PST:getTreeSnapshotMod("vesselClotOnKill", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("vesselClotOnKillProcs", 0) < 3 and 100 * math.random() < tmpMod then
+            local totalClots = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY)
+            if totalClots < 5 then
+                local clotType = PSTAVessel:getClotSubtypeFromHearts(player)
+                local newClot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, clotType, player.Position, RandomVector() * 3, player)
+                newClot:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
+                PST:addModifiers({ vesselClotOnKillProcs = 1 }, true)
+            end
+        end
+
         -- NPC checks
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
@@ -205,6 +239,22 @@ function PSTAVessel:onDeath(entity)
             tmpMod = PST:getTreeSnapshotMod("bossKillFinalDmg", 0)
             if tmpMod > 0 and tmpNPC:IsBoss() and PST:getTreeSnapshotMod("bossKillFinalDmgProcs", 0) < 50 then
                 PST:addModifiers({ finalBossDmg = tmpMod, bossKillFinalDmgProcs = 1 }, true)
+            end
+
+            -- Mod: % chance to spawn a spider when killing enemies within 6 seconds of entering a room
+            tmpMod = PST:getTreeSnapshotMod("quickKillSpider", 0)
+            if tmpNPC:IsChampion() then
+                tmpMod = tmpMod * 2
+            end
+            if tmpMod > 0 and Game():GetRoom():GetFrameCount() <= 180 and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil)
+                local maxSpiders = 1
+                if tmpNPC:IsChampion() then maxSpiders = 2 end
+                for _=1,maxSpiders do
+                    player:ThrowBlueSpider(entity.Position, entity.Position + RandomVector() * 70)
+
+                    PST:getPlayer():ThrowBlueSpider(PST:getPlayer().Position, PST:getPlayer().Position + RandomVector() * 70)
+                end
             end
         end
     end

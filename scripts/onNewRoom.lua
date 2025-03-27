@@ -2,6 +2,7 @@ function PSTAVessel:onNewRoom()
     if not PST.gameInit then return end
 
     PSTAVessel.roomFirstFire = false
+    PSTAVessel.roomBlueSpiderDeaths = 0
 
     local room = Game():GetRoom()
     local roomType = room:GetType()
@@ -308,5 +309,25 @@ function PSTAVessel:onNewRoom()
         elseif not isBossRoom and PST:getTreeSnapshotMod("bossRoomAllstatPercProc", false) then
             PST:addModifiers({ allstatsPerc = -tmpMod, bossRoomAllstatPercProc = false }, true)
         end
+    end
+
+    -- Mod: % chance to spawn a clot on kill
+    if PST:getTreeSnapshotMod("vesselClotOnKillProcs", 0) > 0 then
+        PST:addModifiers({ vesselClotOnKillProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: +% temporary speed per blue fly you have, up to 20%
+    tmpMod = PST:getTreeSnapshotMod("vesselFliesSpeed", 0)
+    if tmpMod > 0 and room:GetAliveEnemiesCount() > 0 then
+        PSTAVessel.vesselFliesSpeedBuff = math.min(20, tmpMod * #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, 0))
+        if PSTAVessel.modCooldowns.vesselFliesSpeed == 0 then
+            PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
+        end
+        PSTAVessel.modCooldowns.vesselFliesSpeed = 240
+    end
+
+    -- Mod: whenever a blue spider spawns, % chance to spawn an additional one
+    if PST:getTreeSnapshotMod("spiderDupeProcs", 0) > 0 then
+        PST:addModifiers({ spiderDupeProcs = { value = 0, set = true } }, true)
     end
 end

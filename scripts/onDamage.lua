@@ -44,6 +44,16 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     SFXManager():Play(SoundEffect.SOUND_FIREDEATH_HISS)
                     return { Damage = 0 }
                 end
+
+                -- Mod: % chance to trigger Lemon Mishap when hit
+                tmpMod = PST:getTreeSnapshotMod("lemonMishapHit", 0)
+                if tmpMod > 0 and 100 * math.random() < tmpMod then
+                    if player:GetHearts() > 2 then
+                        player:UseActiveItem(CollectibleType.COLLECTIBLE_LEMON_MISHAP, UseFlag.USE_NOANIM)
+                    else
+                        player:UseActiveItem(CollectibleType.COLLECTIBLE_FREE_LEMONADE, UseFlag.USE_NOANIM)
+                    end
+                end
             end
         end
 
@@ -310,6 +320,16 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                         PSTAVessel.modCooldowns.hitBlackHole = 900
                         if darkCursePresent then
                             PSTAVessel.modCooldowns.hitBlackHole = 450
+                        end
+                    end
+
+                    -- Mod: % chance to poison enemies on hit per blue spider that died this room
+                    tmpMod = PST:getTreeSnapshotMod("spiderDeathHitStatus", 0)
+                    if tmpMod > 0 and 100 * math.random() < tmpMod * PSTAVessel.roomBlueSpiderDeaths then
+                        if PSTAVessel.roomBlueSpiderDeaths < 7 then
+                            target:AddPoison(EntityRef(srcPlayer), 90, srcPlayer.Damage)
+                        else
+                            target:AddFreeze(EntityRef(srcPlayer), 45)
                         end
                     end
                 end

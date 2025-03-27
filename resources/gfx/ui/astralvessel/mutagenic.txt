@@ -1,0 +1,86 @@
+MUTAGENIC:
+	(lesser) Amalgam:
+		- +random stat per full red heart you have at the beginning of the first floor.
+		- % chance for an additional rotten heart to drop when clearing a boss room without taking damage.
+		- Starting trinket: Child's Heart.
+	
+	(lesser) Mushroom:
+		- When clearing a challenge room without taking damage, % chance to spawn an additional random mushroom item (up to quality 3), once per run.
+		- % chance for enemies to leave a hovering Mucormycosis tear on death for 5 seconds.
+		- Starting trinket: Liberty Cap.
+	
+	(lesser) Baby:
+		- (various familiar nodes from PST).
+		- Starting Trinket: Friendship Necklace.
+		- Starting Trinket: The Twins.
+	
+	(greater) Clot:
+		- When killing an enemy, % chance to spawn a clot if you have less than 6 clots, up to 3 per room.
+		Spawned clot type is affected by your heart containers' types.
+		- (T. Eve clot nodes).
+		- Starting Trinket: Lil Clot.
+	
+	(greater) Fly:
+		- When using an active item, % chance to spawn 2-3 blue flies. This effect is triggered independently per used charge.
+		- (+damage on blue fly death nodes).
+		- When entering a room, +% speed for the room per blue fly you have.
+		- Starting trinket: Fish Head.
+	
+	(greater) Spider:
+		- % chance to spawn a blue spider when killing an enemy within 6 seconds of entering a room.
+		Double the chance and spawned spiders for champions.
+		- Whenever a blue spider spawns, % chance to spawn an additional one, up to 3 times per room.
+		- +% chance to poison enemies for 3 seconds on hit per blue spider that died this room.
+		If 7 or more spiders have died in this room, change the effect to petrification for 1.5 seconds.
+		- Starting trinket: Louse.
+	
+	(greater) Dip:
+		- When destroying a poop, % chance to create its associated Dip familiar, up to 7 times per room.
+		- % chance for enemies with at least 10 HP to drop a random poop pickup on death.
+		Poop pickups spawn an associated Dip familiar when collected.
+		- When first entering a room, % chance to replace rocks with regular poop.
+		If this happens, roll the same chance for the poop to be a special variant.
+		- Starting trinket: Dingle Berry.
+	
+	(empyrean) Ballistomycete:
+		- (med) Creep can now hit flying enemies, with 50% damage effectiveness.
+		- % chance for creep to poison enemies for 3 seconds on hit.
+		- When hitting poisoned enemies, % chance to launch an additional homing Mucormycosis tear towards them.
+		- When entering a room, create a random mushroom somewhere in the room that detonates after a delay.
+		- (large) Fungal Overlord
+			Any creep you create periodically generates small mushrooms that detonate after a delay.
+			Mushrooms gain different effects based on the creep that created it.
+	
+	(empyrean) Abomination:
+		- When losing a rotten heart, % chance for a rotten heart to drop from you, which vanishes after 3 seconds.
+		Triggers up to twice per room.
+		- Killing an enemy has a % chance to grant you a leprosy orbital, up to 3 per room.
+		% chance to poison enemies on hit per leprosy orbital you have.
+		- (med) Every 5 seconds, fire a homing, piercing, spectral tear towards the nearest enemy.
+		Tear inflicts a random status effect when hitting enemies.
+			- (- time between tears nodes).
+		- Starting Trinket: Blister.
+		- (large) Shuffling Form
+			When entering a new floor past the first, re-roll all your mutagenic pool items into different mutagenic items.
+			After this happens, 20% chance to gain a new random mutagenic item, up to twice per run.
+	
+	(empyrean) Tarantula:
+		- Blue spiders inherit +% of your damage.
+		- % chance for blue spiders to create slowing creep on death for 4 seconds.
+		- Blue spiders petrify slowed enemies for 1 second on hit.
+			- (+ duration nodes)
+		(large) Caustic Bite
+			Blue spiders poison enemies on hit for 4 seconds.
+			Poisoned enemies have a 33% chance to spawn 2 blue spiders on death.
+			Poisoned bosses have a 5% chance to spawn a blue spider when hit, with a 0.5 second cooldown.
+
+	(empyrean) Dragonfly:
+		- % chance for blue flies to turn into a blue locust for the current room on death, up to 10 times per room.
+		- % chance to spawn a random friendly fly monster when killing enemies with at least 25 HP.
+			- (-HP threshold nodes)
+		- Starting trinket: Rotten Penny.
+		- (large) Suzerain Of Flies
+			When entering a room, if you have blue flies, a random blue fly becomes a Soul Eater.
+			Soul Eater flies cannot receive damage, and gain damage, speed and size when enemies die near it, up to 15 times per room.
+			Soul Eater flies prioritize targeting the last enemy you hit.
+			Soul Eater status is removed when entering a new room.

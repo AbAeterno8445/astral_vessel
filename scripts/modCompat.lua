@@ -4,15 +4,11 @@ function PSTAVessel:initModCompat()
 
     -- Fiend Folio
     if FiendFolio then
-        --[[ TODO: get permission to use costumes!!
         -- Faces
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_dads_dip.anm2", sourceMod="Fiend Folio"})
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_isaac_dot_chr.anm2", sourceMod="Fiend Folio"})
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_twinkleofcontagion.anm2", sourceMod="Fiend Folio"})
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_deadlydose.anm2", sourceMod="Fiend Folio"})
-        ]]
-
-		-- Faces
 		table.insert(PSTAVessel.facesList, {path="gfx/characters/black_moon_evangelion.anm2", sourceMod="Fiend Folio"})
 
 		-- Accessories
