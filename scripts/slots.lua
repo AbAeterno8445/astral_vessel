@@ -38,7 +38,6 @@ function PSTAVessel:onSlotUpdate(slot)
             end
         -- Confessional
         elseif slot.Variant == SlotVariant.CONFESSIONAL and spentHearts then
-            print("HERE")
             -- Mod: % chance for Confessionals to return a red heart when used
             local tmpMod = PST:getTreeSnapshotMod("confessRedReturn", 0)
             if tmpMod > 0 and 100 * math.random() < tmpMod then
