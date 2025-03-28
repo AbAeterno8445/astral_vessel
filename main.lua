@@ -5,6 +5,7 @@ include("scripts.utility")
 include("scripts.initData")
 include("scripts.saveData")
 include("scripts.initTrees")
+include("scripts.extraPSTFuncs")
 include("scripts.menus.appearance.appearanceMenu")
 include("scripts.menus.nexus.nexusMenu")
 include("scripts.menus.changelog.changelogMenu")
@@ -53,7 +54,7 @@ function PSTAVessel:initMod()
     PSTAVessel:initLoadoutSubmenu()
     PSTAVessel:initCorpseRaiserSubmenu()
     PSTAVessel:initModCompat()
-    print("Initialized Astral Vessel v" .. PSTAVessel.version)
+    PSTAVessel:initExtraPSTFuncs()
 
     -- EID
     if EID then
@@ -118,6 +119,8 @@ function PSTAVessel:initMod()
         end
         print("Entity Spawn:", tmpType, tmpVariant, subtype)
     end)]]
+
+    print("Initialized Astral Vessel v" .. PSTAVessel.version)
 end
 PSTAVessel:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, PSTAVessel.initMod)
 
@@ -129,29 +132,3 @@ end
 
 PSTAVessel:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, PSTAVessel.load)
 PSTAVessel:AddCallback(ModCallbacks.MC_EXECUTE_CMD, PSTAVessel.onConsoleCMD)
-
---[[ Modifiers TODO list
-
-poopDip
-poopPickupOnKill
-poopRockReplace
-creepPoison
-poisonHitMucor
-exploShrooms
-ballistoCreepFlying
-fungalOverlord
-dupeRottenOnHit
-leprosyOrbital
-mutagenicTear
-mutagenicTearDelay
-shufflingForm
-blueSpiderDmgInherit
-blueSpiderSlowCreep
-blueSpiderPetriSlow
-causticBite
-blueFlyLocust
-flyFriendOnKill
-flyFriendHP
-suzerainOfFlies
-
-]]

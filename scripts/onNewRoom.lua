@@ -31,6 +31,7 @@ function PSTAVessel:onNewRoom()
         PSTAVessel.updateTrackers.redHearts = player:GetHearts()
         PSTAVessel.updateTrackers.soulHearts = player:GetSoulHearts()
         PSTAVessel.updateTrackers.blackHearts = PSTAVessel:GetBlackHeartCount(player)
+        PSTAVessel.updateTrackers.rottenHearts = player:GetRottenHearts()
         PSTAVessel.updateTrackers.primarySlotCharge = player:GetTotalActiveCharge(ActiveSlot.SLOT_PRIMARY)
     end
 
@@ -329,5 +330,45 @@ function PSTAVessel:onNewRoom()
     -- Mod: whenever a blue spider spawns, % chance to spawn an additional one
     if PST:getTreeSnapshotMod("spiderDupeProcs", 0) > 0 then
         PST:addModifiers({ spiderDupeProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance to create an associated dip familiar when destroying poop
+    if PST:getTreeSnapshotMod("poopDipProcs", 0) > 0 then
+        PST:addModifiers({ poopDipProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: create exploding mushrooms when entering a room with monsters
+    tmpMod = PST:getTreeSnapshotMod("exploShrooms", 0)
+    if tmpMod > 0 and room:GetAliveEnemiesCount() > 0 then
+        for _=1,tmpMod do
+            local tmpPos = room:FindFreePickupSpawnPosition(room:GetRandomPosition(20), 20)
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.exploMushroomID, PSTAVesselMushType.ORANGE, tmpPos, Vector.Zero, nil)
+        end
+    end
+
+    -- Mod: % chance to drop a rotten heart from you when losing rotten hearts
+    if PST:getTreeSnapshotMod("dupeRottenOnHitProcs", 0) > 0 then
+        PST:addModifiers({ dupeRottenOnHitProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: killing enemies has a % chance to spawn a leprosy orbital
+    if PST:getTreeSnapshotMod("leprosyOrbitalProcs", 0) > 0 then
+        PST:addModifiers({ leprosyOrbitalProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Mod: % chance for blue flies to turn into a blue locust for the current room on death
+    if PST:getTreeSnapshotMod("blueFlyLocustProcs", 0) > 0 then
+        PST:addModifiers({ blueFlyLocustProcs = { value = 0, set = true } }, true)
+    end
+
+    -- Suzerain Of Flies node (Dragonfly mutagenic constellation) - remove spawned swarm flies
+    if PST:getTreeSnapshotMod("suzerainSwarmProc", false) then
+        local swarmFlies = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.SWARM_FLY_ORBITAL)
+        for _, tmpFly in ipairs(swarmFlies) do
+            if PST:getEntData(tmpFly).PST_suzerainSwarmFly then
+                tmpFly:Remove()
+            end
+        end
+        PST:addModifiers({ suzerainSwarmProc = false }, true)
     end
 end

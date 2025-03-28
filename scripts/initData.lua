@@ -21,7 +21,10 @@ PSTAVessel.modCooldowns = {
     lightlessMaw = 0,
     secretRoomSpeedBuff = 0,
     lunarScion = 0,
-    vesselFliesSpeed = 0
+    vesselFliesSpeed = 0,
+    poisonHitMucor = 0,
+    mutagenicTear = 0,
+    causticBite = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0,
@@ -32,6 +35,7 @@ PSTAVessel.updateTrackers = {
     redHearts = 0,
     soulHearts = 0,
     blackHearts = 0,
+    rottenHearts = 0,
     primarySlotCharge = 0
 }
 PSTAVessel.floorFirstUpdate = false
@@ -361,6 +365,16 @@ PSTAVessel.mushroomItemsQ3 = {
     CollectibleType.COLLECTIBLE_GODS_FLESH
 }
 
+PSTAVessel.flyFriendsList = {
+    {EntityType.ENTITY_SUCKER, 0}, {EntityType.ENTITY_SUCKER, 1}, {EntityType.ENTITY_SUCKER, 3}, {EntityType.ENTITY_BOOMFLY, 1},
+    {EntityType.ENTITY_BOOMFLY, 3}, {EntityType.ENTITY_BOOMFLY, 3, 1}, {EntityType.ENTITY_FLY_L2, 0}, {EntityType.ENTITY_FULL_FLY, 0},
+    {EntityType.ENTITY_MOTER, 0}
+}
+PSTAVessel.flyFamiliars = {
+    FamiliarVariant.FLY_ORBITAL, FamiliarVariant.BOT_FLY, FamiliarVariant.PSY_FLY, FamiliarVariant.LOST_FLY, FamiliarVariant.PAPA_FLY,
+    FamiliarVariant.ANGRY_FLY, FamiliarVariant.SMART_FLY, FamiliarVariant.SWARM_FLY_ORBITAL
+}
+
 PSTAVessel.crimsonBloomID = Isaac.GetEntityVariantByName("Crimson Bloom")
 PSTAVessel.azureBloomID = Isaac.GetEntityVariantByName("Azure Bloom")
 PSTAVessel.onyxBloomID = Isaac.GetEntityVariantByName("Onyx Bloom")
@@ -372,6 +386,7 @@ PSTAVessel.lifebloomsList = {
     PSTAVessel.crimsonBloomID, PSTAVessel.azureBloomID, PSTAVessel.onyxBloomID, PSTAVessel.calcifiedBloomID, PSTAVessel.eternalBloomID,
     PSTAVessel.rotBloomID, PSTAVessel.gildedBloomID
 }
+PSTAVessel.exploMushroomID = Isaac.GetEntityVariantByName("Vessel Mushroom")
 
 PSTAVessel.lunarScionMoonlightID = Isaac.GetEntityVariantByName("Lunar Scion Moonlight")
 PSTAVessel.solarScionFireRingID = Isaac.GetEntityVariantByName("Solar Scion Fire Ring")

@@ -1,12 +1,15 @@
 <entities anm2root="gfx/" version="5">
     <!-- Lifebloom flowers -->
-    <entity anm2path="effects/avessel_crimsonbloom.anm2" id="1000" variant="2200" name="Crimson Bloom" />
-    <entity anm2path="effects/avessel_azurebloom.anm2" id="1000" variant="2201" name="Azure Bloom" />
-    <entity anm2path="effects/avessel_onyxbloom.anm2" id="1000" variant="2202" name="Onyx Bloom" />
-    <entity anm2path="effects/avessel_calcifiedbloom.anm2" id="1000" variant="2203" name="Calcified Bloom" />
-    <entity anm2path="effects/avessel_eternalbloom.anm2" id="1000" variant="2204" name="Eternal Bloom" />
-    <entity anm2path="effects/avessel_rotbloom.anm2" id="1000" variant="2205" name="Rotbloom" />
-    <entity anm2path="effects/avessel_goldbloom.anm2" id="1000" variant="2206" name="Gilded Bloom" />
+    <entity anm2path="effects/avessel_crimsonbloom.anm2" id="1000" variant="2200" name="Crimson Bloom" shadowSize="8" />
+    <entity anm2path="effects/avessel_azurebloom.anm2" id="1000" variant="2201" name="Azure Bloom" shadowSize="8" />
+    <entity anm2path="effects/avessel_onyxbloom.anm2" id="1000" variant="2202" name="Onyx Bloom" shadowSize="8" />
+    <entity anm2path="effects/avessel_calcifiedbloom.anm2" id="1000" variant="2203" name="Calcified Bloom" shadowSize="8" />
+    <entity anm2path="effects/avessel_eternalbloom.anm2" id="1000" variant="2204" name="Eternal Bloom" shadowSize="8" />
+    <entity anm2path="effects/avessel_rotbloom.anm2" id="1000" variant="2205" name="Rotbloom" shadowSize="8" />
+    <entity anm2path="effects/avessel_goldbloom.anm2" id="1000" variant="2206" name="Gilded Bloom" shadowSize="8" />
+
+    <!-- Mushrooms -->
+    <entity anm2path="effects/avessel_mushrooms.anm2" id="1000" variant="2207" name="Vessel Mushroom" shadowSize="16" />
 
     <!-- Lunar Scion moonlight ray -->
     <entity anm2path="1000.039.001_moonlight.anm2" id="1000" variant="2210" name="Lunar Scion Moonlight" />

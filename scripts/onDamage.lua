@@ -100,8 +100,6 @@ function PSTAVessel:onDamage(target, damage, flag, source)
             end
         -- Valid enemy
         elseif target:IsVulnerableEnemy() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
-            --print("hitdata", source.Type, source.Variant, (source.Entity and source.Entity.SubType or nil), flag, damage)
-
             if source and source.Entity then
                 -- Check if a familiar hit enemy
                 tmpFamiliar = source.Entity:ToFamiliar()
@@ -116,6 +114,47 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                         tmpMod = PST:getTreeSnapshotMod("vesselWispInherit", 0)
                         if tmpMod > 0 then
                             dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
+                        end
+                    -- Blue spider hit
+                    elseif tmpFamiliar.Variant == FamiliarVariant.BLUE_SPIDER then
+                        -- Mod: blue spiders inherit +% of your damage
+                        tmpMod = PST:getTreeSnapshotMod("blueSpiderDmgInherit", 0)
+                        if tmpMod > 0 then
+                            dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
+                        end
+
+                        -- Mod: blue spiders petrify slowed enemies on hit
+                        tmpMod = PST:getTreeSnapshotMod("blueSpiderPetriSlow", 0)
+                        if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) then
+                            target:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod * 30))
+                        end
+
+                        -- Caustic Bite node (Tarantula mutagenic constellation)
+                        if PST:getTreeSnapshotMod("causticBite", false) then
+                            target:AddPoison(EntityRef(srcPlayer), 120, srcPlayer.Damage)
+                        end
+
+                        -- Blue spider death
+                        if source.Entity:HasMortalDamage() then
+                            PSTAVessel.roomBlueSpiderDeaths = PSTAVessel.roomBlueSpiderDeaths + 1
+
+                            -- Mod: % chance for blue spiders to leave slowing creep on death
+                            tmpMod = PST:getTreeSnapshotMod("blueSpiderSlowCreep", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                local newCreep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_WHITE, 0, source.Position, Vector.Zero, nil)
+                                newCreep:ToEffect().Scale = 2
+                            end
+                        end
+                    -- Blue fly hit
+                    elseif tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY then
+                        -- Blue fly death
+                        if source.Entity:HasMortalDamage() then
+                            -- Mod: % chance for blue flies to turn into a blue locust for the current room on death, up to 10x
+                            tmpMod = PST:getTreeSnapshotMod("blueFlyLocust", 0)
+                            if tmpMod > 0 and PST:getTreeSnapshotMod("blueFlyLocustProcs", 0) < 10 and 100 * math.random() < tmpMod then
+                                local newLocust = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ABYSS_LOCUST, 0, source.Position, Vector.Zero, srcPlayer)
+                                newLocust.Color = Color(0, 0.3, 1, 1, 0, 0, 0.6)
+                            end
                         end
                     end
                 end
@@ -290,7 +329,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     end
 
                     -- Mod: % chance for enemies to leave a fire on death (burns on hit)
-                    if (source.Entity and source.Entity:GetData().PST_mobDeathFire) and target:GetBurnCountdown() == 0 then
+                    if (source.Entity:GetData().PST_mobDeathFire) and target:GetBurnCountdown() == 0 then
                         target:AddBurn(EntityRef(srcPlayer), 100, math.min(20, srcPlayer.Damage / 2))
                     end
 
@@ -332,6 +371,38 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                             target:AddFreeze(EntityRef(srcPlayer), 45)
                         end
                     end
+
+                    -- Mod: % chance to launch a homing Mucormycosis tear when hitting poisoned enemies
+                    tmpMod = PST:getTreeSnapshotMod("poisonHitMucor", 0)
+                    if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) and PSTAVessel.modCooldowns.poisonHitMucor == 0 and
+                    100 * math.random() < tmpMod then
+                        local tmpVel = (target.Position - srcPlayer.Position):Normalized() * 9
+                        local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SPORE, 0, srcPlayer.Position, tmpVel, srcPlayer)
+                        newTear:ToTear():AddTearFlags(TearFlags.TEAR_HOMING | TearFlags.TEAR_SPORE)
+                        newTear.CollisionDamage = srcPlayer.Damage
+                        PSTAVessel.modCooldowns.poisonHitMucor = 30
+                    end
+
+                    -- Mutagenic tear hit - inflict random status
+                    if PST:getEntData(source.Entity).PST_mutagenicTear then
+                        PST:inflictRandomStatus(srcPlayer, target, 90)
+                    end
+
+                    -- Caustic Bite node (Tarantula mutagenic constellation)
+                    if PST:getTreeSnapshotMod("causticBite", false) and target:HasEntityFlags(EntityFlag.FLAG_POISON) then
+                        local totalSpiders = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_SPIDER)
+                        if totalSpiders < 30 and 100 * math.random() < 0.05 then
+                            srcPlayer:ThrowBlueSpider(target.Position, target.Position + RandomVector() * 40)
+                            PSTAVessel.modCooldowns.causticBite = 15
+                        end
+                    end
+                end
+
+                -- Mod: % chance for creep to poison enemies on hit
+                tmpMod = PST:getTreeSnapshotMod("creepPoison", 0)
+                if tmpMod > 0 and source.Type == EntityType.ENTITY_EFFECT and PSTAVessel:arrHasValue(PST.playerDamagingCreep, source.Variant) and
+                not target:HasEntityFlags(EntityFlag.FLAG_POISON) and 100 * math.random() < tmpMod then
+                    target:AddPoison(EntityRef(srcPlayer), 90, srcPlayer.Damage)
                 end
             end
 

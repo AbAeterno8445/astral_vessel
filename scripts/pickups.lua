@@ -123,6 +123,47 @@ function PSTAVessel:onPickup(pickup, collider, low, forced)
                 end
                 PSTAVessel.modCooldowns.batterySpeedBuff = 450
             end
+        -- Poop pickup
+        elseif pickup.Variant == PickupVariant.PICKUP_POOP then
+            -- Mod: spawn 1-2 associated friendly Dip variants when picking up poop pickups
+            local tmpMod = PST:getTreeSnapshotMod("poopPickupOnKill", 0)
+            if tmpMod > 0 and (pickup.SubType == PoopPickupSubType.POOP_SMALL or pickup.SubType == PoopPickupSubType.POOP_BIG) then
+                local presentDips = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.DIP)
+                if presentDips < 20 then
+                    local maxDips = 1
+                    local dipWeights = {
+                        [DipSubType.NORMAL] = 40,
+                        [DipSubType.CORN] = 7,
+                        [DipSubType.BROWNIE] = 5,
+                        [DipSubType.FLAMING] = 3,
+                        [DipSubType.GOLDEN] = 1,
+                        [DipSubType.HOLY] = 1,
+                        [DipSubType.PETRIFIED] = 4,
+                        [DipSubType.POISON] = 3,
+                        [DipSubType.RAINBOW] = 2,
+                        [DipSubType.RED] = 5
+                    }
+                    if pickup.SubType == PoopPickupSubType.POOP_BIG then
+                        maxDips = 1 + math.random(2)
+                        dipWeights[DipSubType.NORMAL] = 10
+                    end
+                    local totalWeight = 0
+                    for _, tmpWeight in pairs(dipWeights) do
+                        totalWeight = totalWeight + tmpWeight
+                    end
+
+                    for _=1,maxDips do
+                        local randWeight = math.random(totalWeight)
+                        for dipType, tmpWeight in pairs(dipWeights) do
+                            randWeight = randWeight - tmpWeight
+                            if randWeight <= 0 then
+                                Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.DIP, dipType, pickup.Position, RandomVector() * 2, player)
+                                break
+                            end
+                        end
+                    end
+                end
+            end
         end
     end
 end

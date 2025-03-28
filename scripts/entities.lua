@@ -1,4 +1,5 @@
 include("scripts.lifeblooms")
+include("scripts.exploMushrooms")
 
 ---@param npc EntityNPC
 function PSTAVessel:onNPCUpdate(npc)
@@ -160,6 +161,31 @@ function PSTAVessel:effectUpdate(effect)
     -- Crimson Bloom
     elseif PSTAVessel:arrHasValue(PSTAVessel.lifebloomsList, effect.Variant) then
         PSTAVessel:effectLifebloomUpdate(effect)
+    -- Exploding Mushrooms
+    elseif effect.Variant == PSTAVessel.exploMushroomID then
+        PSTAVessel:exploMushroomUpdate(effect)
+    -- Player creep
+    elseif PSTAVessel:arrHasValue(PST.playerDamagingCreep, effect.Variant) then
+        -- Fungal Overlord node (Ballistomycete mutagenic constellation)
+        if PST:getTreeSnapshotMod("fungalOverlord", false) and Game():GetFrameCount() % 20 == 0 and PST:getRoom():GetAliveEnemiesCount() > 0 then
+            local creepMushType = PSTAVessel.creepMushrooms[effect.Variant]
+            if creepMushType then
+                if not PSTAVessel.modCooldowns["creepMush" .. creepMushType] then
+                    PSTAVessel.modCooldowns["creepMush" .. creepMushType] = 0
+                end
+                if PSTAVessel.modCooldowns["creepMush" .. creepMushType] == 0 then
+                    local tmpSize = effect.Size
+                    while tmpSize > 1 do
+                        if math.random() < 0.1 then
+                            local tmpPos = effect.Position + RandomVector() * effect.Size * math.random()
+                            Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.exploMushroomID, creepMushType, tmpPos, Vector.Zero, PST:getPlayer())
+                        end
+                        tmpSize = tmpSize / 2
+                    end
+                    PSTAVessel.modCooldowns["creepMush" .. creepMushType] = math.max(10, 45 * tmpSize / 200)
+                end
+            end
+        end
     else
         ---@type EntityPlayer
         local player = PST:getPlayer()

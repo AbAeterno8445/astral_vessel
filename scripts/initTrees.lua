@@ -317,23 +317,24 @@ function PSTAVessel:calcConstellationAffinities()
                             PSTAVessel.tiersAlloc[reqs.vesselConstTier] = PSTAVessel.tiersAlloc[reqs.vesselConstTier] + 1
                         end
                     -- Constellation nodes
-                    elseif reqs.vesselBaseConst and not (node.modifiers and node.modifiers.vesselTrinket) then
-                        local baseConst = node.reqs.vesselBaseConst
-                        if not typeAlloc[baseConst] then
-                            typeAlloc[baseConst] = {}
-                        end
-                        if not typeAlloc[baseConst].max then
-                            typeAlloc[baseConst].max = 0
-                            typeAlloc[baseConst].alloc = 0
-                        end
-                        typeAlloc[baseConst].max = typeAlloc[baseConst].max + 1
-
-                        if PST:isNodeAllocated(tmpTreeName, tonumber(nodeID)) then
-                            typeAlloc[baseConst].alloc = typeAlloc[baseConst].alloc + 1
-
-                            if PSTAVessel:strStartsWith(node.name, "Starting Trinket:") then
-                                PSTAVessel.charTrinketAlloc = true
+                    elseif reqs.vesselBaseConst then
+                        local isAllocated = PST:isNodeAllocated(tmpTreeName, tonumber(nodeID))
+                        if not (node.modifiers and node.modifiers.vesselTrinket) then
+                            local baseConst = node.reqs.vesselBaseConst
+                            if not typeAlloc[baseConst] then
+                                typeAlloc[baseConst] = {}
                             end
+                            if not typeAlloc[baseConst].max then
+                                typeAlloc[baseConst].max = 0
+                                typeAlloc[baseConst].alloc = 0
+                            end
+                            typeAlloc[baseConst].max = typeAlloc[baseConst].max + 1
+
+                            if isAllocated then
+                                typeAlloc[baseConst].alloc = typeAlloc[baseConst].alloc + 1
+                            end
+                        elseif isAllocated then
+                            PSTAVessel.charTrinketAlloc = true
                         end
                     end
                 end

@@ -106,6 +106,13 @@ local tfStevenEmpyreanDialogues = {
         {
             "shhhh",
             "it's a secret to everybody"
+        },
+        {
+            "you ever stop and think...",
+            "what's up with all the moon reverence?",
+            "it's a dead rock far smaller than this earth",
+            "and moonlight is just sunlight!",
+            "...sorry, just don't dwell on it too much"
         }
     },
     ["Paladin"] = {
@@ -171,6 +178,29 @@ local tfStevenEmpyreanDialogues = {
             "wait wait wait no",
             "this is the wrong script",
             "dammit... there goes my bonus"
+        }
+    },
+    ["Living Holy Flame"] = {
+        {
+            "woah, you're quite bright aren't you?",
+            "...i mean, luminosity wise",
+            "blindingly bright"
+        }
+    },
+    ["Dragonfly"] = {
+        {
+            "meandering aimlessly, aren't you?",
+            "as per usual, i imagine",
+            "let me show you a time and place",
+            "where you can fly around to your heart's content"
+        }
+    },
+    ["Ballistomycete"] = {
+        {
+            "spores...",
+            "disgusting",
+            "whatever vile higher up came up with you fungi",
+            "couldn't have been right in the head"
         }
     }
 }

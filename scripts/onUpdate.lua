@@ -62,6 +62,59 @@ function PSTAVessel:onUpdate()
                 local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos() - Vector(60, 60), 20, true)
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, tmpPos, Vector.Zero, nil)
             end
+
+            -- Shuffling Form node (Abomination mutagenic tree)
+            if PST:getTreeSnapshotMod("shufflingForm", false) then
+                local mutantItems = {}
+                for _, tmpItem in ipairs(PSTAVessel.constelItemPools[PSTAVConstellationType.MUTAGENIC]) do
+                    local itemCount = player:GetCollectibleNum(tmpItem, true, true)
+                    if itemCount > 0 then
+                        table.insert(mutantItems, tmpItem)
+                    end
+                end
+                for _, tmpItem in ipairs(mutantItems) do
+                    local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem)
+                    if itemCfg then
+                        local targetPool = PSTAVessel.constelItems[PSTAVConstellationType.MUTAGENIC]["Q" .. itemCfg.Quality]
+                        if targetPool then
+                            local newItem = targetPool[math.random(#targetPool)]
+                            local failsafe = 0
+                            while (newItem.active or player:HasCollectible(newItem.item)) and failsafe < 200 do
+                                newItem = targetPool[math.random(#targetPool)]
+                                failsafe = failsafe + 1
+                            end
+                            if failsafe < 200 then
+                                player:RemoveCollectible(tmpItem)
+                                player:AddCollectible(newItem.item)
+                            end
+                        end
+                    end
+                end
+                local extraProc = false
+                if PST:getTreeSnapshotMod("shufflingFormExtra", 0) < 2 and math.random() < 0.15 then
+                    local newItem = Game():GetItemPool():GetCollectible(PSTAVessel.constelItemPools[PSTAVConstellationType.MUTAGENIC])
+                    local failsafe = 0
+                    while player:HasCollectible(newItem) and failsafe < 200 do
+                        newItem = Game():GetItemPool():GetCollectible(PSTAVessel.constelItemPools[PSTAVConstellationType.MUTAGENIC])
+                        failsafe = failsafe + 1
+                    end
+                    if failsafe < 200 then
+                        player:AddCollectible(newItem)
+                        PST:addModifiers({ shufflingFormExtra = 1 }, true)
+                        extraProc = true
+                    end
+                end
+                -- FX
+                local poofFX = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, player.Position, Vector.Zero, nil)
+                poofFX.Color = Color(math.random(), math.random(), math.random())
+
+                local grunts = {0, 1, 2, 4, 5}
+                SFXManager():Play(SoundEffect["SOUND_MONSTER_GRUNT_" .. grunts[math.random(#grunts)]], 1, 2, false, 0.7 + 0.5 * math.random())
+                SFXManager():Play(SoundEffect.SOUND_POWERUP_SPEWER, 0.6)
+
+                local tmpMsg = extraProc and "Shuffling Form (+1)" or "Shuffling Form"
+                PST:createFloatTextFX(tmpMsg, Vector.Zero, Color(math.random(), math.random(), math.random()), 0.13, 100, true)
+            end
         end
     end
 
@@ -105,6 +158,27 @@ function PSTAVessel:onUpdate()
                     tmpGridEnt:Destroy(true)
                     room:SpawnGridEntity(i, GridEntityType.GRID_ROCKT, 0)
                     PST:addModifiers({ secretRoomTintedProcs = 1 }, true)
+                end
+            end
+        end
+
+        -- Mod: % chance to replace rocks with poop
+        tmpMod = PST:getTreeSnapshotMod("poopRockReplace", 0)
+        if tmpMod > 0 and room:IsFirstVisit() then
+            for i=0,room:GetGridSize() do
+                local tmpGridEnt = room:GetGridEntity(i)
+                if tmpGridEnt and tmpGridEnt:GetType() == GridEntityType.GRID_ROCK and 100 * math.random() < tmpMod then
+                    tmpGridEnt:Destroy(true)
+                    local tmpPoopVariant = GridPoopVariant.NORMAL
+                    if 100 * math.random() < tmpMod then
+                        local specialTypes = {
+                            GridPoopVariant.BLACK, GridPoopVariant.CHARMING, GridPoopVariant.CHUNKY, GridPoopVariant.CORN,
+                            GridPoopVariant.GOLDEN, GridPoopVariant.HOLY, GridPoopVariant.RAINBOW, GridPoopVariant.RED,
+                            GridPoopVariant.WHITE
+                        }
+                        tmpPoopVariant = specialTypes[math.random(#specialTypes)]
+                    end
+                    room:SpawnGridEntity(i, GridEntityType.GRID_POOP, tmpPoopVariant)
                 end
             end
         end
@@ -168,6 +242,15 @@ function PSTAVessel:onUpdate()
                     Isaac.Spawn(EntityType.ENTITY_EFFECT, PSTAVessel.gildedBloomID, 0, tmpPos, Vector.Zero, nil)
                 end
             end
+
+            -- Suzerain Of Flies node (Dragonfly mutagenic constellation)
+            if PST:getTreeSnapshotMod("suzerainOfFlies", false) and room:IsFirstVisit() and room:GetType() == RoomType.ROOM_BOSS then
+                for _=1,7 do
+                    local newFly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.SWARM_FLY_ORBITAL, 0, player.Position, Vector.Zero, player)
+                    PST:getEntData(newFly).PST_suzerainSwarmFly = true
+                end
+                PST:addModifiers({ suzerainSwarmProc = true }, true)
+            end
         end
     end
 
@@ -223,6 +306,18 @@ function PSTAVessel:onUpdate()
                 if modName == "vesselFliesSpeed" then
                     PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
                 end
+                -- Mutagenic Tear node (Abomination mutagenic constellation)
+                if modName == "mutagenicTear" and room:GetAliveEnemiesCount() > 0 then
+                    local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.GODS_FLESH_BLOOD, 0, player.Position, RandomVector() * 7, player)
+                    PST:getEntData(newTear).PST_mutagenicTear = true
+                    newTear:ToTear():AddTearFlags(TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_PIERCING | TearFlags.TEAR_ORBIT_ADVANCED)
+                    newTear:ToTear().Color = Color(math.random(), math.random(), math.random(), 0.8)
+                    newTear:ToTear().SpriteScale = Vector(1.4, 1.4)
+                    newTear:ToTear().Height = -30
+                    newTear:ToTear().FallingAcceleration = 0.01
+                    newTear:ToTear().FallingSpeed = -10
+                    newTear.CollisionDamage = math.min(80, player.Damage)
+                end
             end
         end
     end
@@ -273,6 +368,24 @@ function PSTAVessel:onUpdate()
                 end
                 SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 1, 17, false, 1.1)
             end
+
+            -- Suzerain Of Flies node (Dragonfly mutagenic constellation)
+            if PST:getTreeSnapshotMod("suzerainOfFlies", false) and room:GetAliveEnemiesCount() > 0 then
+                local maxSwarmFlies = 2 + math.random(3) + player:GetRottenHearts()
+                Isaac.CreateTimer(function()
+                    local flyFamType = PSTAVessel.flyFamiliars[math.random(#PSTAVessel.flyFamiliars)]
+                    local newFly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, flyFamType, 0, player.Position, RandomVector() * 5, player)
+
+                    local flyTimer = 239 + math.random(120) + player:GetRottenHearts() * 60
+                    Isaac.CreateTimer(function()
+                        if newFly and newFly:Exists() then
+                            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, newFly.Position, Vector.Zero, nil)
+                            newFly:Remove()
+                        end
+                    end, flyTimer, 1, true)
+                end, 5, maxSwarmFlies, false)
+            end
+
             PSTAVessel.roomFirstFire = true
         end
     end
@@ -492,6 +605,11 @@ function PSTAVessel:onUpdate()
                 PST:updateCacheDelayed(CacheFlag.CACHE_DAMAGE)
             end
         end
+    end
+
+    -- Mutagenic Tear node (Abomination mutagenic constellation)
+    if PST:getTreeSnapshotMod("mutagenicTear", false) and room:GetAliveEnemiesCount() > 0 and PSTAVessel.modCooldowns.mutagenicTear == 0 then
+        PSTAVessel.modCooldowns.mutagenicTear = 150 - math.floor(PST:getTreeSnapshotMod("mutagenicTearDelay", 0) * 30)
     end
 
     -- Level 100 unlock

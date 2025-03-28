@@ -9,7 +9,7 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_isaac_dot_chr.anm2", sourceMod="Fiend Folio"})
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_twinkleofcontagion.anm2", sourceMod="Fiend Folio"})
         table.insert(PSTAVessel.facesList, {path="gfx/characters/faces/astralvessel/fiend_folio/face_deadlydose.anm2", sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.facesList, {path="gfx/characters/black_moon_evangelion.anm2", sourceMod="Fiend Folio"})
+        table.insert(PSTAVessel.facesList, {path="gfx/characters/black_moon_evangelion.anm2", sourceMod="Fiend Folio"})
 
 		-- Accessories
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GMO_CORN, sourceMod="Fiend Folio"})
@@ -491,6 +491,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("Brain Implosion Energy Drink", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addRevItem("Sing-Along Buddy", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addRevItem("Treasure Scout Mouse", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addRevItem("Deep Reading", {PSTAVConstellationType.MUNDANE})
 
         PSTAVessel_addRevItem("Impulse to Destroy", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRevItem("Blood Gem", {PSTAVConstellationType.DEMONIC})
@@ -533,7 +534,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRepItem("The Cross of Chaos", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRepItem("Magic Pen", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addRepItem("Cherubim", {PSTAVConstellationType.DIVINE})
-        PSTAVessel_addRepItem("Mother's Love", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRepItem("Mother's Love", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.DIVINE})
         PSTAVessel_addRepItem("Friendly Sack", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addRepItem("2+1", {PSTAVConstellationType.MERCANTILE})
         PSTAVessel_addRepItem("Enraged Soul", {PSTAVConstellationType.DEMONIC})
@@ -689,7 +690,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRetItem("Weltling Sac", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addRetItem("Friend Folio", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addRetItem("Beeconomy", {PSTAVConstellationType.MUTAGENIC})
-        PSTAVessel_addRetItem("Brownie", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRetItem("Brownie", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addRetItem("Conjunctivitis", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addRetItem("Milk of Baphomet", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addRetItem("Devil's Tooth", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MUTAGENIC})
@@ -1568,6 +1569,66 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_lazarus_01.anm2", sourceMod="Alternate Hairstyles"})
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/extrahair_maggy_01.anm2", sourceMod="Alternate Hairstyles"})
     end
+
+	-- Restored Collection
+	if RestoredCollection then
+		-- Items
+        local function PSTAVessel_addRcItem(rcItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(rcItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Restored Collection item '" .. rcItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Restored Collection")
+        end
+		PSTAVessel_addRcItem("Stone Bombs", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRcItem("Blank Bombs", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRcItem("Checked Mate", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRcItem("​Donkey Jawbone", {PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addRcItem("Lucky Seven", {PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRcItem("Beth's Heart", {PSTAVConstellationType.DIVINE})
+		PSTAVessel_addRcItem("Keeper's Rope", {PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRcItem("Pacifist", {PSTAVConstellationType.DIVINE})
+		PSTAVessel_addRcItem("Safety Bombs", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRcItem("Ol' Lopper", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRcItem("​Max's Head", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRcItem("​Pumpkin Mask", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addRcItem("​Tammy's Tail", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRcItem("Melted Candle", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.ELEMENTAL})
+
+		PSTAVessel_addRcItem("Lunchbox", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRcItem("Book of Despair", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addRcItem("Pill Crusher", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRcItem("​Voodoo Pin", {PSTAVConstellationType.OCCULT})
+	end
+
+	-- Rune Rooms
+	if RuneRooms then
+		-- Items
+        local function PSTAVessel_addRuneRoomItem(runeRoomItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(runeRoomItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Rune Rooms item '" .. runeRoomItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Rune Rooms")
+        end
+		PSTAVessel_addRuneRoomItem("Essence of Hagalaz", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRuneRoomItem("Essence of Jera", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRuneRoomItem("Essence of Ehwaz", {PSTAVConstellationType.COSMIC})
+		PSTAVessel_addRuneRoomItem("Essence of Dagaz", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.DIVINE})
+		PSTAVessel_addRuneRoomItem("Essence of Ansuz", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addRuneRoomItem("Essence of Perthro", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRuneRoomItem("Essence of Berkano", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRuneRoomItem("Essence of Algiz", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.DIVINE})
+		PSTAVessel_addRuneRoomItem("Essence of Gebo", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRuneRoomItem("Essence of Kenaz", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRuneRoomItem("Essence of Fehu", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRuneRoomItem("Essence of Othala", {PSTAVConstellationType.COSMIC}, 10)
+		PSTAVessel_addRuneRoomItem("Essence of Ingwaz", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addRuneRoomItem("Essence of Sowilo", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+
+	end
 
     PSTAVessel:sortConstellationItems()
     modCompatInit = true

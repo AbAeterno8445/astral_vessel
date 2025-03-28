@@ -98,7 +98,14 @@ function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost, so
         print("   Constellation types:", typesStr)
         return
     end
-    if not PSTAVessel:arrHasValue(tmpAddedItems, itemType) and itemCfg.Quality >= 0 and itemCfg.Quality <= 4 then
+    if itemCfg and itemCfg.Quality >= 4 then
+        print("[Astral Vessel] Warning: attempted to include item quality 4+ to starting item list.", "(" .. (extraCost or 0) .. ", " .. sourceMod .. ")")
+        local typesStr = ""
+        for _, tmpType in ipairs(itemCategories) do typesStr = typesStr .. tmpType .. " " end
+        print("   Constellation types:", typesStr)
+        return
+    end
+    if not PSTAVessel:arrHasValue(tmpAddedItems, itemType) and itemCfg.Quality >= 0 and itemCfg.Quality <= 3 then
         local newEntry = {
             item = itemType,
             types = itemCategories,
@@ -163,7 +170,7 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_LIL_DELIRIUM, {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT}},
         {CollectibleType.COLLECTIBLE_FATES_REWARD},
         {CollectibleType.COLLECTIBLE_JAR_OF_WISPS},
-        {CollectibleType.COLLECTIBLE_SOUL_LOCKET},
+        {CollectibleType.COLLECTIBLE_SOUL_LOCKET, nil, 4},
         {CollectibleType.COLLECTIBLE_BIBLE},
         {CollectibleType.COLLECTIBLE_CELTIC_CROSS},
         {CollectibleType.COLLECTIBLE_IMMACULATE_CONCEPTION},

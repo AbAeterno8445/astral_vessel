@@ -42,6 +42,11 @@ function PSTAVessel:onRoomClear()
         PSTAVessel.modCooldowns.roomClearIncubus = 600
     end
 
+    -- Mutagenic Tear node (Abomination mutagenic tree)
+    if PSTAVessel.modCooldowns.mutagenicTear > 0 then
+        PSTAVessel.modCooldowns.mutagenicTear = 0
+    end
+
     -- Boss room clear
     if roomType == RoomType.ROOM_BOSS then
         -- Mod: boss room soul conversion

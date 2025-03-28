@@ -156,5 +156,10 @@ function PSTAVessel:onNewLevel()
         PST:addModifiers({ sunRockBottomProc = false })
     end
 
+    -- Mod: % chance to spawn a friendly fly monster when killing enemies with at least X HP
+    if PST:getTreeSnapshotMod("flyFriendProcs", 0) > 0 then
+        PST:addModifiers({ flyFriendProcs = { value = 0, set = true } }, true)
+    end
+
     PSTAVessel.floorFirstUpdate = true
 end

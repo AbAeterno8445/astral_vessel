@@ -6,12 +6,6 @@ function PSTAVessel:onDeath(entity)
 
     local isFrozen = entity:HasEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
 
-    -- Blue spider death
-    if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == FamiliarVariant.BLUE_SPIDER then
-        print("+1")
-        PSTAVessel.roomBlueSpiderDeaths = PSTAVessel.roomBlueSpiderDeaths + 1
-    end
-
     if entity:IsActiveEnemy(true) and entity.Type ~= EntityType.ENTITY_BLOOD_PUPPY and not EntityRef(entity).IsFriendly and
     PST:getRoom():GetFrameCount() > 1 and not isFrozen then
         -- Mom death procs
@@ -203,6 +197,45 @@ function PSTAVessel:onDeath(entity)
                 newClot:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
                 PST:addModifiers({ vesselClotOnKillProcs = 1 }, true)
             end
+        end
+
+        -- Mod: % chance for monsters with at least 10 HP to drop a random poop pickup on death
+        tmpMod = PST:getTreeSnapshotMod("poopPickupOnKill", 0)
+        if tmpMod > 0 and entity.MaxHitPoints >= 10 and 100 * math.random() < tmpMod then
+            local tmpPoopType = PoopPickupSubType.POOP_SMALL
+            if math.random() < 0.3 then
+                tmpPoopType = PoopPickupSubType.POOP_BIG
+            end
+            local newPoop = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_POOP, tmpPoopType, entity.Position, RandomVector() * 3, nil)
+            newPoop:ToPickup().Timeout = 120
+        end
+
+        -- Mod: killing enemies has a % chance to grant you a leprosy orbital, up to 3 per room
+        tmpMod = PST:getTreeSnapshotMod("leprosyOrbital", 0)
+        if tmpMod > 0 and PST:getTreeSnapshotMod("leprosyOrbitalProcs", 0) < 3 and 100 * math.random() < tmpMod then
+            Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.LEPROSY, 0, player.Position, Vector.Zero, player)
+            PST:addModifiers({ leprosyOrbitalProcs = 1 }, true)
+        end
+
+        -- Caustic Bite node (Tarantula mutagenic constellation)
+        if PST:getTreeSnapshotMod("causticBite", false) and entity:HasEntityFlags(EntityFlag.FLAG_POISON) then
+            local totalSpiders = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_SPIDER)
+            if totalSpiders < 30 and 100 * math.random() < 0.33 then
+                for _=1,2 do
+                    player:ThrowBlueSpider(entity.Position, entity.Position + RandomVector() * 30)
+                end
+            end
+        end
+
+        -- Mod: % chance to spawn a friendly fly monster when killing enemies with at least X HP
+        tmpMod = PST:getTreeSnapshotMod("flyFriendOnKill", 0)
+        if tmpMod > 0 and entity.MaxHitPoints >= 25 - PST:getTreeSnapshotMod("flyFriendHP", 0) and PST:getTreeSnapshotMod("flyFriendProcs", 0) < 6 and
+        100 * math.random() < tmpMod then
+            local randFly = PSTAVessel.flyFriendsList[math.random(#PSTAVessel.flyFriendsList)]
+            local newFly = Isaac.Spawn(randFly[1], randFly[2] or 0, randFly[3] or 0, entity.Position, Vector.Zero, player)
+            newFly:AddCharmed(EntityRef(player), -1)
+            newFly:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
+            PST:addModifiers({ flyFriendProcs = 1 }, true)
         end
 
         -- NPC checks

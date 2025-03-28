@@ -72,4 +72,20 @@ function PSTAVessel:onUpdateHeartChecks(player)
         end
         PSTAVessel.updateTrackers.soulHearts = PSTAVessel:GetBlackHeartCount(player)
     end
+
+    -- Rotten heart updates
+    heartDiff = player:GetRottenHearts() - PSTAVessel.updateTrackers.rottenHearts
+    if heartDiff ~= 0 then
+        -- Lost rotten hearts
+        if heartDiff < 0 then
+            -- Mod: % chance to drop a rotten heart from you when losing rotten hearts, up to twice per room
+            local tmpMod = PST:getTreeSnapshotMod("dupeRottenOnHit", 0)
+            if tmpMod > 0 and PST:getTreeSnapshotMod("dupeRottenOnHitProcs", 0) < 2 and 100 * math.random() < tmpMod then
+                local newHeart = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN, player.Position, RandomVector() * 3, nil)
+                newHeart:ToPickup().Wait = 25
+                PST:addModifiers({ dupeRottenOnHitProcs = 1 }, true)
+            end
+        end
+        PSTAVessel.updateTrackers.rottenHearts = player:GetRottenHearts()
+    end
 end

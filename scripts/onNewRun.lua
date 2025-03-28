@@ -1,4 +1,5 @@
 function PSTAVessel:onNewRun(isContinued)
+    Isaac.DebugString("[Astral Vessel] Beginning run init...")
     local player = Isaac.GetPlayer()
     local isVessel = (player:GetPlayerType() == PSTAVessel.vesselType)
     PSTAVessel.tmpHairSprite = nil
@@ -165,4 +166,5 @@ function PSTAVessel:onNewRun(isContinued)
     PSTAVessel:onNewLevel()
     PSTAVessel:onNewRoom()
     PSTAVessel:save()
+    Isaac.DebugString("[Astral Vessel] Run init complete.")
 end
