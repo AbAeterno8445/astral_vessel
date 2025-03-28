@@ -47,6 +47,19 @@ function PSTAVessel:onRoomClear()
         PSTAVessel.modCooldowns.mutagenicTear = 0
     end
 
+    -- Mod: % chance to drop an additional coin, key or bomb when clearing a room without taking damage
+    tmpMod = PST:getTreeSnapshotMod("vesselSelfPickupDrops", 0) / (2 ^ PST:getTreeSnapshotMod("floorHitsReceived", 0))
+    if tmpMod > 0 and not playerGotHit and 100 * math.random() < tmpMod then
+        local randPicks = {
+            {PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY},
+            {PickupVariant.PICKUP_KEY, KeySubType.KEY_NORMAL},
+            {PickupVariant.PICKUP_BOMB, BombSubType.BOMB_NORMAL}
+        }
+        local tmpPos = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 20, true)
+        local newPick = randPicks[math.random(#randPicks)]
+        Isaac.Spawn(EntityType.ENTITY_PICKUP, newPick[1], newPick[2], tmpPos, Vector.Zero, nil)
+    end
+
     -- Boss room clear
     if roomType == RoomType.ROOM_BOSS then
         -- Mod: boss room soul conversion

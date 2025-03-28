@@ -24,6 +24,17 @@ function PSTAVessel:onNewRun(isContinued)
         return
     end
 
+    local itemPool = Game():GetItemPool()
+    -- Starting item addition func
+    local function PSTAVessel_addStartItem(item)
+        player:AddCollectible(item)
+        itemPool:RemoveCollectible(item)
+        -- Decrease transformation counters
+        for _, tmpForm in pairs(PlayerForm) do
+            player:IncrementPlayerFormCounter(tmpForm, -1)
+        end
+    end
+
     if isVessel then
         -- Apply constellation trees
         for _, tmpType in pairs(PSTAVConstellationType) do
@@ -54,16 +65,7 @@ function PSTAVessel:onNewRun(isContinued)
             vesselHair = PST:copyTable(PSTAVessel.charHair)
         }, true)
 
-        local itemPool = Game():GetItemPool()
-        -- Starting item addition func
-        local function PSTAVessel_addStartItem(item)
-            player:AddCollectible(item)
-            itemPool:RemoveCollectible(item)
-            -- Decrease transformation counters
-            for _, tmpForm in pairs(PlayerForm) do
-                player:IncrementPlayerFormCounter(tmpForm, -1)
-            end
-        end
+        
 
         -- Starting item loadout
         if #PSTAVessel.charStartItems > 0 then
@@ -80,83 +82,97 @@ function PSTAVessel:onNewRun(isContinued)
             end
         end
 
-        -- Walking Nullifier node (Voidborn cosmic constellation)
-        if PST:getTreeSnapshotMod("walkingNullifier", false) then
-            PSTAVessel_addStartItem(CollectibleType.COLLECTIBLE_VOID)
-            player:SetActiveCharge(6, ActiveSlot.SLOT_PRIMARY)
-        end
-
         PSTAVessel:applyCostumes()
+    end
 
-        -- Extra XP unlock
-        if PSTAVessel.charXPBonus > 0 then
-            PST:addModifiers({ xpgain = PSTAVessel.charXPBonus }, true)
+    -- Walking Nullifier node (Voidborn cosmic constellation)
+    if PST:getTreeSnapshotMod("walkingNullifier", false) then
+        PSTAVessel_addStartItem(CollectibleType.COLLECTIBLE_VOID)
+        player:SetActiveCharge(6, ActiveSlot.SLOT_PRIMARY)
+    end
+
+    -- Extra XP unlock
+    if PSTAVessel.charXPBonus > 0 then
+        PST:addModifiers({ xpgain = PSTAVessel.charXPBonus }, true)
+    end
+
+    -- Extra Obols
+    if PSTAVessel.charObolBonus > 0 then
+        PST:addModifiers({ obolsFound = PSTAVessel.charObolBonus }, true)
+    end
+
+    -- Starting trinket
+    local tmpMod = PST:getTreeSnapshotMod("vesselTrinket", 0)
+    if tmpMod > 0 then
+        if not PST:getTreeSnapshotMod("ingrainedPower", false) then
+            player:AddTrinket(tmpMod, false)
+        else
+            player:AddSmeltedTrinket(tmpMod, false)
         end
+    end
 
-        -- Extra Obols
-        if PSTAVessel.charObolBonus > 0 then
-            PST:addModifiers({ obolsFound = PSTAVessel.charObolBonus }, true)
+    -- Dark Decay node (Archdemon demonic constellation)
+    if PST:getTreeSnapshotMod("archdemonDarkDecay", false) then
+        PSTAVessel_addStartItem(CollectibleType.COLLECTIBLE_ABADDON)
+    end
+
+    -- Corpse Raiser node (Necromancer occult constellation)
+    if PST:getTreeSnapshotMod("corpseRaiser", false) then
+        PST:addModifiers({
+            corpseRaiserChoice1 = PSTAVessel.corpseRaiserChoice[1],
+            corpseRaiserChoice2 = PSTAVessel.corpseRaiserChoice[2],
+            corpseRaiserChoice3 = PSTAVessel.corpseRaiserChoice[3]
+        }, true)
+    end
+
+    -- Teardrop Charm node (God Of Fortune mercantile constellation)
+    if PST:getTreeSnapshotMod("teardropCharm", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_TEARDROP_CHARM)
+    end
+
+    -- Gold-Bound node (Greed mercantile constellation)
+    if PST:getTreeSnapshotMod("goldBound", false) then
+        player:AddMaxHearts(2)
+        player:AddHearts(2)
+    end
+
+    -- Smelted Myosotis node (Flower mundane constellation)
+    if PST:getTreeSnapshotMod("smeltedMyosotis", false) then
+        player:AddSmeltedTrinket(TrinketType.TRINKET_MYOSOTIS)
+    end
+
+    -- Mod: random stat % (+2% per node of this type)
+    tmpMod = PST:getTreeSnapshotMod("randomStatPerc", 0)
+    if tmpMod > 0 then
+        local tmpStatList = {}
+        for _=1,tmpMod do
+            local randStat = PST:getRandomStat()
+            if not tmpStatList[randStat .. "Perc"] then tmpStatList[randStat .. "Perc"] = 0 end
+            tmpStatList[randStat .. "Perc"] = tmpStatList[randStat .. "Perc"] + 2
         end
+        PST:addModifiers(tmpStatList, true)
+    end
 
-        -- Starting trinket
-        local tmpMod = PST:getTreeSnapshotMod("vesselTrinket", 0)
-        if tmpMod > 0 then
-            if not PST:getTreeSnapshotMod("ingrainedPower", false) then
-                player:AddTrinket(tmpMod, false)
-            else
-                player:AddSmeltedTrinket(tmpMod, false)
+    -- Mod: +1% to a random stat per full red heart you have at the beginning
+    tmpMod = PST:getTreeSnapshotMod("amalgamHPStat", 0)
+    if tmpMod > 0 then
+        for _=1,math.floor(player:GetHearts() / 2) do
+            local randStat = PST:getRandomStat()
+            PST:addModifiers({ [randStat .. "Perc"] = tmpMod }, true)
+        end
+    end
+
+    -- Mod: % chance to start with an additional coin, key or bomb. Above 100%, roll multiple times
+    tmpMod = PST:getTreeSnapshotMod("randPickupStart", 0)
+    if tmpMod > 0 then
+        while tmpMod > 0 do
+            if 100 * math.random() < tmpMod then
+                local randPick = math.random(3)
+                if randPick == 1 then player:AddCoins(1)
+                elseif randPick == 2 then player:AddKeys(1)
+                else player:AddBombs(1) end
             end
-        end
-
-        -- Dark Decay node (Archdemon demonic constellation)
-        if PST:getTreeSnapshotMod("archdemonDarkDecay", false) then
-            PSTAVessel_addStartItem(CollectibleType.COLLECTIBLE_ABADDON)
-        end
-
-        -- Corpse Raiser node (Necromancer occult constellation)
-        if PST:getTreeSnapshotMod("corpseRaiser", false) then
-            PST:addModifiers({
-                corpseRaiserChoice1 = PSTAVessel.corpseRaiserChoice[1],
-                corpseRaiserChoice2 = PSTAVessel.corpseRaiserChoice[2],
-                corpseRaiserChoice3 = PSTAVessel.corpseRaiserChoice[3]
-            }, true)
-        end
-
-        -- Teardrop Charm node (God Of Fortune mercantile constellation)
-        if PST:getTreeSnapshotMod("teardropCharm", false) then
-            player:AddSmeltedTrinket(TrinketType.TRINKET_TEARDROP_CHARM)
-        end
-
-        -- Gold-Bound node (Greed mercantile constellation)
-        if PST:getTreeSnapshotMod("goldBound", false) then
-            player:AddMaxHearts(2)
-            player:AddHearts(2)
-        end
-
-        -- Smelted Myosotis node (Flower mundane constellation)
-        if PST:getTreeSnapshotMod("smeltedMyosotis", false) then
-            player:AddSmeltedTrinket(TrinketType.TRINKET_MYOSOTIS)
-        end
-
-        -- Mod: random stat % (+2% per node of this type)
-        tmpMod = PST:getTreeSnapshotMod("randomStatPerc", 0)
-        if tmpMod > 0 then
-            local tmpStatList = {}
-            for _=1,tmpMod do
-                local randStat = PST:getRandomStat()
-                if not tmpStatList[randStat .. "Perc"] then tmpStatList[randStat .. "Perc"] = 0 end
-                tmpStatList[randStat .. "Perc"] = tmpStatList[randStat .. "Perc"] + 2
-            end
-            PST:addModifiers(tmpStatList, true)
-        end
-
-        -- Mod: +1% to a random stat per full red heart you have at the beginning
-        tmpMod = PST:getTreeSnapshotMod("amalgamHPStat", 0)
-        if tmpMod > 0 then
-            for _=1,math.floor(player:GetHearts() / 2) do
-                local randStat = PST:getRandomStat()
-                PST:addModifiers({ [randStat .. "Perc"] = tmpMod }, true)
-            end
+            tmpMod = tmpMod - 100
         end
     end
 

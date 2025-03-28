@@ -23,8 +23,6 @@ function PSTAVessel:onSlotUpdate(slot)
         local spentKeys = player:GetNumKeys() < lastResources.keys
         local spentBombs = player:GetNumBombs() < lastResources.bombs
 
-        local freeUse = false
-
         -- Shop donation machine
         if slot.Variant == SlotVariant.DONATION_MACHINE and spentCoins then
             -- Mod: % chance for donation machines to grant an additional random non-coin pickup on use
@@ -37,6 +35,14 @@ function PSTAVessel:onSlotUpdate(slot)
                 }
                 local randPickup = pickupTypes[math.random(#pickupTypes)]
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, randPickup[1], randPickup[2], slot.Position, RandomVector() * 3, nil)
+            end
+        -- Confessional
+        elseif slot.Variant == SlotVariant.CONFESSIONAL and spentHearts then
+            print("HERE")
+            -- Mod: % chance for Confessionals to return a red heart when used
+            local tmpMod = PST:getTreeSnapshotMod("confessRedReturn", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF, slot.Position, RandomVector() * 3, nil)
             end
         end
     end

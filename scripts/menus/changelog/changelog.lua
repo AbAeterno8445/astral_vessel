@@ -1,6 +1,7 @@
 function PSTAVessel:getChangelogList()
     local changelog = {
         "v0.1.3",
+        "- Added the following constellations: Choir (Divine), Mephit and Siren (Demonic), Self (Mundane), Rune and Lithomancer (Cosmic).",
         "- Increased max loadouts to 100, and added pagination to the loadouts submenu.",
         "- Implemented the Mutagenic constellation tree.",
         "- Improved loadouts display to show affinities + starting items on hover, as well as tinting the sprite to that loadout's character color.",

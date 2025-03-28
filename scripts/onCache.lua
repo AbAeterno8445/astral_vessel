@@ -169,6 +169,13 @@ function PSTAVessel:onCache(player, cacheFlag)
         dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpBonus * PST:getTreeSnapshotMod("lunarScionStacks", 1)
     end
 
+    -- Mod: temporary +% all stats when killing enemies afflicted with Hemoptysis' curse
+    if PSTAVessel.modCooldowns.mephitCurseKillBuff > 0 then
+        tmpMod = PST:getTreeSnapshotMod("mephitCurseKillBuff", 0)
+        local tmpStacks = PST:getTreeSnapshotMod("mephitCurseKillBuffStacks", 0)
+        dynamicMods.allstatsPerc = dynamicMods.allstatsPerc + tmpMod * tmpStacks
+    end
+
     ---- Stat modifier application ----
     local allstats = dynamicMods.allstats
     local allstatsPerc = dynamicMods.allstatsPerc

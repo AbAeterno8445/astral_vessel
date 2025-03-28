@@ -159,6 +159,20 @@ function PSTAVessel:onNewRoom()
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_TELESCOPE_LENS, tmpPos, Vector.Zero, nil)
                 PST:addModifiers({ treasureTeleLensProcs = 1 }, true)
             end
+
+            -- Mod: % chance for a random item in treasure rooms to cycle between it and a familiar item
+            tmpMod = PST:getTreeSnapshotMod("treasureFamItem", 0)
+            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                local roomItems = Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE)
+                for _, tmpItem in ipairs(roomItems) do
+                    if not PSTAVessel:arrHasValue(PST.progressionItems, tmpItem.SubType) then
+                        local tmpFamList = {table.unpack(PST.songOfTheFewFamiliars, PST.sirenDissonanceFamiliars)}
+                        local newFamItem = Game():GetItemPool():GetCollectibleFromList(tmpFamList)
+                        tmpItem:ToPickup():AddCollectibleCycle(newFamItem)
+                        break
+                    end
+                end
+            end
         -- Curse Room
         elseif roomType == RoomType.ROOM_CURSE then
             -- Mod: % chance for the curse room to contain an additional red chest
@@ -370,5 +384,30 @@ function PSTAVessel:onNewRoom()
             end
         end
         PST:addModifiers({ suzerainSwarmProc = false }, true)
+    end
+
+    -- Mod: % chance to spawn a random rune or soul stone when first entering a secret room
+    tmpMod = PST:getTreeSnapshotMod("secretRoomRune", 0)
+    if tmpMod > 0 and (roomType == RoomType.ROOM_SECRET or roomType == RoomType.ROOM_SUPERSECRET or roomType == RoomType.ROOM_ULTRASECRET) then
+        local soulChance = 0.15
+        if roomType == RoomType.ROOM_SUPERSECRET then
+            tmpMod = tmpMod * 2
+            soulChance = 0.3
+        elseif roomType == RoomType.ROOM_ULTRASECRET then
+            tmpMod = tmpMod * 4
+            soulChance = 0.5
+        end
+        if 100 * math.random() < tmpMod then
+            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+            if math.random() < soulChance then
+                -- Random Soulstone
+                local newSoulstone = PST:getMatchingSoulstone(nil)
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newSoulstone, tmpPos, Vector.Zero, nil)
+            else
+                -- Random Rune
+                local newRune = PST.allRune[math.random(#PST.allRunes)]
+                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newRune, tmpPos, Vector.Zero, nil)
+            end
+        end
     end
 end

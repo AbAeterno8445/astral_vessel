@@ -38,6 +38,15 @@ function PSTAVessel:onUpdate()
             PST:updateCacheDelayed(CacheFlag.CACHE_SPEED)
         end
 
+        -- Mod: % chance to spawn a Confessional when entering a floor
+        tmpMod = PST:getTreeSnapshotMod("floorConfessional", 0)
+        if tmpMod > 0 and 100 * math.random() < tmpMod then
+            local tmpPos = room:GetCenterPos() + Vector(120, -80)
+            Isaac.Spawn(EntityType.ENTITY_SLOT, SlotVariant.CONFESSIONAL, 0, Isaac.GetFreeNearPosition(tmpPos, 20), Vector.Zero, nil)
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, tmpPos, Vector.Zero, nil)
+            SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN)
+        end
+
         -- On first floor
         if PST:isFirstOrigStage() then
             -- Spindown Angle node (Dark Gambler occult constellation)
@@ -114,6 +123,39 @@ function PSTAVessel:onUpdate()
 
                 local tmpMsg = extraProc and "Shuffling Form (+1)" or "Shuffling Form"
                 PST:createFloatTextFX(tmpMsg, Vector.Zero, Color(math.random(), math.random(), math.random()), 0.13, 100, true)
+            end
+
+            -- Mod: +% to the lowest stat for this floor
+            tmpMod = PST:getTreeSnapshotMod("floorLowestBuff", 0)
+            if tmpMod > 0 then
+                -- Remove previous buff if applied
+                local tmpBuff = PST:getTreeSnapshotMod("floorLowestBuffStat", nil)
+                if tmpBuff then
+                    local tmpBuffVal = PST:getTreeSnapshotMod("floorLowestBuffVal", 0)
+                    PST:addModifiers({
+                        [tmpBuff] = -tmpBuffVal,
+                        floorLowestBuffVal = { value = 0, set = true }
+                    }, true)
+                end
+                local statList = {
+                    damagePerc = player.Damage - 3,
+                    rangePerc = player.TearRange / 40 - 7,
+                    tearsPerc = 30 / (player.MaxFireDelay + 1) - 3,
+                    speedPerc = player.MoveSpeed - 1
+                }
+                local lowestStat
+                local lowestVal = 1000
+                for statName, statVal in ipairs(statList) do
+                    if statVal < lowestVal then
+                        lowestStat = statName
+                        lowestVal = statVal
+                    end
+                end
+                PST:addModifiers({
+                    floorLowestBuffStat = lowestStat,
+                    floorLowestBuffVal = tmpMod,
+                    [lowestStat] = tmpMod
+                }, true)
             end
         end
     end
@@ -317,6 +359,11 @@ function PSTAVessel:onUpdate()
                     newTear:ToTear().FallingAcceleration = 0.01
                     newTear:ToTear().FallingSpeed = -10
                     newTear.CollisionDamage = math.min(80, player.Damage)
+                end
+                -- Mod: temporary +% all stats when killing enemies afflicted with Hemoptysis' curse
+                if modName == "mephitCurseKillBuff" then
+                    PST:addModifiers({ mephitCurseKillBuffStacks = { value = 0, set = true } }, true)
+                    PST:updateCacheDelayed()
                 end
             end
         end

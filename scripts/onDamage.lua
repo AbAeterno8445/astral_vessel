@@ -396,6 +396,18 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                             PSTAVessel.modCooldowns.causticBite = 15
                         end
                     end
+
+                    -- Mod: % chance to charm enemies on hit per familiar you have
+                    tmpMod = PST:getTreeSnapshotMod("sirenCharmBuff", 0) * PST:getTreeSnapshotMod("totalFamiliars", 0)
+                    if tmpMod > 0 and 100 * math.random() < tmpMod then
+                        target:AddCharmed(EntityRef(srcPlayer), 90)
+                    end
+
+                    -- Mod: inflict Hemoptysis' curse on hit for the first X seconds of a room
+                    tmpMod = PST:getTreeSnapshotMod("tempHemoCurseHit", 0)
+                    if tmpMod > 0 and Game():GetRoom():GetFrameCount() <= tmpMod * 30 then
+                        target:AddBrimstoneMark(EntityRef(srcPlayer), 150)
+                    end
                 end
 
                 -- Mod: % chance for creep to poison enemies on hit

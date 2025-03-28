@@ -24,7 +24,8 @@ PSTAVessel.modCooldowns = {
     vesselFliesSpeed = 0,
     poisonHitMucor = 0,
     mutagenicTear = 0,
-    causticBite = 0
+    causticBite = 0,
+    mephitCurseKillBuff = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0,

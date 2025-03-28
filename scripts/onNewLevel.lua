@@ -161,5 +161,11 @@ function PSTAVessel:onNewLevel()
         PST:addModifiers({ flyFriendProcs = { value = 0, set = true } }, true)
     end
 
+    -- Mod: +% stats for the current floor when using a rune
+    tmpMod = PST:getTreeSnapshotMod("divinatorRuneBuffApplied", 0)
+    if tmpMod > 0 then
+        PST:addModifiers({ allstatsPerc = -tmpMod, divinatorRuneBuffApplied = { value = 0, set = true } }, true)
+    end
+
     PSTAVessel.floorFirstUpdate = true
 end

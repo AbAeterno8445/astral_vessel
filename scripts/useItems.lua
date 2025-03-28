@@ -80,6 +80,22 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
                     end
                 end
             end
+
+            -- Mod: % chance to charm all enemies in the room when using an active with at least 2 charges
+            tmpMod = PST:getTreeSnapshotMod("sirenActiveCharm", 0)
+            if tmpMod > 0 and isNormalCharge and usedCharges >= 2 then
+                local tmpChance = tmpMod + (usedCharges - 2) * 10
+                if 100 * math.random() < tmpChance then
+                    local roomEnts = Isaac.GetRoomEntities()
+                    for _, tmpEnt in ipairs(roomEnts) do
+                        local tmpNPC = tmpEnt:ToNPC()
+                        if tmpNPC and tmpNPC:IsActiveEnemy(false) and tmpNPC:IsVulnerableEnemy() and not EntityRef(tmpNPC).IsFriendly then
+                            tmpNPC:AddCharmed(EntityRef(player), 180)
+                        end
+                    end
+                    SFXManager():Play(SoundEffect.SOUND_SIREN_SING, 0.75, 2, false, 0.85 + 0.25 * math.random())
+                end
+            end
         end
     end
 end
