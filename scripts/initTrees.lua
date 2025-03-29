@@ -182,6 +182,25 @@ function PSTAVessel:initVesselTree()
                 table.insert(newDesc, {"(New!)", PST.kcolors.LIGHTBLUE1})
             end
             return { name = descName, description = newDesc }
+        -- Tonic of Forgetfulness, respec cost calc
+        elseif descName == "Tonic Of Forgetfulness" then
+            newDesc = {table.unpack(tmpDescription)}
+            local tonicTree
+            if reqs and reqs.vesselTonic then
+                tonicTree = "Astral Vessel " .. reqs.vesselTonic
+            end
+            if tonicTree then
+                local allocNodes = 0
+                local tmpTree = PST.trees[tonicTree]
+                for nodeID, nodeData in pairs(tmpTree) do
+                    if not (nodeData.reqs and nodeData.reqs.noSP) and PST:isNodeAllocated(tonicTree, nodeID) then
+                        allocNodes = allocNodes + 1
+                    end
+                end
+                table.insert(newDesc, "Respeccing: " .. reqs.vesselTonic .. " tree.")
+                table.insert(newDesc, "Respec cost: " .. allocNodes)
+            end
+            return { name = descName, description = newDesc }
         end
     end
     PST:addExtraNodeDescFunc("avesselConst", PSTAVessel_constNodeDesc)

@@ -206,6 +206,7 @@ return [[
 "278": "{\"pos\":[-15,-8],\"type\":5030,\"size\":\"Small\",\"name\":\"Starting Luck\",\"description\":[\"+0.1 starting luck.\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[281],\"reqs\":{\"vesselBaseConst\":\"Choir\"},\"customID\":\"astralvessel\"}",
 "279": "{\"pos\":[-14,-9],\"type\":5030,\"size\":\"Small\",\"name\":\"Starting Luck\",\"description\":[\"+0.1 starting luck.\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[281],\"reqs\":{\"vesselBaseConst\":\"Choir\"},\"customID\":\"astralvessel\"}",
 "280": "{\"pos\":[-13,-8],\"type\":5030,\"size\":\"Small\",\"name\":\"Starting Luck\",\"description\":[\"+0.1 starting luck.\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[281],\"reqs\":{\"vesselBaseConst\":\"Choir\"},\"customID\":\"astralvessel\"}",
-"281": "{\"pos\":[-14,-8],\"type\":5030,\"size\":\"Small\",\"name\":\"Starting Luck\",\"description\":[\"+0.1 starting luck.\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[277,279,278,280],\"reqs\":{\"vesselBaseConst\":\"Choir\"},\"customID\":\"astralvessel\"}"
+"281": "{\"pos\":[-14,-8],\"type\":5030,\"size\":\"Small\",\"name\":\"Starting Luck\",\"description\":[\"+0.1 starting luck.\"],\"modifiers\":{\"luck\":0.1},\"adjacent\":[277,279,278,280],\"reqs\":{\"vesselBaseConst\":\"Choir\"},\"customID\":\"astralvessel\"}",
+"282": "{\"pos\":[0,1],\"type\":5304,\"size\":\"Large\",\"name\":\"Tonic Of Forgetfulness\",\"description\":[\"Can be allocated for free.\",\"Once allocated, hover over this node and hold Allocate for 3 seconds to respec this\",\"entire tree.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true,\"vesselTonic\":\"Divine\"},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
 }
 ]]
