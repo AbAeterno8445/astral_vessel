@@ -1,7 +1,0 @@
-<sounds root="sfx/">
-    <sound name="Siren Hurt (PSTAVessel)">
-		<sample weight="1" path="Player/siren hurt 1.wav"/>
-		<sample weight="1" path="Player/siren hurt 2.wav"/>
-		<sample weight="1" path="Player/siren hurt 3.wav"/>
-	</sound>
-</sounds>

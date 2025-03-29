@@ -1,0 +1,7 @@
+<sounds root="sfx/">
+    <sound name="Siren Hurt (PSTAVessel)">
+		<sample weight="1" path="player/avessel_sirenhurt1.wav"/>
+		<sample weight="1" path="player/avessel_sirenhurt2.wav"/>
+		<sample weight="1" path="player/avessel_sirenhurt3.wav"/>
+	</sound>
+</sounds>

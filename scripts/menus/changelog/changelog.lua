@@ -1,5 +1,9 @@
 function PSTAVessel:getChangelogList()
     local changelog = {
+        "v0.2.1",
+        "- Fix Siren Hit sfx not playing.",
+        "",
+
         "v0.2.0",
         "- Public beta release.",
         "",
