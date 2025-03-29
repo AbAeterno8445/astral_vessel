@@ -11,6 +11,7 @@ include("scripts.menus.nexus.nexusMenu")
 include("scripts.menus.changelog.changelogMenu")
 include("scripts.menus.loadoutSubmenu")
 include("scripts.menus.corpseRaiserSubmenu")
+include("scripts.menus.customSFX.customSFXSubmenu")
 include("scripts.modCompat")
 
 include("scripts.costumes")
@@ -31,6 +32,7 @@ include("scripts.slots")
 include("scripts.entities")
 include("scripts.rendering")
 include("scripts.useCardsPills")
+include("scripts.sounds")
 include("scripts.consoleCommands")
 
 local initFlag = false
@@ -53,6 +55,7 @@ function PSTAVessel:initMod()
     PSTAVessel:initChangelogMenu()
     PSTAVessel:initLoadoutSubmenu()
     PSTAVessel:initCorpseRaiserSubmenu()
+    PSTAVessel:initCustomSFXSubmenu()
     PSTAVessel:initModCompat()
     PSTAVessel:initExtraPSTFuncs()
 
@@ -98,6 +101,7 @@ function PSTAVessel:initMod()
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, PSTAVessel.onPickupUpdate)
     PSTAVessel:AddCallback(ModCallbacks.MC_PLAYER_GET_HEALTH_TYPE, PSTAVessel.playerHealthType)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_RENDER, PSTAVessel.onRender)
+    PSTAVessel:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PSTAVessel.preSFXPlay)
 
     -- Entity debug
     --[[PSTAVessel:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, function(self, entityType, variant, subtype)

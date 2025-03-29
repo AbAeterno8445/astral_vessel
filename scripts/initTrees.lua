@@ -13,7 +13,8 @@ local AVesselTree = [[
 "27": "{\"pos\":[0,0],\"type\":5002,\"size\":\"Large\",\"name\":\"Stellar Nexus\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to pick your starting items.\",\"Items are divided into categories matching constellation types, and require affinity with\",\"those constellations to choose.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}",
 "28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "29": "{\"pos\":[-2,-4],\"type\":5239,\"size\":\"Large\",\"name\":\"Astral Vessel Changelog\",\"description\":[\"Press Allocate to open the changelog display.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"30": "{\"pos\":[2,-1],\"type\":5062,\"size\":\"Large\",\"name\":\"Mutagenic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mutagenic Constellations tree.\",\"This tree contains nodes that grant mutation/disease themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
+"30": "{\"pos\":[2,-1],\"type\":5062,\"size\":\"Large\",\"name\":\"Mutagenic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mutagenic Constellations tree.\",\"This tree contains nodes that grant mutation/disease themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
+"31": "{\"pos\":[2,-4],\"type\":5303,\"size\":\"Large\",\"name\":\"Custom Hurt Sound\",\"description\":[\"Press Allocate to customize your on-hit and on-death sound effects.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
 }
 ]]
 
@@ -280,6 +281,12 @@ function PSTAVessel:initVesselTree()
     -- Submenu-opening nodes
     PST:addSubmenuOpenNode("Vessel Loadouts", PSTAVessel.loadoutSubmenuID)
     PST:addSubmenuOpenNode("Corpse Raiser", PSTAVessel.corpseRaiserSubmenuID)
+    PST:addSubmenuOpenNode("Custom Hurt Sound", PSTAVessel.customSFXSubmenuID)
+
+    -- Save when closing PST tree
+    PST:addCloseTreeExtraFunc("avesselCloseTree", function()
+        PSTAVessel:save()
+    end)
 
     -- Init constellation trees
     for tmpType, treeData in pairs(constTreeBanks) do

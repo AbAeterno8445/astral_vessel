@@ -22,6 +22,10 @@ function PSTAVessel:initCorpseRaiserSubmenu()
         end
     end
 
+    function corpseRaiserSubmenu:OnClose()
+        PSTAVessel:save()
+    end
+
     function corpseRaiserSubmenu:Update()
         -- Input: Allocate
         if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then

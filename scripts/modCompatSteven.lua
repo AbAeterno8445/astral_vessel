@@ -169,6 +169,11 @@ local tfStevenEmpyreanDialogues = {
         {
             "come on, hideous monster",
             "do your worst"
+        },
+        {
+            "oh, gross...",
+            "you're WAY past your expiration date",
+            "if you give me food poisoning, it's your fault"
         }
     },
     ["Baphomet"] = {
@@ -184,7 +189,13 @@ local tfStevenEmpyreanDialogues = {
         {
             "woah, you're quite bright aren't you?",
             "...i mean, luminosity wise",
-            "blindingly bright"
+            "blindingly bright",
+            "...it's starting to hurt, hurry up"
+        },
+        {
+            "OWWWWWWWWW",
+            "MY EYES",
+            "GET IN BEFORE I GO BLIND"
         }
     },
     ["Dragonfly"] = {
@@ -193,6 +204,13 @@ local tfStevenEmpyreanDialogues = {
             "as per usual, i imagine",
             "let me show you a time and place",
             "where you can fly around to your heart's content"
+        },
+        {
+            "wow, you're loud",
+            "well, not you specifically",
+            "but the thousands of flies surrounding you",
+            "...how do you sleep?",
+            "does it just fade into white noise at some point?"
         }
     },
     ["Ballistomycete"] = {
@@ -201,6 +219,30 @@ local tfStevenEmpyreanDialogues = {
             "disgusting",
             "whatever vile higher up came up with you fungi",
             "couldn't have been right in the head"
+        }
+    },
+    ["Archangel"] = {
+        {
+            "you angel types",
+            "always saying to be not afraid",
+            "maybe we should be",
+            "see for yourself"
+        }
+    },
+    ["Tarantula"] = {
+        {
+            "am i really about to eat a spider",
+            "...",
+            "i hear it's a delicacy in cambodia",
+            "get in here before i change my mind"
+        }
+    },
+    ["God Of Fortune"] = {
+        {
+            "you know",
+            "you're not as lucky as you claim",
+            "if you were REALLY lucky...",
+            "you wouldn't be trapped down here in the first place"
         }
     }
 }

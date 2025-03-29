@@ -25,7 +25,8 @@ PSTAVessel.modCooldowns = {
     poisonHitMucor = 0,
     mutagenicTear = 0,
     causticBite = 0,
-    mephitCurseKillBuff = 0
+    mephitCurseKillBuff = 0,
+    playerDmgWindow = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0,
@@ -70,6 +71,10 @@ function PSTAVessel:initCharData()
     PSTAVessel.charFace = nil
     PSTAVessel.charAccessories = {}
     PSTAVessel.charStartItems = {}
+    PSTAVessel.charHurtSFX = SoundEffect.SOUND_ISAAC_HURT_GRUNT
+    PSTAVessel.charDeathSFX = SoundEffect.SOUND_ISAACDIES
+    PSTAVessel.charHurtPitch = 1
+    PSTAVessel.charHurtRandpitch = false
 
     PSTAVessel.corpseRaiserChoice = {1, 1, 1}
 end
@@ -414,4 +419,21 @@ PSTAVessel.corpseRaiserSummons3 = { -- Floors 10+
     {EntityType.ENTITY_CHARGER, 3, 11, {"Move Hori"}},
     {EntityType.ENTITY_CLICKETY_CLACK, 0, 5},
     {EntityType.ENTITY_REVENANT, 0, 3}
+}
+
+PSTAVessel.customHurtSFX = {
+    SoundEffect.SOUND_ISAAC_HURT_GRUNT, SoundEffect.SOUND_BABY_HURT, SoundEffect.SOUND_CUTE_GRUNT, SoundEffect.SOUND_FAMINE_GRUNT,
+    SoundEffect.SOUND_MONSTER_GRUNT_4, SoundEffect.SOUND_MONSTER_GRUNT_5, SoundEffect.SOUND_SPIDER_SPIT_ROAR, SoundEffect.SOUND_BOSS_LITE_ROAR,
+    SoundEffect.SOUND_WEIRD_WORM_SPIT, SoundEffect.SOUND_ULTRA_GREED_SPIT, SoundEffect.SOUND_LARYNX_SCREAM_LO, SoundEffect.SOUND_LITTLE_HORN_COUGH,
+    SoundEffect.SOUND_WHEEZY_COUGH, SoundEffect.SOUND_BUMBINO_SNAP_OUT, SoundEffect.SOUND_GLASS_BREAK, SoundEffect.SOUND_POT_BREAK_2,
+    SoundEffect.SOUND_BONE_BREAK, SoundEffect.SOUND_WOOD_PLANK_BREAK, SoundEffect.SOUND_DOGMA_TV_BREAK, SoundEffect.SOUND_ROCK_CRUMBLE,
+    SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, SoundEffect.SOUND_BISHOP_HIT, SoundEffect.SOUND_BULB_FLASH, SoundEffect.SOUND_EDEN_GLITCH,
+    SoundEffect.SOUND_JELLY_BOUNCE, SoundEffect.SOUND_POISON_HURT, SoundEffect.SOUND_LIGHTBOLT_CHARGE
+}
+PSTAVessel.customDeathSFX = {
+    SoundEffect.SOUND_ISAACDIES, SoundEffect.SOUND_SPIDER_COUGH, SoundEffect.SOUND_DOGMA_SCREAM, SoundEffect.SOUND_LARYNX_SCREAM_HI,
+    SoundEffect.SOUND_LARYNX_SCREAM_MED, SoundEffect.SOUND_THE_FORSAKEN_SCREAM, SoundEffect.SOUND_DOGMA_DEATH, SoundEffect.SOUND_PESTILENCE_DEATH,
+    SoundEffect.SOUND_GOODEATH, SoundEffect.SOUND_FAMINE_DEATH_2, SoundEffect.SOUND_MEATY_DEATHS, SoundEffect.SOUND_BUMBINO_DEATH,
+    SoundEffect.SOUND_POT_BREAK_2, SoundEffect.SOUND_MIRROR_BREAK, SoundEffect.SOUND_ROCK_CRUMBLE, SoundEffect.SOUND_INHALE,
+    SoundEffect.SOUND_BULB_FLASH, SoundEffect.SOUND_ANGEL_BEAM
 }

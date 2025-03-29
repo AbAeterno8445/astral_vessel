@@ -7,6 +7,11 @@ function PSTAVessel:onDamage(target, damage, flag, source)
     local player = target:ToPlayer()
     -- Player got hit
     if player then
+        -- 'Damage window' (e.g. for hurt SFX switching)
+        if player:GetPlayerType() == PSTAVessel.vesselType then
+            PSTAVessel.modCooldowns.playerDmgWindow = 10
+        end
+
         -- True Eternal node (Archangel divine constellation)
         if PST:getTreeSnapshotMod("trueEternal", false) and player:GetEternalHearts() > 0 then
             PSTAVessel.trueEternalHitProc = true
