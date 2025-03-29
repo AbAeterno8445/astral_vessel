@@ -206,9 +206,9 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
         PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.LIGHTBLUE1)
     end
 
-    local tmpStr = "Bear in mind certain costumes might override each other in-game."
+    local tmpStr = "Bear in mind certain costumes might override each other in-game (consider starting items as well)."
     tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
-    tmpTextY = tmpTextY + 90
+    tmpTextY = tmpDrawY + 90
     PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
     tmpTextY = tmpTextY + 10
 

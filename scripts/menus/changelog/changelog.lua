@@ -2,11 +2,14 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "v0.1.3",
         "- Added the following constellations: Choir (Divine), Mephit and Siren (Demonic), Self (Mundane), Rune and Lithomancer (Cosmic).",
-        "- Increased max loadouts to 100, and added pagination to the loadouts submenu.",
+        "- Added a free 'Custom Hurt Sound' node to Vessel's main tree, which allows you to customize on-hit and on-death sound effects.",
         "- Implemented the Mutagenic constellation tree.",
+        "- Increased max loadouts to 100, and added pagination to the loadouts submenu.",
         "- Improved loadouts display to show affinities + starting items on hover, as well as tinting the sprite to that loadout's character color.",
         "- Further tweaking of saving/loading system to prevent cases of skillpoints going negative or over the character's level.",
-        "- Support for multiple Fiend Folio costumes.",
+        "- Adjusted how accessories are saved to prevent unintentional shifting when adding/removing mods or future compat.",
+        "- Further addition of various costumes and custom SFX.",
+        "- Fixed starting trinket nodes not locking other trinket nodes on allocation.",
         "",
 
         "v0.1.2",

@@ -8,6 +8,8 @@ function PSTAVessel:initCustomSFXSubmenu()
         menuX = 0,
         menuY = 0,
         hoveredChoice = nil,
+        hoveredSourceName = nil,
+        hoveredSourceMod = nil,
         hoveredButton = nil,
 
         -- "hurt" or "death"
@@ -86,10 +88,12 @@ function PSTAVessel:initCustomSFXSubmenu()
 
     function customSFXSubmenu:Render(tScreen, submenusModule)
         self.hoveredChoice = nil
+        self.hoveredSourceName = nil
+        self.hoveredSourceMod = nil
         self.hoveredButton = nil
-        local targetTable = PSTAVessel.customHurtSFX
+        local targetTable = PSTAVessel.customHurtSFXList
         if self.sfxMode == "death" then
-            targetTable = PSTAVessel.customDeathSFX
+            targetTable = PSTAVessel.customDeathSFXList
         end
 
         submenusModule:DrawNodeSubMenu(
@@ -99,7 +103,16 @@ function PSTAVessel:initCustomSFXSubmenu()
             self.menuX, self.menuY,
             "Custom Hurt SFX",
             function()
-                for i, targetSFX in ipairs(targetTable) do
+                for i, targetSFXData in ipairs(targetTable) do
+                    local targetSFX = targetSFXData
+
+                    local tmpSourceName = nil
+                    local tmpSourceMod = nil
+                    if type(targetSFXData) == "table" then
+                        targetSFX = targetSFXData[1]
+                        tmpSourceName = targetSFXData[2] or "Unknown SFX"
+                        tmpSourceMod = targetSFXData[3] or ""
+                    end
                     local drawX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32
                     local drawY = self.menuY * tScreen.zoomScale + 84 + math.floor((i - 1) / 5) * 32
 
@@ -109,6 +122,8 @@ function PSTAVessel:initCustomSFXSubmenu()
                         if tScreen.camCenterX > drawX - 16 and tScreen.camCenterX < drawX + 16 and
                         tScreen.camCenterY > drawY - 16 and tScreen.camCenterY < drawY + 16 then
                             self.hoveredChoice = targetSFX
+                            self.hoveredSourceName = tmpSourceName
+                            self.hoveredSourceMod = tmpSourceMod
                             tScreen.cursorHighlight = true
 
                             -- Fetch SFX name and cache it
@@ -122,7 +137,7 @@ function PSTAVessel:initCustomSFXSubmenu()
                                     end
                                 end
                                 if not assigned then
-                                    self.sfxNameCache[targetSFX] = "Unknown SFX"
+                                    self.sfxNameCache[targetSFX] = self.hoveredSourceName or "Unknown SFX"
                                 end
                             end
                         else
@@ -130,6 +145,15 @@ function PSTAVessel:initCustomSFXSubmenu()
                         end
                     else
                         self.sfxIcon.Color.A = 0.5
+                    end
+
+                    -- Mod compat icon color
+                    if tmpSourceMod then
+                        self.sfxIcon.Color.GO = 0.4
+                        self.sfxIcon.Color.BO = 0.6
+                    else
+                        self.sfxIcon.Color.GO = 0
+                        self.sfxIcon.Color.BO = 0
                     end
 
                     local finalDrawX = drawX - tScreen.treeCamera.X - tScreen.camZoomOffset.X
@@ -187,11 +211,14 @@ function PSTAVessel:initCustomSFXSubmenu()
 
         -- Hovered summon description box
         if self.hoveredChoice then
-            local sfxName = self.sfxNameCache[self.hoveredChoice] or "Unknown SFX"
+            local sfxName = self.sfxNameCache[self.hoveredChoice] or self.hoveredSourceName or "Unknown SFX"
             local sfxDesc = {
                 "Press Allocate to select this sound effect.",
                 "Press Respec to test it, using the current pitch config."
             }
+            if self.hoveredSourceMod then
+                table.insert(sfxDesc, {"Source mod: " .. self.hoveredSourceMod, PST.kcolors.LIGHTBLUE1})
+            end
             tScreen:DrawNodeBox(sfxName, sfxDesc)
         -- Hovered SFX mode button
         elseif self.hoveredButton == "mode" then

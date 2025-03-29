@@ -277,6 +277,16 @@ function PSTAVessel:initModCompat()
         -- Knife items
         table.insert(PSTAVessel.knifeItems, Epiphany.Item.DESCENT.ID)
         table.insert(PSTAVessel.knifeItems, Epiphany.Item.OLD_KNIFE.ID)
+
+        -- Hurt/Death SFX
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Guppy Giggle"), "Guppy Giggle", "Epiphany"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Eden Hurt"), "Tr. Eden Hurt", "Epiphany"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Keeper Hurt"), "Tr. Keeper Hurt", "Epiphany"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Lost Ghost Charge"), "Ghost Charge", "Epiphany"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Eden Dies"), "Tr. Eden Death", "Epiphany"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Keeper Dies"), "Tr. Keeper Death", "Epiphany"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Lost Ghost Charge Full"), "Ghost Charge Full", "Epiphany"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Death Roar"), "Death Roar", "Epiphany"})
     end
 
     -- Reverie
@@ -1114,6 +1124,9 @@ function PSTAVessel:initModCompat()
         -- Knife Items
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Misericorde"))
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Ceremonial Blade"))
+
+        -- Hurt/Death SFX
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("mandrake scream"), "Mandrake Scream", "Community Remix"})
     end
 
     -- Reshaken Vol 1
@@ -1226,6 +1239,16 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addAndItem("Extinction Event", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.COSMIC})
         PSTAVessel_addAndItem("Book of Cosmos", {PSTAVConstellationType.COSMIC})
         PSTAVessel_addAndItem("The Sporepedia", {PSTAVConstellationType.COSMIC})
+
+        -- Faces
+        table.insert(PSTAVessel.facesList, {path="gfx/characters/andromedabheadeyes.anm2", sourceMod="Andromeda"})
+        table.insert(PSTAVessel.facesList, {path="gfx/characters/andromedabheadeyes_blood.anm2", sourceMod="Andromeda"})
+
+        -- Hurt/Death SFX
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("AndromedaHurt"), "Andromeda Hurt", "Andromeda"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("TAndromedaHurt"), "T. Andromeda Hurt", "Andromeda"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("AndromedaDeath"), "Andromeda Death", "Andromeda"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("TAndromedaDeath"), "T. Andromeda Death", "Andromeda"})
     end
 
     -- Samael

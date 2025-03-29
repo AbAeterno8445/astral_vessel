@@ -188,7 +188,6 @@ PSTAVessel:updateUnlockData()
 PSTAVessel.hairstyles = {
     {path="none"},
     {path="gfx/characters/Character_002_MagdaleneHead.anm2"},
-    {path="gfx/characters/Character_002_MagdaleneHead.anm2"},
     {path="gfx/characters/Character_005_EveHead.anm2"},
     {path="gfx/characters/Character_007_SamsonHead.anm2"},
     {path="gfx/characters/Character_LazarusHair1.anm2"},
@@ -344,7 +343,6 @@ PSTAVessel:updateAccessoryMap()
 PSTAVessel.facesList = {
     {path="none"},
     {path="gfx/characters/faces/astralvessel/face_isaac.anm2"},
-    {path="gfx/characters/faces/astralvessel/face_isaac.anm2"},
     {path="gfx/characters/faces/astralvessel/face_isaac_nocry.anm2"},
     {path="gfx/characters/faces/astralvessel/face_3dollar.anm2"},
     {path="gfx/characters/faces/astralvessel/face_fruitcake.anm2"},
@@ -456,16 +454,17 @@ PSTAVessel.corpseRaiserSummons3 = { -- Floors 10+
     {EntityType.ENTITY_REVENANT, 0, 3}
 }
 
-PSTAVessel.customHurtSFX = {
+PSTAVessel.customHurtSFXList = {
     SoundEffect.SOUND_ISAAC_HURT_GRUNT, SoundEffect.SOUND_BABY_HURT, SoundEffect.SOUND_CUTE_GRUNT, SoundEffect.SOUND_FAMINE_GRUNT,
     SoundEffect.SOUND_MONSTER_GRUNT_4, SoundEffect.SOUND_MONSTER_GRUNT_5, SoundEffect.SOUND_SPIDER_SPIT_ROAR, SoundEffect.SOUND_BOSS_LITE_ROAR,
     SoundEffect.SOUND_WEIRD_WORM_SPIT, SoundEffect.SOUND_ULTRA_GREED_SPIT, SoundEffect.SOUND_LARYNX_SCREAM_LO, SoundEffect.SOUND_LITTLE_HORN_COUGH,
     SoundEffect.SOUND_WHEEZY_COUGH, SoundEffect.SOUND_BUMBINO_SNAP_OUT, SoundEffect.SOUND_GLASS_BREAK, SoundEffect.SOUND_POT_BREAK_2,
     SoundEffect.SOUND_BONE_BREAK, SoundEffect.SOUND_WOOD_PLANK_BREAK, SoundEffect.SOUND_DOGMA_TV_BREAK, SoundEffect.SOUND_ROCK_CRUMBLE,
     SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, SoundEffect.SOUND_BISHOP_HIT, SoundEffect.SOUND_BULB_FLASH, SoundEffect.SOUND_EDEN_GLITCH,
-    SoundEffect.SOUND_JELLY_BOUNCE, SoundEffect.SOUND_POISON_HURT, SoundEffect.SOUND_LIGHTBOLT_CHARGE
+    SoundEffect.SOUND_JELLY_BOUNCE, SoundEffect.SOUND_POISON_HURT, SoundEffect.SOUND_LIGHTBOLT_CHARGE,
+    {Isaac.GetSoundIdByName("Siren Hurt (PSTAVessel)"), "Siren Hit", "PST (unreleased)"}
 }
-PSTAVessel.customDeathSFX = {
+PSTAVessel.customDeathSFXList = {
     SoundEffect.SOUND_ISAACDIES, SoundEffect.SOUND_SPIDER_COUGH, SoundEffect.SOUND_DOGMA_SCREAM, SoundEffect.SOUND_LARYNX_SCREAM_HI,
     SoundEffect.SOUND_LARYNX_SCREAM_MED, SoundEffect.SOUND_THE_FORSAKEN_SCREAM, SoundEffect.SOUND_DOGMA_DEATH, SoundEffect.SOUND_PESTILENCE_DEATH,
     SoundEffect.SOUND_GOODEATH, SoundEffect.SOUND_FAMINE_DEATH_2, SoundEffect.SOUND_MEATY_DEATHS, SoundEffect.SOUND_BUMBINO_DEATH,

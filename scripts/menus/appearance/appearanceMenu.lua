@@ -263,7 +263,7 @@ function PSTAVessel:initAppearanceMenu()
 
             PST.miniFont:DrawString(tmpTab, drawX, 2, tmpColor, tabW, true)
         end
-        local tmpStr = "Press TAB or 1 2 3 4 nums to switch tabs"
+        local tmpStr = "Press TAB or 1 2 3 4 nums to switch tabs | Shift + V to rotate the character preview"
         PST.miniFont:DrawStringScaled(tmpStr, tScreen.screenW / 2 - PST.luaminiFont:GetStringWidth(tmpStr) / 4, tabH, 0.5, 0.5, PST.kcolors.WHITE)
     end
 end
