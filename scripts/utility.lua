@@ -43,6 +43,7 @@ function PSTAVessel:postPlayerUpdate(player)
         -- Custom hair color
         if PSTAVessel.tmpHairSprite then
             PSTAVessel.tmpHairSprite.Color = PSTAVessel:getRunVesselHairColor()
+            PSTAVessel.tmpHairSprite.Color.A = player:GetSprite().Color.A
         end
     end
 end
