@@ -1,5 +1,9 @@
 function PSTAVessel:getChangelogList()
     local changelog = {
+        "v0.2.2",
+        "- Fixed error on Mephit constellation when hitting enemies afflicted with Hemoptysis' curse.",
+        "",
+
         "v0.2.1",
         "- Fix Siren Hit sfx not playing.",
         "",

@@ -240,7 +240,7 @@ function PSTAVessel:onDeath(entity)
 
         -- Mod: temporary +% all stats when killing enemies inflicted with Hemoptysis' curse. Stacks up to 4x
         tmpMod = PST:getTreeSnapshotMod("mephitCurseKillBuff", 0)
-        if tmpMod > 0 and entity:HasEntityFlags(EntityFlag.FLAG_BRIMSTONE_MARKED) > 0 then
+        if tmpMod > 0 and entity:HasEntityFlags(EntityFlag.FLAG_BRIMSTONE_MARKED) then
             PSTAVessel.modCooldowns.mephitCurseKillBuff = 120
             if PST:getTreeSnapshotMod("mephitCurseKillBuffStacks", 0) < 4 then
                 PST:addModifiers({ mephitCurseKillBuffStacks = 1 }, true)
