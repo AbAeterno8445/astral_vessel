@@ -1657,6 +1657,148 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addRuneRoomItem("Essence of Sowilo", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
 	end
 
+    ---- Preyn's Collections ----
+	-- Cursed Collection
+	if CURCOL then
+		-- Items
+        local function PSTAVessel_addCurColItem(curColItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(curColItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Cursed Collection item '" .. curColItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Cursed Collection")
+        end
+		PSTAVessel_addCurColItem("Siren's call", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addCurColItem("Anathema", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addCurColItem("Pentacle", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addCurColItem("Fettered heart", {PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addCurColItem("Secretion", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addCurColItem("Revenir", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addCurColItem("Reverse of the tower", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addCurColItem("Papyrus rags", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addCurColItem("Chained spikey", {PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addCurColItem("Lil heretic", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addCurColItem("Mended knife", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
+
+		PSTAVessel_addCurColItem("Soul cleaver", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addCurColItem("Cursed flame", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.OCCULT})
+
+		-- Knife Items
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Soul cleaver"))
+        table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Mended knife"))
+	end
+
+	-- Quarry Collection
+	if QUACOL then
+		-- Items
+        local function PSTAVessel_addQuaColItem(quaColItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(quaColItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Quarry Collection item '" .. quaColItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Quarry Collection")
+        end
+		PSTAVessel_addQuaColItem("Gideon's gaze", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addQuaColItem("Limestone carving", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addQuaColItem("Premature detonation", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addQuaColItem("Singed stones", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addQuaColItem("Hot wheels", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addQuaColItem("Broken shell", {PSTAVConstellationType.ELEMENTAL})
+
+		PSTAVessel_addQuaColItem("Pile of bones", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addQuaColItem("Quake oats", {PSTAVConstellationType.ELEMENTAL})
+	end
+
+	-- Golden Collection
+	if GOLCG then
+		-- Items
+        local function PSTAVessel_addGolCgItem(golCgItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(golCgItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Golden Collection item '" .. golCgItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Golden Collection")
+		end
+        PSTAVessel_addGolCgItem("Temptation", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Gold rope", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Childrens fund", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Stolen placard", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Black card", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addGolCgItem("Abundance", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Fancy brooch", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Spinning cent", {PSTAVConstellationType.MERCANTILE})
+
+        PSTAVessel_addGolCgItem("Molten dime", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addGolCgItem("Golden god!", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Quality stamp", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Silver lacquered chisel", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addGolCgItem("Ancient hourglass", {PSTAVConstellationType.COSMIC})
+	end
+
+	-- Rotten Collection
+	if ROTCG then
+		-- Items
+        local function PSTAVessel_addRotCgItem(rotCgItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(rotCgItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Rotten Collection item '" .. rotCgItemName .. "' found (mod compat).")
+                return
+            end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Rotten Collection")
+		end
+		PSTAVessel_addRotCgItem("Necrosis", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRotCgItem("Knout", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRotCgItem("Cube of rot", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRotCgItem("Mother's spine", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRotCgItem("Rotten gut", {PSTAVConstellationType.MUTAGENIC})
+	end
+
+	-- Sewage Collection
+	if SEWCOL then
+        -- Items
+        local function PSTAVessel_addSewColItem(sewColItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(sewColItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Sewage Collection item '" .. sewColItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Sewage Collection")
+        end
+        PSTAVessel_addSewColItem("Haunted rose", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addSewColItem("Plastic bag", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addSewColItem("Slippy tooth", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addSewColItem("Whirling leech", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addSewColItem("Willo", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addSewColItem("Driftwood", {PSTAVConstellationType.ELEMENTAL})
+
+        PSTAVessel_addSewColItem("The pail", {PSTAVConstellationType.MUTAGENIC})
+	end
+
+	-- Toybox Collection
+	if TOYCG then
+		-- Items
+        local function PSTAVessel_addToyCgItem(toyCgItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(toyCgItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No Toybox Collection item '" .. toyCgItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Toybox Collection")
+		end
+		PSTAVessel_addToyCgItem("Ancestral assistance", {PSTAVConstellationType.DIVINE})
+		PSTAVessel_addToyCgItem("Old relic", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addToyCgItem("Jar of air", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addToyCgItem("Witch wand", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addToyCgItem("Sigil of knowledge", {PSTAVConstellationType.COSMIC})
+		PSTAVessel_addToyCgItem("Blank", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addToyCgItem("Wow factor!", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.ELEMENTAL})
+
+		PSTAVessel_addToyCgItem("Concussion", {PSTAVConstellationType.MUNDANE})
+	end
+
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true

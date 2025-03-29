@@ -4,6 +4,7 @@ function PSTAVessel:getChangelogList()
         "- Added the following constellations: Choir (Divine), Mephit and Siren (Demonic), Self (Mundane), Rune and Lithomancer (Cosmic).",
         "- Added a free 'Custom Hurt Sound' node to Vessel's main tree, which allows you to customize on-hit and on-death sound effects.",
         "- Added a free 'Tonic Of Forgetfulness' node to all constellation trees. This node allows respeccing the entire tree in one go.",
+        "- Support for Preyn's Collection mods (thanks wookywok!).",
         "- Implemented the Mutagenic constellation tree.",
         "- Increased max loadouts to 100, and added pagination to the loadouts submenu.",
         "- Improved loadouts display to show affinities + starting items on hover, as well as tinting the sprite to that loadout's character color.",
