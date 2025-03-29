@@ -193,7 +193,7 @@ end
 ---@param effect EntityEffect
 function PSTAVessel:exploMushroomUpdate(effect)
     -- Init setup
-    if not effect:GetData().PST_exploMushroomSetup then
+    if not PST:getEntData(effect).PST_exploMushroomSetup then
         -- Init random type if undefined
         if effect.SubType == 0 then
             effect.SubType = math.random(7)
@@ -207,7 +207,7 @@ function PSTAVessel:exploMushroomUpdate(effect)
         effect:GetSprite().PlaybackSpeed = 0.5 + 0.25 * math.random()
         effect.SpriteScale = Vector(0.4 + 0.25 * math.random(), 0.4 + 0.25 * math.random())
 
-        effect:GetData().PST_exploMushroomSetup = true
+        PST:getEntData(effect).PST_exploMushroomSetup = true
     else
         -- Death
         if effect:GetSprite():IsFinished() then

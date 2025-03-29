@@ -88,7 +88,7 @@ function PSTAVessel:onDeath(entity)
                         if existingSummons < newSummonData[3] then
                             local newSummon = Isaac.Spawn(newSummonData[1], newSummonData[2], 0, entity.Position, Vector.Zero, player)
                             newSummon:AddCharmed(EntityRef(player), -1)
-                            newSummon:GetData().PST_corpseRaised = true
+                            PST:getEntData(newSummon).PST_corpseRaised = true
                         end
                     end
                 end
@@ -130,14 +130,14 @@ function PSTAVessel:onDeath(entity)
             local newFire = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 0, entity.Position, Vector.Zero, player)
             newFire:ToEffect().Timeout = 150
             newFire.CollisionDamage = math.min(20, player.Damage / 2)
-            newFire:GetData().PST_mobDeathFire = true
+            PST:getEntData(newFire).PST_mobDeathFire = true
         end
 
         -- Mod: % chance for enemies to leave a poisonous cloud on death
         tmpMod = PST:getTreeSnapshotMod("poisonCloudOnDeath", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
             local newCloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, entity.Position, Vector.Zero, player)
-            newCloud:GetData().PST_poisonCloudOnDeath = true
+            PST:getEntData(newCloud).PST_poisonCloudOnDeath = true
             newCloud:ToEffect().Timeout = 150
         end
 
@@ -252,7 +252,7 @@ function PSTAVessel:onDeath(entity)
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
             -- Carrion Harvest node (Ritualist occult constellation)
-            if not tmpNPC:IsBoss() and entity:GetData().PST_carrionCurse then
+            if not tmpNPC:IsBoss() and PST:getEntData(entity).PST_carrionCurse then
                 if #PSTAVessel.carrionMobs < 3 then
                     table.insert(PSTAVessel.carrionMobs, {entity.Type, entity.Variant, entity.SubType, entity.MaxHitPoints})
                 else
@@ -320,8 +320,8 @@ function PSTAVessel:onDeath(entity)
                 newShard:ToTear():AddTearFlags(TearFlags.TEAR_SLOW | TearFlags.TEAR_ICE)
                 newShard:ToTear().FallingAcceleration = -0.1
                 newShard:ToTear().FallingSpeed = -0.1
-                newShard:GetData().PST_frozenMobIceShard = true
-                newShard:GetData().PST_iceShard = true
+                PST:getEntData(newShard).PST_frozenMobIceShard = true
+                PST:getEntData(newShard).PST_iceShard = true
             end
         end
 

@@ -170,7 +170,7 @@ function PSTAVessel:onUpdate()
                     local newCarrionMob = Isaac.Spawn(tmpMobData[1], tmpMobData[2], tmpMobData[3], player.Position, Vector.Zero, player)
                     newCarrionMob.Color = Color(0.4, 0.2, 0.75, 1)
                     newCarrionMob:AddCharmed(EntityRef(player), -1)
-                    newCarrionMob:GetData().PST_carrionHarvestMob = true
+                    PST:getEntData(newCarrionMob).PST_carrionHarvestMob = true
                 end
             end
         end
@@ -397,7 +397,7 @@ function PSTAVessel:onUpdate()
                     local tmpVel = Vector(10 * math.cos(tmpAng), 10 * math.sin(tmpAng))
                     local newSword = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, player.Position, tmpVel, player)
                     newSword.CollisionDamage = math.min(40, player.Damage)
-                    newSword:GetData().vesselPalaSword = true
+                    PST:getEntData(newSword).vesselPalaSword = true
                     newSword:ToTear():AddTearFlags(TearFlags.TEAR_SLOW)
                 end
                 SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 1, 2, false, 0.8)
@@ -409,8 +409,8 @@ function PSTAVessel:onUpdate()
                     local tmpVel = Vector(3 * math.cos(tmpAng), 3 * math.sin(tmpAng))
                     local newSword = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, player.Position, tmpVel, player)
                     newSword.CollisionDamage = math.min(40, player.Damage)
-                    newSword:GetData().vesselPalaSword = true
-                    newSword:GetData().swordstormOrbiter = true
+                    PST:getEntData(newSword).vesselPalaSword = true
+                    PST:getEntData(newSword).swordstormOrbiter = true
                     newSword:ToTear():AddTearFlags(TearFlags.TEAR_SLOW)
                 end
                 SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 1, 17, false, 1.1)
@@ -465,7 +465,7 @@ function PSTAVessel:onUpdate()
                         SFXManager():Play(SoundEffect.SOUND_FIREDEATH_HISS, 0.5, 2, false, 1.6)
                         local newFlame = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 1, player.Position, Vector.Zero, player)
                         newFlame:GetSprite():ReplaceSpritesheet(0, "gfx/effects/effect_005_fire_purple.png", true)
-                        newFlame:GetData().PST_ritualPurpleFlame = true
+                        PST:getEntData(newFlame).PST_ritualPurpleFlame = true
                         newFlame:ToEffect().Timeout = 240
                     -- Mod: summon orbiting, piercing fearing tears
                     elseif modName == "singularityFearTears" and 100 * math.random() < PST:getTreeSnapshotMod("singularityFearTears", 0) then
@@ -518,7 +518,7 @@ function PSTAVessel:onUpdate()
                 local newEmber = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.FIRE_MIND, 0, emberPos, tmpVel, player)
                 newEmber:ToTear().Scale = 0.8
                 newEmber.CollisionDamage = 2 + math.min(18, math.ceil(player.Damage * 0.75))
-                newEmber:GetData().PST_ember = true
+                PST:getEntData(newEmber).PST_ember = true
                 SFXManager():Play(SoundEffect.SOUND_CANDLE_LIGHT, 0.8, 2, false, 0.9 + 0.4 * math.random())
 
                 PSTAVessel.fusilladeEmbers = PSTAVessel.fusilladeEmbers - 1
@@ -561,7 +561,7 @@ function PSTAVessel:onUpdate()
             local tmpVel = Vector(math.cos(tmpAng) * 10, math.sin(tmpAng) * 10)
             local newFlame = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 0, player.Position, tmpVel, player)
             newFlame.CollisionDamage = math.max(6, math.min(20, player.Damage))
-            newFlame:GetData().PST_mobDeathFire = true
+            PST:getEntData(newFlame).PST_mobDeathFire = true
             newFlame:ToEffect().Timeout = 30
             SFXManager():Play(SoundEffect.SOUND_BEAST_FIRE_RING, 0.6, 2, false, 0.9 + 0.3 * math.random())
         end
@@ -577,7 +577,7 @@ function PSTAVessel:onUpdate()
             newShard:ToTear().Scale = 2 - (1 - PSTAVessel.modCooldowns.blizzardSnowstorm / 60)
             newShard:ToTear():AddTearFlags(TearFlags.TEAR_SLOW | TearFlags.TEAR_FREEZE)
             newShard.CollisionDamage = math.max(6, math.min(20, player.Damage))
-            newShard:GetData().PST_snowstormShard = true
+            PST:getEntData(newShard).PST_snowstormShard = true
             SFXManager():Play(SoundEffect.SOUND_FREEZE, 0.6, 2, false, 1.3 + 0.3 * math.random())
         end
         PSTAVessel.spiralAbilityAng = PSTAVessel.spiralAbilityAng + 0.2
@@ -670,14 +670,15 @@ end
 
 ---@param tear EntityTear
 function PSTAVessel:tearUpdate(tear)
+    local tearData = PST:getEntData(tear)
     -- Swordstorm sword tears
-    if tear:GetData().swordstormOrbiter then
+    if tearData.swordstormOrbiter then
         local tearAng = math.atan(tear.Velocity.Y, tear.Velocity.X) + 4
         tear:AddVelocity(Vector(-0.25 * math.cos(tearAng), -0.25 * math.sin(tearAng)))
     end
 
     -- Frozen enemy ice shards
-    if tear:GetData().PST_frozenMobIceShard then
+    if tearData.PST_frozenMobIceShard then
         local tearAng = math.atan(tear.Velocity.Y, tear.Velocity.X) + 8
         tear:AddVelocity(Vector(-0.25 * math.cos(tearAng), -0.25 * math.sin(tearAng)))
     end

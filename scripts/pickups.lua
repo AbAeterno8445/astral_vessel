@@ -260,19 +260,20 @@ function PSTAVessel:onPickupUpdate(pickup)
     if pickup.FrameCount == 1 then
         ---@type Room
         local room = PST:getRoom()
-        local isFirstSpawn = not pickup:GetData().PSTAVessel_init and not pickup:GetData().PST_duped and (room:IsFirstVisit() or room:GetFrameCount() > 1)
+        local pickupData = PST:getEntData(pickup)
+        local isFirstSpawn = not pickupData.PSTAVessel_init and not pickupData.PST_duped and (room:IsFirstVisit() or room:GetFrameCount() > 1)
         PSTAVessel:onPickupInit(pickup, isFirstSpawn)
-        pickup:GetData().PSTAVessel_init = true
+        pickupData.PSTAVessel_init = true
 
-        pickup:GetData().PST_price = pickup.Price
+        pickupData.PST_price = pickup.Price
     end
 
     -- Shop discounts
-    if pickup.Price > 0 and pickup:GetData().PST_price then
+    if pickup.Price > 0 and PST:getEntData(pickup).PST_price then
         -- Mod: % chance to reduce all shop prices by 1-4 coins
         local tmpMod = PST:getTreeSnapshotMod("travelMerchShopDiscountProc", 0)
         if tmpMod > 0 then
-            pickup.Price = math.max(1, pickup:GetData().PST_price - tmpMod)
+            pickup.Price = math.max(1, PST:getEntData(pickup).PST_price - tmpMod)
         end
     end
 

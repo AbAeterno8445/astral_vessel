@@ -225,10 +225,10 @@ function PSTAVessel:onDamage(target, damage, flag, source)
 
                     -- Mod: % chance to petrify poisoned enemies for 2 seconds on hit, once per enemy
                     tmpMod = PST:getTreeSnapshotMod("poisonPetrify", 0)
-                    if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) and not target:GetData().PST_poisonPetrifyProc and
+                    if tmpMod > 0 and target:HasEntityFlags(EntityFlag.FLAG_POISON) and not PST:getEntData(target).PST_poisonPetrifyProc and
                     100 * math.random() < tmpMod then
                         target:AddFreeze(EntityRef(player), 60)
-                        target:GetData().PST_poisonPetrifyProc = true
+                        PST:getEntData(target).PST_poisonPetrifyProc = true
                     end
 
                     -- Mod: % chance to spawn an orbiting ember on hit. Double the chance and embers gained when hitting burning enemies
@@ -236,7 +236,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     if target:GetBurnCountdown() > 0 then
                         tmpMod = tmpMod * 2
                     end
-                    if tmpMod > 0 and not (source.Entity and source.Entity:GetData().PST_ember) and
+                    if tmpMod > 0 and not (source.Entity and PST:getEntData(source.Entity).PST_ember) and
                     100 * math.random() < tmpMod then
                         if PSTAVessel.fusilladeEmbers < 10 then
                             SFXManager():Play(SoundEffect.SOUND_BEAST_FIRE_RING, 0.4, 2, false, 1.3 + 0.4 * math.random())
@@ -252,14 +252,14 @@ function PSTAVessel:onDamage(target, damage, flag, source)
 
                     -- Mod: % chance to fire an ice shard towards the closest enemy when hitting slowed enemies
                     tmpMod = PST:getTreeSnapshotMod("slowHitIceShard", 0)
-                    if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) and not (source.Entity and source.Entity:GetData().PST_iceShard) and
+                    if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) and not (source.Entity and PST:getEntData(source.Entity).PST_iceShard) and
                     100 * math.random() < tmpMod then
                         local closestEnem = PSTAVessel:getClosestEnemy(srcPlayer.Position, 120)
                         if closestEnem then
                             local tmpVel = (closestEnem.Position - srcPlayer.Position):Normalized() * 8
                             local newShard = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.ICE, 0, srcPlayer.Position, tmpVel, srcPlayer)
                             newShard.CollisionDamage = 1 + math.min(20, srcPlayer.Damage)
-                            newShard:GetData().PST_iceShard = true
+                            PST:getEntData(newShard).PST_iceShard = true
                         end
                     end
 
@@ -276,7 +276,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     end
 
                     -- Snowstorm node (Blizzard elemental constellation) - double damage from shards against bosses
-                    if PST:getTreeSnapshotMod("blizzardSnowstorm", false) and tmpNPC and tmpNPC:IsBoss() and source.Entity:GetData().PST_snowstormShard then
+                    if PST:getTreeSnapshotMod("blizzardSnowstorm", false) and tmpNPC and tmpNPC:IsBoss() and PST:getEntData(source.Entity).PST_snowstormShard then
                         dmgMult = dmgMult + 1
                     end
 
@@ -334,7 +334,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                     end
 
                     -- Mod: % chance for enemies to leave a fire on death (burns on hit)
-                    if (source.Entity:GetData().PST_mobDeathFire) and target:GetBurnCountdown() == 0 then
+                    if (PST:getEntData(source.Entity).PST_mobDeathFire) and target:GetBurnCountdown() == 0 then
                         target:AddBurn(EntityRef(srcPlayer), 100, math.min(20, srcPlayer.Damage / 2))
                     end
 
@@ -491,11 +491,12 @@ function PSTAVessel:onDamage(target, damage, flag, source)
             end
 
             -- Carrion Harvest node (Ritualist occult constellation)
-            if target:GetData().PST_carrionCurse then
+            local tgData = PST:getEntData(target)
+            if tgData.PST_carrionCurse then
                 dmgMult = dmgMult + 0.1
             end
-            if PST:getTreeSnapshotMod("carrionHarvestHits", 0) > 0 and not target:GetData().PST_carrionCurse then
-                target:GetData().PST_carrionCurse = true
+            if PST:getTreeSnapshotMod("carrionHarvestHits", 0) > 0 and not tgData.PST_carrionCurse then
+                tgData.PST_carrionCurse = true
                 PST:addModifiers({ carrionHarvestHits = -1 }, true)
             end
 
@@ -515,7 +516,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                 -- Mod: swords on champion hit
                 tmpMod = PST:getTreeSnapshotMod("palaChampSwords", 0)
                 if tmpMod > 0 and PSTAVessel.modCooldowns.palaChampSwords == 0 and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) and
-                not (source.Entity and source.Entity:GetData().vesselPalaSword) and 100 * math.random() < tmpMod then
+                not (source.Entity and PST:getEntData(source.Entity).vesselPalaSword) and 100 * math.random() < tmpMod then
                     local tmpCount = 2 + math.random(3)
                     for i=1,tmpCount do
                         local randAng = math.random() * 2 * math.pi
@@ -524,7 +525,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
                         local newSword = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, tmpPos, tmpVel, srcPlayer)
                         newSword:ToTear():AddTearFlags(TearFlags.TEAR_ACCELERATE)
                         newSword.CollisionDamage = math.min(25, srcPlayer.Damage / 2)
-                        newSword:GetData().vesselPalaSword = true
+                        PST:getEntData(newSword).vesselPalaSword = true
                         PSTAVessel.modCooldowns.palaChampSwords = 90
                         SFXManager():Play(SoundEffect.SOUND_SWORD_SPIN, 0.3, (i - 1) * 2, false, 1.4 + 0.6 * math.random())
                     end

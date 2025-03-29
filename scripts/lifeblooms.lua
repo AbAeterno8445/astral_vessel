@@ -62,14 +62,14 @@ local lifebloomFuncs = {
     -- Calcified lifeblooms
     [PSTAVessel.calcifiedBloomID] = {
         Attack = function(effect)
-            ---@type EntityNPC
-            local tmpBony = effect:GetData().PST_bloomBony
+            local effectData = PST:getEntData(effect)
+            local tmpBony = effectData.PST_bloomBony
             if not tmpBony or (tmpBony and not tmpBony:Exists()) then
                 local tmpPos = Isaac.GetFreeNearPosition(effect.Position, 20)
                 local newBony = Isaac.Spawn(EntityType.ENTITY_BONY, 0, 0, tmpPos, Vector.Zero, PST:getPlayer())
                 newBony:AddCharmed(EntityRef(PST:getPlayer()), -1)
-                newBony:GetData().PST_bloomBony = true
-                effect:GetData().PST_bloomBony = newBony
+                PST:getEntData(newBony).PST_bloomBony = true
+                effectData.PST_bloomBony = newBony
             end
         end,
         Death = function(effect)
@@ -97,7 +97,7 @@ local lifebloomFuncs = {
     [PSTAVessel.rotBloomID] = {
         Attack = function(effect)
             local newCloud = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, effect.Position, RandomVector() * 10, PST:getPlayer())
-            newCloud:GetData().PST_poisonCloudOnDeath = true
+            PST:getEntData(newCloud).PST_poisonCloudOnDeath = true
             newCloud:ToEffect().Timeout = 90
         end,
         Death = function(effect)
@@ -131,32 +131,33 @@ local lifebloomFuncs = {
 ---@param effect EntityEffect
 function PSTAVessel:effectLifebloomUpdate(effect)
     local bloomFuncs = lifebloomFuncs[effect.Variant]
+    local bloomData = PST:getEntData(effect)
     -- Growing phase
-    if not effect:GetData().PST_bloomGrown then
-        if not effect:GetData().PST_bloomGrowing then
+    if not bloomData.PST_bloomGrown then
+        if not bloomData.PST_bloomGrowing then
             effect:GetSprite():Play("Growing", true)
             effect:GetSprite().PlaybackSpeed = 0.5
             effect:GetSprite().Scale = Vector(0.7, 0.7)
-            effect:GetData().PST_bloomAttackCD = math.random(bloomFuncs.Cooldown or 50)
-            effect:GetData().PST_bloomGrowing = true
+            bloomData.PST_bloomAttackCD = math.random(bloomFuncs.Cooldown or 50)
+            bloomData.PST_bloomGrowing = true
         elseif effect:GetSprite():IsFinished() then
             effect:GetSprite():Play("Idle", true)
             effect:GetSprite().PlaybackSpeed = 1
-            effect:GetData().PST_bloomGrown = true
+            bloomData.PST_bloomGrown = true
         end
-    elseif not effect:GetData().PST_bloomDying then
+    elseif not bloomData.PST_bloomDying then
         -- Attacks
-        if not effect:GetData().PST_bloomAttacking then
-            if effect:GetData().PST_bloomAttackCD > 0 then
-                effect:GetData().PST_bloomAttackCD = effect:GetData().PST_bloomAttackCD - 1
+        if not bloomData.PST_bloomAttacking then
+            if bloomData.PST_bloomAttackCD > 0 then
+                bloomData.PST_bloomAttackCD = bloomData.PST_bloomAttackCD - 1
                 -- Faster cooldown for Eternal blooms if player is nearby
                 if effect.Variant == PSTAVessel.eternalBloomID and effect.Position:Distance(PST:getPlayer().Position) <= 80 then
-                    effect:GetData().PST_bloomAttackCD = effect:GetData().PST_bloomAttackCD - 1
+                    bloomData.PST_bloomAttackCD = bloomData.PST_bloomAttackCD - 1
                 end
-                if effect:GetData().PST_bloomAttackCD <= 0 then
+                if bloomData.PST_bloomAttackCD <= 0 then
                     effect:GetSprite():Play("Attack", true)
-                    effect:GetData().PST_bloomAttackCD = bloomFuncs.Cooldown or 50
-                    effect:GetData().PST_bloomAttacking = true
+                    bloomData.PST_bloomAttackCD = bloomFuncs.Cooldown or 50
+                    bloomData.PST_bloomAttacking = true
                 end
             end
         elseif effect:GetSprite():IsEventTriggered("Attack") then
@@ -164,17 +165,17 @@ function PSTAVessel:effectLifebloomUpdate(effect)
             if bloomFuncs and bloomFuncs.Attack then
                 bloomFuncs.Attack(effect)
             end
-        elseif effect:GetData().PST_bloomAttacking and effect:GetSprite():IsFinished() then
+        elseif bloomData.PST_bloomAttacking and effect:GetSprite():IsFinished() then
             effect:GetSprite():Play("Idle", true)
-            effect:GetData().PST_bloomAttacking = false
+            bloomData.PST_bloomAttacking = false
         end
 
         -- Stepped on by enemy
         if Game():GetFrameCount() % 10 == 0 then
             if PST:getRoom():GetAliveEnemiesCount() == 0 then
                 -- Disappear on room clear
-                --effect:GetSprite():Play("Step", true)
-                --effect:GetData().PST_bloomDying = true
+                effect:GetSprite():Play("Step", true)
+                bloomData.PST_bloomDying = true
             elseif effect.Variant ~= PSTAVessel.eternalBloomID then
                 local getClosestEnem = PSTAVessel:getClosestEnemy(effect.Position, 10)
                 if getClosestEnem and not getClosestEnem:IsFlying() then
@@ -183,7 +184,7 @@ function PSTAVessel:effectLifebloomUpdate(effect)
                         bloomFuncs.Death(effect)
                     end
                     effect:GetSprite():Play("Step", true)
-                    effect:GetData().PST_bloomDying = true
+                    bloomData.PST_bloomDying = true
                 end
             end
         end

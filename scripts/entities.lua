@@ -4,11 +4,12 @@ include("scripts.exploMushrooms")
 ---@param npc EntityNPC
 function PSTAVessel:onNPCUpdate(npc)
     -- Mod: +% tears for 6 seconds whenever a friendly undead monster is summoned
+    local npcData = PST:getEntData(npc)
     local tmpMod = PST:getTreeSnapshotMod("undeadSummonTears", 0)
     if tmpMod > 0 and PST:isMobUndead(npc) then
         -- Friendly NPC init
-        if EntityRef(npc).IsFriendly and not npc:GetData().PST_friendInit then
-            npc:GetData().PST_friendInit = true
+        if EntityRef(npc).IsFriendly and not npcData.PST_friendInit then
+            npcData.PST_friendInit = true
 
             if PSTAVessel.modCooldowns.undeadSummonTears == 0 then
                 PST:updateCacheDelayed(CacheFlag.CACHE_FIREDELAY)
@@ -18,7 +19,7 @@ function PSTAVessel:onNPCUpdate(npc)
     end
 
     -- Carrion Harvest node (Ritualist occult constellation) - effect
-    if npc:GetData().PST_carrionCurse and Game():GetFrameCount() % 8 == 0 then
+    if npcData.PST_carrionCurse and Game():GetFrameCount() % 8 == 0 then
         local carrionCurseSprite = Sprite("gfx/effects/avessel_carrioncurse.anm2", true)
         carrionCurseSprite.Scale = Vector(0.5, 0.5)
         carrionCurseSprite:Play("Default")
@@ -28,7 +29,7 @@ end
 
 ---@param effect EntityEffect
 function PSTAVessel:effectUpdate(effect)
-    local effectData = effect:GetData()
+    local effectData = PST:getEntData(effect)
 
     -- Mod: ritual purple flame
     if effectData.PST_ritualPurpleFlame then
@@ -72,19 +73,19 @@ function PSTAVessel:effectUpdate(effect)
         end
     -- Lunar Scion node (Moon cosmic constellation) - Moonlight ray effect
     elseif effect.Variant == PSTAVessel.lunarScionMoonlightID then
-        if not effect:GetData().PST_lunarRayDisappear then
+        if not effectData.PST_lunarRayDisappear then
             if Game():GetFrameCount() % 15 == 0 then
                 -- Player nearby - trigger effect
                 if effect.Position:Distance(PST:getPlayer().Position) <= 30 then
                     PST:addModifiers({ lunarScionStacks = 1 }, true)
                     PST:updateCacheDelayed()
                     PSTAVessel.modCooldowns.lunarScion = 300
-                    effect:GetData().PST_lunarRayDisappear = true
+                    effectData.PST_lunarRayDisappear = true
                     effect:GetSprite():Play("Disappear")
                     SFXManager():Play(SoundEffect.SOUND_HOLY, 0.4, 2, false, 1.3)
                 end
                 if PST:getRoom():GetAliveEnemiesCount() == 0 then
-                    effect:GetData().PST_lunarRayDisappear = true
+                    effectData.PST_lunarRayDisappear = true
                     effect:GetSprite():Play("Disappear")
                 end
             end
@@ -94,21 +95,21 @@ function PSTAVessel:effectUpdate(effect)
     -- Solar Scion node (Sun cosmic constellation) - Fire ring effect
     elseif effect.Variant == PSTAVessel.solarScionFireRingID then
         effect.DepthOffset = -100
-        if not effect:GetData().PST_solarRingInit then
+        if not effectData.PST_solarRingInit then
             effect:GetSprite().PlaybackSpeed = 0.5
-            effect:GetData().PST_solarRingTarget = Game():GetRoom():GetRandomPosition(20)
-            effect:GetData().PST_solarRingInit = true
+            effectData.PST_solarRingTarget = Game():GetRoom():GetRandomPosition(20)
+            effectData.PST_solarRingInit = true
             SFXManager():Play(SoundEffect.SOUND_FLAMETHROWER_START, 0.4, 0, false, 0.9)
 
             local lightFX = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.LIGHT, 0, effect.Position, Vector.Zero, nil)
             lightFX:ToEffect().SpriteScale = Vector(2, 2)
             lightFX:ToEffect().Color = Color(0.9, 0.65, 0.2, 1)
-            effect:GetData().PST_solarRingLightFX = lightFX
-        elseif not effect:GetData().PST_solarRingFading then
+            effectData.PST_solarRingLightFX = lightFX
+        elseif not effectData.PST_solarRingFading then
             local frameCount = Game():GetFrameCount()
             if frameCount % 2 == 0 then
                 -- Ember FX particles
-                if not effect:GetData().PST_solarRingActive then
+                if not effectData.PST_solarRingActive then
                     for _=1,2 do
                         local tmpAng = math.pi * 2 * math.random()
                         local tmpSpawnPos = effect.Position + Vector(math.cos(tmpAng) * 60, math.sin(tmpAng) * 60)
@@ -121,32 +122,32 @@ function PSTAVessel:effectUpdate(effect)
                         local tmpSpawnPos = effect.Position + Vector(math.cos(tmpAng) * 40, math.sin(tmpAng) * 40)
                         local tmpVel = Vector(math.cos(tmpAng + math.pi / 2) * 7, math.sin(tmpAng + math.pi / 2) * 7)
                         local emberFX = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.EMBER_PARTICLE, 0, tmpSpawnPos, tmpVel, nil)
-                        emberFX:GetData().PST_solarRingEmberFX = true
+                        PST:getEntData(emberFX).PST_solarRingEmberFX = true
                     end
 
                     -- Disappear on room clear
                     if frameCount % 15 == 0 and PST:getRoom():GetAliveEnemiesCount() == 0 then
-                        effect:GetData().PST_solarRingFading = true
+                        effectData.PST_solarRingFading = true
                     end
                 end
 
                 -- Movement
-                local targetDist = effect.Position:Distance(effect:GetData().PST_solarRingTarget)
+                local targetDist = effect.Position:Distance(effectData.PST_solarRingTarget)
                 if targetDist > 25 then
-                    local tmpVel = (effect:GetData().PST_solarRingTarget - effect.Position):Normalized()
+                    local tmpVel = (effectData.PST_solarRingTarget - effect.Position):Normalized()
                     effect:AddVelocity(tmpVel * 0.02)
                 else
-                    effect:GetData().PST_solarRingTarget = Game():GetRoom():GetRandomPosition(20)
+                    effectData.PST_solarRingTarget = Game():GetRoom():GetRandomPosition(20)
                 end
-                if effect:GetData().PST_solarRingLightFX and effect:GetData().PST_solarRingLightFX:Exists() then
-                    effect:GetData().PST_solarRingLightFX.Position = effect.Position
+                if effectData.PST_solarRingLightFX and effectData.PST_solarRingLightFX:Exists() then
+                    effectData.PST_solarRingLightFX.Position = effect.Position
                 end
             end
             -- Growing -> Active phase
             if effect:GetSprite():IsFinished("Growing") then
                 effect:GetSprite().PlaybackSpeed = 1
                 effect:GetSprite():Play("Active", true)
-                effect:GetData().PST_solarRingActive = true
+                effectData.PST_solarRingActive = true
                 SFXManager():Play(SoundEffect.SOUND_FLAME_BURST, 0.7, 2, false, 1.2)
             end
         elseif effect:GetSprite().Color.A > 0 then
@@ -155,7 +156,7 @@ function PSTAVessel:effectUpdate(effect)
             effect:Remove()
         end
     -- Solar Scion fire ring ember particle
-    elseif effect:GetData().PST_solarRingEmberFX then
+    elseif effectData.PST_solarRingEmberFX then
         effect.Velocity = effect.Velocity * 0.95
         SFXManager():Play(SoundEffect.SOUND_FIRE_BURN)
     -- Crimson Bloom
@@ -194,18 +195,18 @@ function PSTAVessel:effectUpdate(effect)
         if effect.Variant == EffectVariant.RED_CANDLE_FLAME and PST:getTreeSnapshotMod("volcanoFireTears", false) and
         effect.SpawnerType == EntityType.ENTITY_PLAYER then
             local tearCD = 40
-            if not effect:GetData().PST_volcanoFireCD then
-                effect:GetData().PST_volcanoFireCD = tearCD
-            elseif effect:GetData().PST_volcanoFireCD > 0 then
-                effect:GetData().PST_volcanoFireCD = effect:GetData().PST_volcanoFireCD - 1
-            elseif effect:GetData().PST_volcanoFireCD == 0 then
+            if not effectData.PST_volcanoFireCD then
+                effectData.PST_volcanoFireCD = tearCD
+            elseif effectData.PST_volcanoFireCD > 0 then
+                effectData.PST_volcanoFireCD = effectData.PST_volcanoFireCD - 1
+            elseif effectData.PST_volcanoFireCD == 0 then
                 local closestEnem = PSTAVessel:getClosestEnemy(effect.Position, 100)
                 if closestEnem then
                     local tmpVel = (closestEnem.Position - effect.Position):Normalized() * 10
                     local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.FIRE_MIND, 0, effect.Position, tmpVel, effect)
                     newTear.CollisionDamage = math.min(30, player.Damage + player.Damage * (PST:getTreeSnapshotMod("volcanoFireTearDmg", 0) / 100))
                 end
-                effect:GetData().PST_volcanoFireCD = tearCD
+                effectData.PST_volcanoFireCD = tearCD
             end
         end
     end

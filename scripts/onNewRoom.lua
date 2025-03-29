@@ -266,7 +266,7 @@ function PSTAVessel:onNewRoom()
         local tmpEntities = Isaac.GetRoomEntities()
         for _, tmpEnt in ipairs(tmpEntities) do
             local tmpNPC = tmpEnt:ToNPC()
-            if tmpNPC and (tmpNPC:GetData().PST_corpseRaised or tmpNPC:GetData().PST_carrionHarvestMob) then
+            if tmpNPC and (PST:getEntData(tmpNPC).PST_corpseRaised or PST:getEntData(tmpNPC).PST_carrionHarvestMob) then
                 tmpNPC:Remove()
             end
         end
@@ -299,7 +299,7 @@ function PSTAVessel:onNewRoom()
         local tmpBonies = Isaac.FindByType(EntityType.ENTITY_BONY, 0, 0)
         for i=#tmpBonies,1,-1 do
             local tmpBony = tmpBonies[i]
-            if tmpBony:GetData().PST_bloomBony then
+            if PST:getEntData(tmpBony).PST_bloomBony then
                 tmpBony:Remove()
             end
         end
