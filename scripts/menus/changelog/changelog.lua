@@ -1,5 +1,9 @@
 function PSTAVessel:getChangelogList()
     local changelog = {
+        "v0.2.0",
+        "- Public beta release.",
+        "",
+
         "v0.1.3",
         "- Added the following constellations: Choir (Divine), Mephit and Siren (Demonic), Self (Mundane), Rune and Lithomancer (Cosmic).",
         "- Added a free 'Custom Hurt Sound' node to Vessel's main tree, which allows you to customize on-hit and on-death sound effects.",
