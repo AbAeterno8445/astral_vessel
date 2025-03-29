@@ -59,17 +59,18 @@ function PSTAVessel:appMenuAccTabInput(appearanceMenu)
 
     -- Input: Allocate
     if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
-        if PSTAVessel.accessoryList[appearanceMenu.accTabSel] then
-            if PSTAVessel:arrHasValue(PSTAVessel.charAccessories, appearanceMenu.accTabSel) then
-                for i, tmpAcc in ipairs(PSTAVessel.charAccessories) do
-                    if tmpAcc == appearanceMenu.accTabSel then
+        local tmpAccessory = PSTAVessel.accessoryList[appearanceMenu.accTabSel]
+        if tmpAccessory and tmpAccessory.ID then
+            if PSTAVessel:arrHasValue(PSTAVessel.charAccessories, tmpAccessory.ID) then
+                for i, tmpAccID in ipairs(PSTAVessel.charAccessories) do
+                    if tmpAccID == tmpAccessory.ID then
                         table.remove(PSTAVessel.charAccessories, i)
                         break
                     end
                 end
                 SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.33, 2, false, 0.9 + 0.2 * math.random())
             elseif #PSTAVessel.charAccessories < PSTAVessel.accessoryLimit then
-                table.insert(PSTAVessel.charAccessories, appearanceMenu.accTabSel)
+                table.insert(PSTAVessel.charAccessories, tmpAccessory.ID)
                 SFXManager():Play(SoundEffect.SOUND_BAND_AID_PICK_UP, 0.33, 2, false, 0.9 + 0.2 * math.random())
             else
                 SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.35)
@@ -83,7 +84,8 @@ function PSTAVessel:appMenuAccTabInput(appearanceMenu)
     if PST:isKeybindActive(PSTKeybind.SWITCH_TREE) then
         if #PSTAVessel.charAccessories > 0 then
             for i=appearanceMenu.accTabSel + 1,#PSTAVessel.accessoryList do
-                if PSTAVessel:arrHasValue(PSTAVessel.charAccessories, i) then
+                local tmpAccessory = PSTAVessel.accessoryList[i]
+                if tmpAccessory.ID and PSTAVessel:arrHasValue(PSTAVessel.charAccessories, tmpAccessory.ID) then
                     appearanceMenu.accTabSel = i
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7, 2, false, 1.15)
                     break
@@ -96,7 +98,8 @@ function PSTAVessel:appMenuAccTabInput(appearanceMenu)
     if PST:isKeybindActive(PSTKeybind.TOGGLE_TREE_MODS) then
         if #PSTAVessel.charAccessories > 0 then
             for i=appearanceMenu.accTabSel - 1,1,-1 do
-                if PSTAVessel:arrHasValue(PSTAVessel.charAccessories, i) then
+                local tmpAccessory = PSTAVessel.accessoryList[i]
+                if tmpAccessory.ID and PSTAVessel:arrHasValue(PSTAVessel.charAccessories, tmpAccessory.ID) then
                     appearanceMenu.accTabSel = i
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS, 0.7, 2, false, 1.15)
                     break
@@ -168,7 +171,7 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
                     PST.normalFont:DrawString("None", accX - 12, accY - 22, KColor(1, 1, 1, tmpAlpha))
                 end
 
-                if PSTAVessel:arrHasValue(PSTAVessel.charAccessories, i) then
+                if tmpAcc.ID and PSTAVessel:arrHasValue(PSTAVessel.charAccessories, tmpAcc.ID) then
                     bubbleSpr.Color.A = tmpAcc.sprite.Color.A
                     bubbleSpr:SetFrame("Default", 1)
                     bubbleSpr:Render(Vector(accX, accY - 18))
@@ -215,9 +218,9 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
 
     -- Layer conflicts + display
     local totalLayers = {}
-    for i, tmpAcc in ipairs(PSTAVessel.accessoryList) do
+    for _, tmpAcc in ipairs(PSTAVessel.accessoryList) do
         -- Add to total layers if selected (for conflicts)
-        if tmpAcc.costumeSprite and PST:arrHasValue(PSTAVessel.charAccessories, i) then
+        if tmpAcc.costumeSprite and tmpAcc.ID and PST:arrHasValue(PSTAVessel.charAccessories, tmpAcc.ID) then
             for _, tmpLayer in ipairs(tmpAcc.costumeSprite:GetAllLayers()) do
                 local layerName = tmpLayer:GetName()
                 if layerAlias[layerName] then

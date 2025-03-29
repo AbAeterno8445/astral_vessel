@@ -188,6 +188,7 @@ PSTAVessel:updateUnlockData()
 PSTAVessel.hairstyles = {
     {path="none"},
     {path="gfx/characters/Character_002_MagdaleneHead.anm2"},
+    {path="gfx/characters/Character_002_MagdaleneHead.anm2"},
     {path="gfx/characters/Character_005_EveHead.anm2"},
     {path="gfx/characters/Character_007_SamsonHead.anm2"},
     {path="gfx/characters/Character_LazarusHair1.anm2"},
@@ -198,6 +199,7 @@ PSTAVessel.hairstyles = {
     {path="gfx/characters/character_b02_magdalene.anm2"},
     {path="gfx/characters/character_b06_eve.anm2"},
     {path="gfx/characters/character_b15_thesoul.anm2"},
+    {path="gfx/characters/character_b16_bethany.anm2"},
     {path="gfx/characters/217_momswig.anm2"},
 
     -- Custom
@@ -227,8 +229,15 @@ PSTAVessel_loadEdenHair()
 ---- ACCESSORIES DATA
 PSTAVessel.accessoryList = {
     {path="gfx/characters/accessories/astralvessel/accessory_cainseyepatch.anm2"},
+    {path="gfx/characters/character_b03_cain.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_judasfez.anm2"},
+    {path="gfx/characters/character_b04_judas.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_keepernoose.anm2"},
+    {path="gfx/characters/character_b11_thelost.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_apollyonhorns.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_spiderfangs.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_guppyeyes.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_doubleglass.anm2"},
     {path="gfx/characters/n014_Blindfold.anm2"},
     {item=CollectibleType.COLLECTIBLE_MY_REFLECTION},
     {item=CollectibleType.COLLECTIBLE_BLOOD_OF_THE_MARTYR},
@@ -303,13 +312,38 @@ PSTAVessel.accessoryList = {
     {item=CollectibleType.COLLECTIBLE_LITTLE_HORN},
     {item=CollectibleType.COLLECTIBLE_SHARP_STRAW},
     {item=CollectibleType.COLLECTIBLE_BOZO},
-    {item=CollectibleType.COLLECTIBLE_SCHOOLBAG},
     {item=CollectibleType.COLLECTIBLE_MERCURIUS}
 }
+
+-- Maps accessory IDs to their list entry
+PSTAVessel.accessoryMap = {}
+
+-- Generates an unique accessory ID based on entry data (path + item + sourceMod)
+function PSTAVessel:getAccessoryID(accessoryData)
+    local IDStr
+    if accessoryData.path then
+        IDStr = tostring(PSTAVessel:strHash(accessoryData.path))
+    elseif accessoryData.item then
+        local baseStr = (accessoryData.sourceMod ~= nil) and accessoryData.sourceMod or "PSTAVessel"
+        IDStr = baseStr .. "_" .. accessoryData.item
+    end
+    return IDStr
+end
+-- Maps current accessory list's entries to their unique IDs
+function PSTAVessel:updateAccessoryMap()
+    PSTAVessel.accessoryMap = {}
+    for _, tmpAcc in ipairs(PSTAVessel.accessoryList) do
+        local accID = PSTAVessel:getAccessoryID(tmpAcc)
+        tmpAcc.ID = accID
+        PSTAVessel.accessoryMap[accID] = tmpAcc
+    end
+end
+PSTAVessel:updateAccessoryMap()
 
 ---- FACES DATA
 PSTAVessel.facesList = {
     {path="none"},
+    {path="gfx/characters/faces/astralvessel/face_isaac.anm2"},
     {path="gfx/characters/faces/astralvessel/face_isaac.anm2"},
     {path="gfx/characters/faces/astralvessel/face_isaac_nocry.anm2"},
     {path="gfx/characters/faces/astralvessel/face_3dollar.anm2"},
@@ -349,7 +383,8 @@ PSTAVessel.facesList = {
     {path="gfx/characters/faces/astralvessel/face_smb.anm2"},
     {path="gfx/characters/faces/astralvessel/face_balloftar1.anm2"},
     {path="gfx/characters/faces/astralvessel/face_balloftar2.anm2"},
-    {path="gfx/characters/faces/astralvessel/face_balloftar3.anm2"}
+    {path="gfx/characters/faces/astralvessel/face_balloftar3.anm2"},
+    {path="gfx/characters/faces/astralvessel/face_terra.anm2"}
 }
 
 include("scripts.constellationsInitData")

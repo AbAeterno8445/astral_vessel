@@ -198,3 +198,13 @@ function PSTAVessel:getRunVesselHairColor()
     local tmpColor = PST:getTreeSnapshotMod("vesselHairColor", {1, 1, 1, 1})
     return Color(table.unpack(tmpColor))
 end
+
+---@param str string
+function PSTAVessel:strHash(str)
+    if type(str) ~= "string" then str = tostring(str) end
+    local hash = 0
+    for i = 1, #str do
+        hash = (hash * 31 + str:byte(i)) % 0x7FFFFFFF
+    end
+    return hash
+end

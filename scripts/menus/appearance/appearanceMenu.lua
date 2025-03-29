@@ -156,7 +156,7 @@ function PSTAVessel:initAppearanceMenu()
         -- Render accessories
         if #PSTAVessel.charAccessories > 0 then
             for _, tmpAccessoryID in ipairs(PSTAVessel.charAccessories) do
-                local tmpAcc = PSTAVessel.accessoryList[tmpAccessoryID]
+                local tmpAcc = PSTAVessel.accessoryMap[tmpAccessoryID]
                 if tmpAcc then
                     if not tmpAcc.costumeSprite and not tmpAcc.sprite and not tmpAcc.item then
                         if tmpAcc.path and tmpAcc.path ~= "none" then

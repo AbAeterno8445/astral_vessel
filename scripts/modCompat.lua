@@ -2,6 +2,9 @@ local modCompatInit = false
 function PSTAVessel:initModCompat()
     if modCompatInit then return end
 
+    -- Extra PST items
+    PSTAVessel:addConstellationItem(Isaac.GetItemIdByName("Shadowmeld"), {PSTAVConstellationType.DEMONIC})
+
     -- Fiend Folio
     if FiendFolio then
         -- Faces
@@ -210,7 +213,7 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_cain_extra.anm2", sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_judas_1_extra.anm2", sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_keeper_extra.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path=Epiphany.birthday_costume, sourceMod="Epiphany"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/epiphany_anniversary.anm2", sourceMod="Epiphany"})
 
         -- Hairstyles
         table.insert(PSTAVessel.hairstyles, {path="gfx/characters/tarnished_eden_extra.anm2", sourceMod="Epiphany"})
@@ -1192,6 +1195,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addSItem("Poo Bum", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addSItem("Little Little Horn", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addSItem("Little Siren", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.ELEMENTAL})
+
+        -- Hairstyles
+        table.insert(PSTAVessel.hairstyles, {path="gfx/characters/character_siren.anm2", sourceMod="Siren (character)"})
     end
 
     -- Andromeda
@@ -1629,6 +1635,7 @@ function PSTAVessel:initModCompat()
 	end
 
     PSTAVessel:sortConstellationItems()
+    PSTAVessel:updateAccessoryMap()
     modCompatInit = true
 end
 

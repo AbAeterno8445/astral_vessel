@@ -62,7 +62,7 @@ end
 
 -- Save variables thrown 'as-is'
 local asIsVars = {
-    "charStartItems", "corpseRaiserChoice", "charHurtSFX", "charDeathSFX", "charHurtPitch", "charHurtRandpitch"
+    "charAccessories", "charStartItems", "corpseRaiserChoice", "charHurtSFX", "charDeathSFX", "charHurtPitch", "charHurtRandpitch"
 }
 
 -- Save current settings into the currently selected loadout (PSTAVessel.currentLoadout)
@@ -83,18 +83,14 @@ function PSTAVessel:saveLoadout()
     if PSTAVessel.charFace then
         newLoadout.charFace = PSTAVessel.charFace.path
     end
-    -- 4. Character accessories
-    if #PSTAVessel.charAccessories > 0 then
-        newLoadout.charAccessories = {table.unpack(PSTAVessel.charAccessories)}
-    end
-    -- 5. Variables thrown 'as-is'
+    -- 4. Variables thrown 'as-is'
     for _, tmpVar in ipairs(asIsVars) do
         local origVar = PSTAVessel[tmpVar]
         if origVar ~= nil then
             newLoadout[tmpVar] = origVar
         end
     end
-    -- 6. Constellation trees & affinities
+    -- 5. Constellation trees & affinities
     newLoadout.constTrees = {}
     newLoadout.constAffinities = {}
     for _, tmpType in pairs(PSTAVConstellationType) do
@@ -135,18 +131,14 @@ function PSTAVessel:switchLoadout(loadoutID)
         if newLoadout.charFace then
             PSTAVessel.charFace = {path=newLoadout.charFace}
         end
-        -- 4. Character accessories
-        if newLoadout.charAccessories then
-            PSTAVessel.charAccessories = newLoadout.charAccessories
-        end
-        -- 5. 'As-is' variables
+        -- 4. 'As-is' variables
         for _, tmpVar in ipairs(asIsVars) do
             if newLoadout[tmpVar] ~= nil then
                 PSTAVessel[tmpVar] = newLoadout[tmpVar]
             end
         end
     end
-    -- 6. Constellation trees
+    -- 5. Constellation trees
     for _, tmpType in pairs(PSTAVConstellationType) do
         local baseTree = PST.modData.treeNodes["Astral Vessel " .. tmpType]
         if baseTree then
@@ -179,6 +171,24 @@ function PSTAVessel:switchLoadout(loadoutID)
         end
         PSTAVessel:sanitizeTrees()
         PST:save()
+    end
+
+    ---- Mod data validation ----
+    -- Accessories
+    for i=#PSTAVessel.charAccessories,1,-1 do
+        local accID = PSTAVessel.charAccessories[i]
+        if not PSTAVessel.accessoryMap[accID] then
+            print("[Astral Vessel] Removed accessory ID", accID, "- no longer mapped.")
+            table.remove(PSTAVessel.charAccessories, i)
+        end
+    end
+    -- Starting items
+    for i=#PSTAVessel.charStartItems,1,-1 do
+        local startItem = PSTAVessel.charStartItems[i]
+        if Isaac.GetItemConfig():GetCollectible(startItem.item) == -1 then
+            print("[Astral Vessel] Removed starting item ID", startItem.item, "- no longer present.")
+            table.remove(PSTAVessel.charStartItems, i)
+        end
     end
 
     PSTAVessel:calcConstellationAffinities()

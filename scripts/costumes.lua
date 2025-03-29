@@ -21,20 +21,18 @@ function PSTAVessel:applyCostumes(clearOld)
         end
 
         -- Apply accessories
-        if #PSTAVessel.charAccessories > 0 then
-            for _, tmpAccID in ipairs(PSTAVessel.charAccessories) do
-                local accData = PSTAVessel.accessoryList[tmpAccID]
-                if accData then
-                    if accData.path then
-                        local costID = Isaac.GetCostumeIdByPath(accData.path)
-                        if costID ~= -1 then
-                            player:AddNullCostume(costID)
-                        end
-                    elseif accData.item then
-                        local itemCfg = Isaac.GetItemConfig():GetCollectible(accData.item)
-                        if itemCfg then
-                            player:AddCostume(itemCfg)
-                        end
+        for _, accID in ipairs(PSTAVessel.charAccessories) do
+            local accData = PSTAVessel.accessoryMap[accID]
+            if accData then
+                if accData.path then
+                    local costID = Isaac.GetCostumeIdByPath(accData.path)
+                    if costID ~= -1 then
+                        player:AddNullCostume(costID)
+                    end
+                elseif accData.item then
+                    local itemCfg = Isaac.GetItemConfig():GetCollectible(accData.item)
+                    if itemCfg then
+                        player:AddCostume(itemCfg)
                     end
                 end
             end
