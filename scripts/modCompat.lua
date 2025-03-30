@@ -1799,6 +1799,23 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addToyCgItem("Concussion", {PSTAVConstellationType.MUNDANE})
 	end
 
+	--Balatro Jokers
+	if BalatroJokers then
+		-- Accessories
+		table.insert(PSTAVessel.accessoryList, {item=BalatroJokers.Enums.Items.jimbos_collection, sourceMod="Balatro Jokers"})
+
+		-- Items
+		local function PSTAVessel_addBalatroJokersItem(balatroJokersItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(balatroJokersItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Balatro Jokers item '" .. balatroJokersItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Balatro Jokers")
+		end
+		PSTAVessel_addBalatroJokersItem("Jimbo's Collection", {PSTAVConstellationType.MERCANTILE})
+	end
+
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true

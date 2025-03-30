@@ -220,8 +220,10 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
     local totalLayers = {}
     for _, tmpAcc in ipairs(PSTAVessel.accessoryList) do
         -- Add to total layers if selected (for conflicts)
-        if tmpAcc.costumeSprite and tmpAcc.ID and PST:arrHasValue(PSTAVessel.charAccessories, tmpAcc.ID) then
-            for _, tmpLayer in ipairs(tmpAcc.costumeSprite:GetAllLayers()) do
+        local tmpSprite = tmpAcc.sprite
+        if tmpAcc.costumeSprite then tmpSprite = tmpAcc.costumeSprite end
+        if tmpSprite and tmpAcc.ID and PST:arrHasValue(PSTAVessel.charAccessories, tmpAcc.ID) then
+            for _, tmpLayer in ipairs(tmpSprite:GetAllLayers()) do
                 local layerName = tmpLayer:GetName()
                 if layerAlias[layerName] then
                     if not totalLayers[layerName] then totalLayers[layerName] = 0 end

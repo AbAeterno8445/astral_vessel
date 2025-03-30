@@ -52,13 +52,16 @@
     <costume anm2path="faces/astralvessel/face_terra.anm2" type="none" priority="0" />
 
     <!-- ACCESSORIES -->
-    <costume anm2path="accessories/accessory_monocle.anm2" type="none" priority="0" />
-    <costume anm2path="accessories/accessory_cainseyepatch.anm2" type="none" priority="0" />
-    <costume anm2path="accessories/accessory_judasfez.anm2" type="none" priority="0" />
-    <costume anm2path="accessories/accessory_keepernoose.anm2" type="none" priority="0" />
-    <costume anm2path="accessories/accessory_doubleguppy.anm2" type="none" priority="0" />
-    <costume anm2path="accessories/accessory_apollyonhorns.anm2" type="none" priority="0" />
-    <costume anm2path="accessories/accessory_spiderfangs.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_monocle.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_cainseyepatch.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_cainsbloodeyepatch.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_judasfez.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_tjudasfez.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_keepernoose.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_lostcobwebs.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_doubleguppy.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_apollyonhorns.anm2" type="none" priority="0" />
+    <costume anm2path="accessories/astralvessel/accessory_spiderfangs.anm2" type="none" priority="0" />
 
     <!-- FIEND FOLIO -->
     <!--

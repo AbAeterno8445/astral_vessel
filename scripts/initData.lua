@@ -228,11 +228,11 @@ PSTAVessel_loadEdenHair()
 ---- ACCESSORIES DATA
 PSTAVessel.accessoryList = {
     {path="gfx/characters/accessories/astralvessel/accessory_cainseyepatch.anm2"},
-    {path="gfx/characters/character_b03_cain.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_cainsbloodeyepatch.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_judasfez.anm2"},
-    {path="gfx/characters/character_b04_judas.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_tjudasfez.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_keepernoose.anm2"},
-    {path="gfx/characters/character_b11_thelost.anm2"},
+    {path="gfx/characters/accessories/astralvessel/accessory_lostcobwebs.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_apollyonhorns.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_spiderfangs.anm2"},
     {path="gfx/characters/accessories/astralvessel/accessory_guppyeyes.anm2"},
