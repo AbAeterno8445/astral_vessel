@@ -11,6 +11,7 @@ function PSTAVessel:getChangelogList()
         "- Bomb effect items (nancy bombs, bob's curse, etc.) are now available as starting items.",
         "- Fixed a few accessories not being applied in-game.",
         "- Fixed accessory layer conflicts not showing up for non-item accessories (displayed on a blank head).",
+        "- Fixed Vessel completion events triggering with any character.",
         "",
 
         "v0.2.2",
