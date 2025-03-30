@@ -1915,6 +1915,55 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRbItem("Dad's Smoke Sticks", {PSTAVConstellationType.MUNDANE})
     end
 
+	-- Potato Pack 1
+	if potatopack1 then
+		-- Items
+		local function PSTAVessel_addPotatoPack1Item(potatoPack1ItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(potatoPack1ItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Potato Pack 1 item '" .. potatoPack1ItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Potato Pack 1")
+		end
+		PSTAVessel_addPotatoPack1Item("Acid Bombs", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Auto Resupply", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Blood Syringe", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addPotatoPack1Item("Bone Dagger", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Boney Paw", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Bound Soul", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addPotatoPack1Item("Charged Bombs", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Crow Head", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Crown of Stone", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Cursed Mirror", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Dark Razor", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Eye Witness", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Flying Contacts", {PSTAVConstellationType.MUTAGENIC}, 4)
+		PSTAVessel_addPotatoPack1Item("Gecko", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Happy Shroom", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addPotatoPack1Item("Health = Power", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Health Insurance", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Heart Burn", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Hot Potato", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Hydrophobic Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Ignis", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Landscape Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Mini Drill", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Ninja Log", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Old Skull", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Portal Gun", {PSTAVConstellationType.COSMIC})
+		PSTAVessel_addPotatoPack1Item("Portrait Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Radial Shots", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Red Shoes", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Rib Cage", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Spray Paint", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Stone Mask", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Tantrum", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Tear Bubble", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Tear Helpers", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Water Bottle", {PSTAVConstellationType.MUNDANE})
+	end
+	
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
