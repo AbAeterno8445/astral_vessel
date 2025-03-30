@@ -1333,6 +1333,13 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addSamItem("Malakh Mot", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addSamItem("Memento Mori", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addSamItem("Jar of Scythes", {PSTAVConstellationType.OCCULT})
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Mask of Thanatos"), sourceMod="Samael"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/samael_tech.anm2", sourceMod="Samael"})
+
+        -- Hairstyles
+        table.insert(PSTAVessel.hairstyles, {path="gfx/characters/samael_venus.anm2", sourceMod="Samael"})
     end
 
     -- Mastema
@@ -1357,6 +1364,11 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addMasItem("Raven Skull", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addMasItem("Infernal Covenant", {PSTAVConstellationType.DEMONIC})
         --PSTAVessel_addMasItem("Broken Dice", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MERCANTILE}) -- Unsupported quality level
+
+        -- Accessories
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/character_mastema_horns.anm2", sourceMod="Mastema"})
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/character_mastema_b_horns.anm2", sourceMod="Mastema"}) -- These replace face layers
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Corrupt Heart"), sourceMod="Mastema"})
     end
 
     -- D!Edith
@@ -1409,6 +1421,12 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addShItem("Deader Eye", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addShItem("B.U.R.T.", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addShItem("Holster", {PSTAVConstellationType.MUNDANE})
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/ten_gallon_hat/costume_tengallonhat_0.anm2", sourceMod="Sheriff"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Bandit's Bandana"), sourceMod="Sheriff"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Blunt Force"), sourceMod="Sheriff"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Glass Bullets"), sourceMod="Sheriff"})
     end
 
     -- Martha of Bethany
@@ -1449,6 +1467,9 @@ function PSTAVessel:initModCompat()
         if Retribution then
             PSTAVessel_addMarItem("Mortar", {PSTAVConstellationType.MUNDANE})
         end
+
+        -- Hairstyles
+        table.insert(PSTAVessel.hairstyles, {path="gfx/characters/character_marthashair.anm2", sourceMod="Martha of Bethany"})
     end
 
     -- Arachna
@@ -1474,6 +1495,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addArItem("Divine Cloth", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addArItem("Yarn Heart", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addArItem("Geptameron", {PSTAVConstellationType.DIVINE})
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("3D Glasses"), sourceMod="Arachna"})
     end
 
     -- Tainted Treasure Rooms
@@ -1648,6 +1672,9 @@ function PSTAVessel:initModCompat()
 		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Mushroom"))
 		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Cap"))
 		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Contraband"))
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/pageantkitty.anm2", sourceMod="Bael"})
     end
 
     -- Alternate Hairstyles

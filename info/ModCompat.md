@@ -14,17 +14,17 @@
 - **Kicks and Giggles:** Items.
 - **Siren (character):** Items.
 - **Andromeda:** Items, Faces, Custom hurt/death SFX.
-- **Samael:** Items.
-- **Mastema:** Items.
+- **Samael:** Items, Hairstyles, Accessories.
+- **Mastema:** Items, Accessories.
 - **D!Edith:** Items.
-- **The Sheriff:** Items.
-- **Martha Of Bethany:** Items.
-- **Arachna:** Items.
+- **The Sheriff:** Items, Accessories.
+- **Martha Of Bethany:** Items, Hairstyles.
+- **Arachna:** Items, Accessories.
 - **Tainted Treasure Rooms:** Items.
 - **Sewing Machine:** Items.
 - **Malware & Spam:** Items.
 - **Lazy Mattpack:** Items.
-- **Bael:** Items.
+- **Bael:** Items, Accessories.
 - **Alternate Hairstyles:** Hairstyles.
 - **Restored Collection:** Items.
 - **Rune Rooms:** Items.

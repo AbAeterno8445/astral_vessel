@@ -5,6 +5,7 @@ function PSTAVessel:getChangelogList()
         "v0.2.3",
         "- Additional compatibility for the Balatro Jokers, Potato Pack 1 and Red Baby mods.",
         "- Added some custom hurt/death SFX from Revelations and Retribution.",
+        "- Support for accessories/hairstyles from the following mods: Samael, Mastema, Martha of Bethany, Bael, Arachna, Sheriff.",
         "- Support for mod Mushroom items, and Fly familiars (Suzerain Of Flies mutagenic node).",
         "- Starting items can no longer grant pickups, such as +5 bombs. Other effects from these items still apply.",
         "- Bomb effect items (nancy bombs, bob's curse, etc.) are now available as starting items.",
