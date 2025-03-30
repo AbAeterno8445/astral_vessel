@@ -1963,7 +1963,7 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addPotatoPack1Item("Tear Helpers", {PSTAVConstellationType.ELEMENTAL})
 		PSTAVessel_addPotatoPack1Item("Water Bottle", {PSTAVConstellationType.MUNDANE})
 	end
-	
+
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
