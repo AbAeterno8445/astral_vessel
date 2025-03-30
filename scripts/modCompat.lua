@@ -1973,9 +1973,6 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRbItem("Fenrir's Paw", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRbItem("Rebekah's Scrapbook", {PSTAVConstellationType.MUNDANE})
         -- PSTAVessel_addRbItem("Giddy up!", {PSTAVConstellationType.MUTAGENIC}) -- i dont trust this one yet - wooky
-
-
-
     end
 
     PSTAVessel:sortConstellationItems()
