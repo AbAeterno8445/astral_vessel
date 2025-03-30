@@ -3,7 +3,7 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.3",
-        "- Additional support for the Balatro Jokers mod (thanks Penelope!).",
+        "- Additional compatibility for the Balatro Jokers (thanks Penelope!) and Red Baby mods.",
         "- Fixed a few accessories not being applied in-game.",
         "- Fixed accessory layer conflicts not showing up for non-item accessories (displayed on a blank head).",
         "",

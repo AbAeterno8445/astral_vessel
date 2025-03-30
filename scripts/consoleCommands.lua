@@ -13,6 +13,7 @@ PSTAVessel.consoleCommands = {
             print("Astral Vessel - Triggered all completion events.")
         end
     },
+    --[[
     ["avessel_infinity"] = {
         desc = "Astral Vessel - Set all affinities to 100",
         compType = AutocompleteType.DEBUG_FLAG,
@@ -23,6 +24,7 @@ PSTAVessel.consoleCommands = {
             print("Astral Vessel - Set all affinities to 100.")
         end
     }
+    ]]
 }
 
 function PSTAVessel:initConsoleCMDs()

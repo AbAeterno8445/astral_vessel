@@ -1799,7 +1799,7 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addToyCgItem("Concussion", {PSTAVConstellationType.MUNDANE})
 	end
 
-	--Balatro Jokers
+	-- Balatro Jokers
 	if BalatroJokers then
 		-- Accessories
 		table.insert(PSTAVessel.accessoryList, {item=BalatroJokers.Enums.Items.jimbos_collection, sourceMod="Balatro Jokers"})
@@ -1815,6 +1815,37 @@ function PSTAVessel:initModCompat()
 		end
 		PSTAVessel_addBalatroJokersItem("Jimbo's Collection", {PSTAVConstellationType.MERCANTILE})
 	end
+
+    -- Red Baby
+    if RedBaby then
+        -- Items
+		local function PSTAVessel_addRbItem(redBabyItem, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(redBabyItem)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Red Baby item '" .. redBabyItem .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Red Baby")
+		end
+        PSTAVessel_addRbItem("!!!'s Heart", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Hush's Scythe", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Phobos ", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addRbItem("Pig's Heart", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("...'s Spine", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Protector", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRbItem("Salvaged Pendant", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Lemon Brownie Bombs", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRbItem("Jester Baby", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("!!!'s Last Friend", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Scarlet Infant", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Isaac's Skin", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("The Fistuloids", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Lil !!!", {PSTAVConstellationType.MUTAGENIC})
+
+        PSTAVessel_addRbItem("Bladder", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRbItem("Youch! Heart", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRbItem("Dad's Smoke Sticks", {PSTAVConstellationType.MUNDANE})
+    end
 
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
