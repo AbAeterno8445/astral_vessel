@@ -240,7 +240,8 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_NECRONOMICON, {PSTAVConstellationType.OCCULT}},
         {CollectibleType.COLLECTIBLE_MONSTER_MANUAL},
         {CollectibleType.COLLECTIBLE_RAZOR_BLADE, {PSTAVConstellationType.MUNDANE}},
-        {CollectibleType.COLLECTIBLE_BLOOD_RIGHTS}
+        {CollectibleType.COLLECTIBLE_BLOOD_RIGHTS},
+        {CollectibleType.COLLECTIBLE_BRIMSTONE_BOMBS, nil, 7}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.DEMONIC)
 
@@ -282,7 +283,8 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_YUCK_HEART, {PSTAVConstellationType.MUTAGENIC}},
         {CollectibleType.COLLECTIBLE_TELEPATHY_BOOK},
         {CollectibleType.COLLECTIBLE_DULL_RAZOR},
-        --{CollectibleType.COLLECTIBLE_CURSE_OF_THE_TOWER, nil, -8} -- TODO: consider affinity-granting items? Might need special handling
+        {CollectibleType.COLLECTIBLE_GHOST_BOMBS},
+        {CollectibleType.COLLECTIBLE_SHARP_KEY, {PSTAVConstellationType.MUNDANE}}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.OCCULT)
 
@@ -329,7 +331,8 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_MOVING_BOX},
         {CollectibleType.COLLECTIBLE_D10},
         {CollectibleType.COLLECTIBLE_PORTABLE_SLOT, nil, 2},
-        {CollectibleType.COLLECTIBLE_COUPON}
+        {CollectibleType.COLLECTIBLE_COUPON},
+        {CollectibleType.COLLECTIBLE_GLITTER_BOMBS, nil, 4}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.MERCANTILE)
 
@@ -368,7 +371,9 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_DEPRESSION},
         {CollectibleType.COLLECTIBLE_ANEMIC, {PSTAVConstellationType.MUTAGENIC}},
         {CollectibleType.COLLECTIBLE_ISAACS_TEARS},
-        {CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR}
+        {CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR},
+        {CollectibleType.COLLECTIBLE_SAD_BOMBS},
+        {CollectibleType.COLLECTIBLE_HOT_BOMBS, nil, 6}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.ELEMENTAL)
 
@@ -448,7 +453,12 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_BEAN},
         {CollectibleType.COLLECTIBLE_THE_JAR},
         {CollectibleType.COLLECTIBLE_ERASER},
-        {CollectibleType.COLLECTIBLE_PLACEBO}
+        {CollectibleType.COLLECTIBLE_PLACEBO},
+        {CollectibleType.COLLECTIBLE_NANCY_BOMBS, {PSTAVConstellationType.MUTAGENIC}},
+        {CollectibleType.COLLECTIBLE_ROCKET_IN_A_JAR, {PSTAVConstellationType.COSMIC}},
+        {CollectibleType.COLLECTIBLE_BOBBY_BOMB},
+        {CollectibleType.COLLECTIBLE_REMOTE_DETONATOR},
+        {CollectibleType.COLLECTIBLE_SCATTER_BOMBS}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.MUNDANE)
 
@@ -524,7 +534,10 @@ function PSTAVessel:initConstellationItems()
         {CollectibleType.COLLECTIBLE_BEST_BUD},
         {CollectibleType.COLLECTIBLE_FLUSH},
         {CollectibleType.COLLECTIBLE_BOBS_BRAIN},
-        {CollectibleType.COLLECTIBLE_BOBS_ROTTEN_HEAD}
+        {CollectibleType.COLLECTIBLE_BOBS_ROTTEN_HEAD},
+        {CollectibleType.COLLECTIBLE_BOBS_CURSE},
+        {CollectibleType.COLLECTIBLE_BUTT_BOMBS},
+        {CollectibleType.COLLECTIBLE_STICKY_BOMBS}
     }
     PSTAV_addConstItems(tmpItems, PSTAVConstellationType.MUTAGENIC)
 

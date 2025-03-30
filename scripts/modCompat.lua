@@ -1333,6 +1333,13 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addSamItem("Malakh Mot", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addSamItem("Memento Mori", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addSamItem("Jar of Scythes", {PSTAVConstellationType.OCCULT})
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Mask of Thanatos"), sourceMod="Samael"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/samael_tech.anm2", sourceMod="Samael"})
+
+        -- Hairstyles
+        table.insert(PSTAVessel.hairstyles, {path="gfx/characters/samael_venus.anm2", sourceMod="Samael"})
     end
 
     -- Mastema
@@ -1357,6 +1364,11 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addMasItem("Raven Skull", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addMasItem("Infernal Covenant", {PSTAVConstellationType.DEMONIC})
         --PSTAVessel_addMasItem("Broken Dice", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MERCANTILE}) -- Unsupported quality level
+
+        -- Accessories
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/character_mastema_horns.anm2", sourceMod="Mastema"})
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/character_mastema_b_horns.anm2", sourceMod="Mastema"}) -- These replace face layers
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Corrupt Heart"), sourceMod="Mastema"})
     end
 
     -- D!Edith
@@ -1409,6 +1421,12 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addShItem("Deader Eye", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addShItem("B.U.R.T.", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addShItem("Holster", {PSTAVConstellationType.MUNDANE})
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/ten_gallon_hat/costume_tengallonhat_0.anm2", sourceMod="Sheriff"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Bandit's Bandana"), sourceMod="Sheriff"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Blunt Force"), sourceMod="Sheriff"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Glass Bullets"), sourceMod="Sheriff"})
     end
 
     -- Martha of Bethany
@@ -1449,6 +1467,9 @@ function PSTAVessel:initModCompat()
         if Retribution then
             PSTAVessel_addMarItem("Mortar", {PSTAVConstellationType.MUNDANE})
         end
+
+        -- Hairstyles
+        table.insert(PSTAVessel.hairstyles, {path="gfx/characters/character_marthashair.anm2", sourceMod="Martha of Bethany"})
     end
 
     -- Arachna
@@ -1474,6 +1495,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addArItem("Divine Cloth", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addArItem("Yarn Heart", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addArItem("Geptameron", {PSTAVConstellationType.DIVINE})
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("3D Glasses"), sourceMod="Arachna"})
     end
 
     -- Tainted Treasure Rooms
@@ -1648,6 +1672,9 @@ function PSTAVessel:initModCompat()
 		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Mushroom"))
 		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Cap"))
 		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Contraband"))
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/pageantkitty.anm2", sourceMod="Bael"})
     end
 
     -- Alternate Hairstyles
@@ -1978,6 +2005,103 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("RebekahHurt"), "Rebekah Hurt", "Rebekah"})
         table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("RebekahDie"), "Rebekah Death", "Rebekah"})
     end
+
+    -- Heaven's Call
+    if HeavensCall then
+        -- Items
+		local function PSTAVessel_addHcItem(HcItem, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(HcItem)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Heaven's Call item '" .. HcItem .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Heaven's Call")
+		end
+        PSTAVessel_addHcItem("Mercurius?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Venus?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Terra?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.DIVINE, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addHcItem("Jupiter?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Uranus?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Neptunus?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Jupiter", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Saturn", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addHcItem("Lil Uranus", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Neptune", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Mercury", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Venus", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Terra", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addHcItem("Lil Luna", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Mars", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Errant", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Ceres", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Io", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Europa", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Ganymede", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Callisto", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Titan", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addHcItem("Lil Titania", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Oberon", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Triton", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Pluto", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Charon", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Eris", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Makemake", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Haumea", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Iris", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil End", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+
+        PSTAVessel_addHcItem("Mars?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addHcItem("Saturnus?", {PSTAVConstellationType.COSMIC})
+    end
+
+	-- Potato Pack 1
+	if potatopack1 then
+		-- Items
+		local function PSTAVessel_addPotatoPack1Item(potatoPack1ItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(potatoPack1ItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Potato Pack 1 item '" .. potatoPack1ItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Potato Pack 1")
+		end
+		PSTAVessel_addPotatoPack1Item("Acid Bombs", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Auto Resupply", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Blood Syringe", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addPotatoPack1Item("Bone Dagger", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Boney Paw", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Bound Soul", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addPotatoPack1Item("Charged Bombs", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Crow Head", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Crown of Stone", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Cursed Mirror", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Dark Razor", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Eye Witness", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Flying Contacts", {PSTAVConstellationType.MUTAGENIC}, 4)
+		PSTAVessel_addPotatoPack1Item("Gecko", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Happy Shroom", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addPotatoPack1Item("Health = Power", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Health Insurance", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Heart Burn", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Hot Potato", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Hydrophobic Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Ignis", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Landscape Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Mini Drill", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Ninja Log", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Old Skull", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Portal Gun", {PSTAVConstellationType.COSMIC})
+		PSTAVessel_addPotatoPack1Item("Portrait Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Radial Shots", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Red Shoes", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Rib Cage", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Spray Paint", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addPotatoPack1Item("Stone Mask", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addPotatoPack1Item("Tantrum", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Tear Bubble", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Tear Helpers", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addPotatoPack1Item("Water Bottle", {PSTAVConstellationType.MUNDANE})
+	end
 
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()

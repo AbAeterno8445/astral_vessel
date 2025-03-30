@@ -27,12 +27,21 @@ function PSTAVessel:onNewRun(isContinued)
     local itemPool = Game():GetItemPool()
     -- Starting item addition func
     local function PSTAVessel_addStartItem(item)
+        local plPickups = {
+            coins = player:GetNumCoins(),
+            bombs = player:GetNumBombs(),
+            keys = player:GetNumKeys()
+        }
         player:AddCollectible(item)
         itemPool:RemoveCollectible(item)
         -- Decrease transformation counters
         for _, tmpForm in pairs(PlayerForm) do
             player:IncrementPlayerFormCounter(tmpForm, -1)
         end
+        -- Return pickups to pre-item addition (prevents +pickup items)
+        player:AddCoins(plPickups.coins - player:GetNumCoins())
+        player:AddBombs(plPickups.bombs - player:GetNumBombs())
+        player:AddKeys(plPickups.keys - player:GetNumKeys())
     end
 
     if isVessel then
