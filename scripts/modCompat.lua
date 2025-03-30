@@ -1964,6 +1964,26 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addPotatoPack1Item("Water Bottle", {PSTAVConstellationType.MUNDANE})
 	end
 	
+	-- Sweet Halloween
+	if Isaac.GetCardIdByName("GreenCandy") ~= -1 then
+		-- Items
+		local function PSTAVessel_addSweetHalloweenItem(sweetHalloweenItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(sweetHalloweenItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Sweet Halloween item '" .. sweetHalloweenItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Sweet Halloween")
+		end
+		PSTAVessel_addSweetHalloweenItem("Pumpkin Basket", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addSweetHalloweenItem("Blank Candy", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addSweetHalloweenItem("Eye Candy", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addSweetHalloweenItem("Xocolate Bar", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addSweetHalloweenItem("Rock Candy", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addSweetHalloweenItem("Chiropterophilia", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addSweetHalloweenItem("Sweet Tooth", {PSTAVConstellationType.MUTAGENIC})
+	end
+	
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
