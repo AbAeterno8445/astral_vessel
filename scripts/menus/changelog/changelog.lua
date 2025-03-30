@@ -5,6 +5,7 @@ function PSTAVessel:getChangelogList()
         "v0.2.3",
         "- Additional compatibility for the Balatro Jokers (thanks Penelope!) and Red Baby mods.",
         "- Added some custom hurt/death SFX from Revelations and Retribution.",
+        "- Support for mod Mushroom items, and Fly familiars (Suzerain Of Flies mutagenic node).",
         "- Fixed a few accessories not being applied in-game.",
         "- Fixed accessory layer conflicts not showing up for non-item accessories (displayed on a blank head).",
         "",

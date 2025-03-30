@@ -194,6 +194,12 @@ function PSTAVessel:initModCompat()
         -- Knife Items
         table.insert(PSTAVessel.knifeItems, FiendFolio.ITEM.COLLECTIBLE.YOUR_ETERNAL_REWARD)
         table.insert(PSTAVessel.knifeItems, FiendFolio.ITEM.COLLECTIBLE.DEVILS_DAGGER)
+
+		-- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, FiendFolio.ITEM.COLLECTIBLE.FRAUDULENT_FUNGUS)
+
+		-- Fly familiars
+        table.insert(PSTAVessel.flyFamiliars, FiendFolio.ITEM.FAMILIAR.ORANGE_BOOM_FLY)
     end
 
     -- Epiphany
@@ -473,6 +479,13 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Psycho Knife"))
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Dagger of Servants"))
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Yamanba's Chopper"))
+
+		-- Mushrooms
+        table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Gourd-Shroom"))
+        table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Parasitic Mushroom"))
+
+		-- Fly familiars
+        table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Queen of the Clan"))
     end
 
     -- Reverie: MGO
@@ -518,6 +531,9 @@ function PSTAVessel:initModCompat()
 
         -- Knife Items
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Silver Knife"))
+
+		-- Mushrooms
+        table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Bustling Fungus"))
     end
 
     -- Repentance Plus! (mod)
@@ -582,6 +598,9 @@ function PSTAVessel:initModCompat()
 
         -- Knife Items
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Ceremonial Blade"))
+
+		-- Fly familiars
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Keeper's Annoying Fly"))
     end
 
     -- Revelations
@@ -808,6 +827,17 @@ function PSTAVessel:initModCompat()
         -- Hurt/Death SFX
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("MammonHurt"), "Mammon Hurt", "Retribution"})
         table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("MammonDeath"), "Mammon Death", "Retribution"})
+
+		-- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Death Cap"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Puffstool"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Devil's Tooth"))
+
+		-- Fly familiars
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Bedbug"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Sunken Fly"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Baron Fly"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Frail Fly"))
     end
 
     -- Eclipsed
@@ -942,6 +972,10 @@ function PSTAVessel:initModCompat()
 
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Battery Bombs"))
+
+		-- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Shroomface"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Mushroom Soup"))
     end
 
     -- Lost and Forgotten
@@ -1057,6 +1091,10 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Plastic Knife"))
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Small Knives"))
 
+		-- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Champion Mush"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Green Cap"))
+
         -- Questionnaire interaction for Vessel
         LNF:AddQuestionnaireDrop(PSTAVessel.vesselType, EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, Isaac.GetTrinketIdByName("Arcane Obols 3"))
     end
@@ -1143,6 +1181,9 @@ function PSTAVessel:initModCompat()
 
         -- Hurt/Death SFX
         table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("mandrake scream"), "Mandrake Scream", "Community Remix"})
+
+        -- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Musty Mush"))
     end
 
     -- Reshaken Vol 1
@@ -1527,6 +1568,9 @@ function PSTAVessel:initModCompat()
         -- Knife Items
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Kitchen Knife"))
         table.insert(PSTAVessel.knifeItems, Isaac.GetItemIdByName("Knife Bender"))
+
+		-- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Mutant Mycelium"))
     end
 
     -- Bael
@@ -1599,6 +1643,11 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addCatItem("Cat's Master Key", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUNDANE})
         PSTAVessel_addCatItem("Cat's Razor", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MUNDANE})
         PSTAVessel_addCatItem("Cat's Skin", {PSTAVConstellationType.OCCULT})
+
+		-- Mushrooms
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Mushroom"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Cap"))
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Cat's Contraband"))
     end
 
     -- Alternate Hairstyles
@@ -1791,6 +1840,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addSewColItem("Driftwood", {PSTAVConstellationType.ELEMENTAL})
 
         PSTAVessel_addSewColItem("The pail", {PSTAVConstellationType.MUTAGENIC})
+
+		-- Fly familiars
+		table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Willo familiar"))
 	end
 
 	-- Toybox Collection
