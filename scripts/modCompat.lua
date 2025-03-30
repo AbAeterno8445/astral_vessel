@@ -650,6 +650,18 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("Moxie's Yarn", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addRevItem("Super Meat Blade", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addRevItem("Dramamine", {PSTAVConstellationType.MUTAGENIC})
+
+        -- Hurt/Death SFX
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("REV Draugr Idle"), "Draugr", "Revelations"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("REV Jaugr Hit"), "Jaugr Hit", "Revelations"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("REV Mint Gum Break"), "Mint Gum Break", "Revelations"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("REV Ice Break Large"), "Ice Break Large", "Revelations"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("REV Hog Oink"), "Hog Oink", "Revelations"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("REV Catastrophe Cough"), "Catastrophe Cough", "Revelations"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("REV Ice Break Large"), "Ice Break Large", "Revelations"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("REV Hog Slam"), "Hog Slam", "Revelations"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("REV Wendy Death"), "Wendy Death", "Revelations"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("REV Catastrophe Defeat"), "Catastrophe Defeat", "Revelations"})
     end
 
     -- Retribution
@@ -792,6 +804,10 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRetItem("Shattered Dice", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
         PSTAVessel_addRetItem("Bottled Fairy", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.OCCULT})
         PSTAVessel_addRetItem("Puffstool", {PSTAVConstellationType.ELEMENTAL})
+
+        -- Hurt/Death SFX
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("MammonHurt"), "Mammon Hurt", "Retribution"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("MammonDeath"), "Mammon Death", "Retribution"})
     end
 
     -- Eclipsed
