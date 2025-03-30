@@ -1942,6 +1942,54 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRbItem("Dad's Smoke Sticks", {PSTAVConstellationType.MUNDANE})
     end
 
+    -- Heaven's Call
+    if HeavensCall then
+        -- Items
+		local function PSTAVessel_addHcItem(HcItem, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(HcItem)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Heaven's Call item '" .. HcItem .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Heaven's Call")
+		end
+        PSTAVessel_addHcItem("Mercurius?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Venus?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Terra?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.DIVINE, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addHcItem("Jupiter?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Uranus?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Neptunus?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Jupiter", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Saturn", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addHcItem("Lil Uranus", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Neptune", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Mercury", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Venus", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Terra", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addHcItem("Lil Luna", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Mars", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Errant", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Ceres", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Io", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Europa", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Ganymede", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Callisto", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Titan", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addHcItem("Lil Titania", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Oberon", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addHcItem("Lil Triton", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Pluto", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Charon", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addHcItem("Lil Eris", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Makemake", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil Haumea", {PSTAVConstellationType.COSMIC})
+        PSTAVessel_addHcItem("Lil Iris", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addHcItem("Lil End", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.OCCULT})
+
+        PSTAVessel_addHcItem("Mars?", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addHcItem("Saturnus?", {PSTAVConstellationType.COSMIC})
+    end
+
 	-- Potato Pack 1
 	if potatopack1 then
 		-- Items
