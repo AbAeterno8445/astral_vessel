@@ -132,9 +132,11 @@ function PSTAVessel:initVesselTree()
         if newDesc then
             return { name = descName, description = newDesc }
         end
-        -- Stellar Nexus starting items display
+        -- Stellar Nexus notes + starting items display
         if descName == "Stellar Nexus" then
             newDesc = {table.unpack(tmpDescription)}
+            table.insert(newDesc, {"Note: Starting items do not count towards transformations.", PST.kcolors.ANCIENT_ORANGE})
+            table.insert(newDesc, {"Note: Starting items cannot grant starting pickups (e.g. a '+5 bombs' items won't grant bombs).", PST.kcolors.ANCIENT_ORANGE})
             for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
                 if itemCfg then

@@ -3,11 +3,15 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.3",
-        "- Additional compatibility for the Balatro Jokers (thanks Penelope!) and Red Baby mods.",
+        "- Additional compatibility for the Balatro Jokers, Potato Pack 1, Red Baby and Heaven's Call mods.",
         "- Added some custom hurt/death SFX from Revelations and Retribution.",
+        "- Support for accessories/hairstyles from the following mods: Samael, Mastema, Martha of Bethany, Bael, Arachna, Sheriff.",
         "- Support for mod Mushroom items, and Fly familiars (Suzerain Of Flies mutagenic node).",
+        "- Starting items can no longer grant pickups, such as +5 bombs. Other effects from these items still apply.",
+        "- Bomb effect items (nancy bombs, bob's curse, etc.) are now available as starting items.",
         "- Fixed a few accessories not being applied in-game.",
         "- Fixed accessory layer conflicts not showing up for non-item accessories (displayed on a blank head).",
+        "- Fixed Vessel completion events triggering with any character.",
         "",
 
         "v0.2.2",
