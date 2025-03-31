@@ -17,14 +17,14 @@ function PSTAVessel:onNewRoom()
         if charHair then
             for _, tmpCostume in ipairs(PST:getPlayer():GetCostumeSpriteDescs()) do
                 local tmpSprite = tmpCostume:GetSprite()
-                if tmpSprite and tmpSprite:GetFilename() == "gfx/characters/hair/astralvessel/hair_vessel.anm2" then
+                if tmpSprite and tmpSprite:GetFilename() == PSTAVessel.baseHairCostumePath then
                     PSTAVessel.tmpHairSprite = tmpCostume:GetSprite()
                     break
                 end
             end
         end
 
-        PSTAVessel:updateHairVariant(player)
+        PSTAVessel:updateHairAndFace(player)
 
         -- Update trackers
         PSTAVessel.updateTrackers.eternalHearts = player:GetEternalHearts()

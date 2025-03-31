@@ -19,7 +19,7 @@ function PSTAVessel:onNewRun(isContinued)
 
     if isContinued then
         if isVessel then
-            PSTAVessel:updateHairVariant(player)
+            PSTAVessel:updateHairAndFace(player)
         end
         return
     end
@@ -71,10 +71,9 @@ function PSTAVessel:onNewRun(isContinued)
         PST:addModifiers({
             vesselColor = {PSTAVessel.charColor.R, PSTAVessel.charColor.G, PSTAVessel.charColor.B},
             vesselHairColor = {PSTAVessel.charHairColor.R, PSTAVessel.charHairColor.G, PSTAVessel.charHairColor.B},
-            vesselHair = PST:copyTable(PSTAVessel.charHair)
+            vesselHair = PST:copyTable(PSTAVessel.charHair),
+            vesselFace = PST:copyTable(PSTAVessel.charFace)
         }, true)
-
-        
 
         -- Starting item loadout
         if #PSTAVessel.charStartItems > 0 then

@@ -5,7 +5,13 @@ function PSTAVessel:applyCostumes(clearOld)
 
         -- Apply custom face
         if PSTAVessel.charFace then
-            local faceCostumeID = Isaac.GetCostumeIdByPath(PSTAVessel.charFace.path)
+            local faceCostumeID = Isaac.GetCostumeIdByPath(PSTAVessel.baseFaceCostumePath)
+            for _, tmpFaceEntry in ipairs(PSTAVessel.facesList) do
+                if tmpFaceEntry.path == PSTAVessel.charFace.path and tmpFaceEntry.baseSprite then
+                    faceCostumeID = Isaac.GetCostumeIdByPath(tmpFaceEntry.baseSprite)
+                    break
+                end
+            end
             if faceCostumeID ~= -1 then
                 player:AddNullCostume(faceCostumeID)
             end
@@ -13,8 +19,7 @@ function PSTAVessel:applyCostumes(clearOld)
 
         -- Apply custom hair
         if PSTAVessel.charHair then
-            --local hairCostumeID = Isaac.GetCostumeIdByPath(PSTAVessel.charHair.path)
-            local hairCostumeID = Isaac.GetCostumeIdByPath("gfx/characters/hair/astralvessel/hair_vessel.anm2")
+            local hairCostumeID = Isaac.GetCostumeIdByPath(PSTAVessel.baseHairCostumePath)
             if hairCostumeID ~= -1 then
                 player:AddNullCostume(hairCostumeID)
             end
@@ -40,22 +45,45 @@ function PSTAVessel:applyCostumes(clearOld)
     end
 end
 
-local tmpHairSprites = {}
-function PSTAVessel:updateHairVariant(player)
+local tmpSpriteCache = {}
+function PSTAVessel:updateHairAndFace(player)
     local charHair = PST:getTreeSnapshotMod("vesselHair", nil)
     if charHair then
-        local tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath("gfx/characters/hair/astralvessel/hair_vessel.anm2"))
+        local tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath(PSTAVessel.baseHairCostumePath))
         if tmpCostumeID then
             local tmpSpriteID = charHair.variant or charHair.path
             if tmpSpriteID then
-                if not tmpHairSprites[tmpSpriteID] then
-                    tmpHairSprites[tmpSpriteID] = Sprite(charHair.path, true)
+                if not tmpSpriteCache[tmpSpriteID] then
+                    tmpSpriteCache[tmpSpriteID] = Sprite(charHair.path, true)
                 end
-                if tmpHairSprites[tmpSpriteID] and tmpHairSprites[tmpSpriteID]:GetLayer(0) then
-                    local pngPath = tmpHairSprites[tmpSpriteID]:GetLayer(0):GetSpritesheetPath()
+                if tmpSpriteCache[tmpSpriteID] and tmpSpriteCache[tmpSpriteID]:GetLayer(0) then
+                    local pngPath = tmpSpriteCache[tmpSpriteID]:GetLayer(0):GetSpritesheetPath()
                     if charHair.variant then
                         pngPath = charHair.variant
                     end
+                    player:ReplaceCostumeSprite(tmpCostumeID, pngPath, 0)
+                end
+            end
+        end
+    end
+
+    local charFace = PST:getTreeSnapshotMod("vesselFace", nil)
+    if charFace then
+        local tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath(PSTAVessel.baseFaceCostumePath))
+        for _, tmpFaceEntry in ipairs(PSTAVessel.facesList) do
+            if tmpFaceEntry.path == PSTAVessel.charFace.path and tmpFaceEntry.baseSprite then
+                tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath(tmpFaceEntry.baseSprite))
+                break
+            end
+        end
+        if tmpCostumeID then
+            local tmpSpriteID = charFace.path
+            if tmpSpriteID then
+                if not tmpSpriteCache[tmpSpriteID] then
+                    tmpSpriteCache[tmpSpriteID] = Sprite(charFace.path, true)
+                end
+                if tmpSpriteCache[tmpSpriteID] and tmpSpriteCache[tmpSpriteID]:GetLayer(0) then
+                    local pngPath = tmpSpriteCache[tmpSpriteID]:GetLayer(0):GetSpritesheetPath()
                     player:ReplaceCostumeSprite(tmpCostumeID, pngPath, 0)
                 end
             end

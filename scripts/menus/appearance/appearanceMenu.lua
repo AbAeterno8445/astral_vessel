@@ -15,7 +15,7 @@ local layerHierarchy = {
     extra = 13
 }
 local function PSTAVessel_layerHierarchySort(a, b)
-    return (a[3] or 14) < (b[3] or 14)
+    return (a[4] or a[3] or 14) < (b[4] or b[3] or 14)
 end
 
 local charDirs = {"Down", "Left", "Up", "Right"}
@@ -150,7 +150,7 @@ function PSTAVessel:initAppearanceMenu()
             local pickedFaceSprite = PSTAVessel.charFace.sprite
             if pickedFaceSprite then
                 pickedFaceSprite.Color.A = 1
-                table.insert(renderList, {pickedFaceSprite, "Head" .. charDir})
+                table.insert(renderList, {pickedFaceSprite, "Head" .. charDir, "head0"})
             end
         end
         -- Render accessories
@@ -211,7 +211,7 @@ function PSTAVessel:initAppearanceMenu()
             for _, tmpLayer in ipairs(tmpSprite:GetAllLayers()) do
                 local layerName = tmpLayer:GetName()
                 if layerHierarchy[layerName] then
-                    table.insert(layerList, {tmpSprite, tmpSpriteData[2], layerName})
+                    table.insert(layerList, {tmpSprite, tmpSpriteData[2], layerName, tmpSpriteData[3]})
                 end
             end
         end

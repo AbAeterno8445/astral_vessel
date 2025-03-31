@@ -8,6 +8,9 @@
     <costume anm2path="hair/astralvessel/hair_vessel.anm2" type="none" priority="100" />
 
     <!-- FACES -->
+    <costume anm2path="faces/astralvessel/base/face_vessel.anm2" type="none" priority="0" />
+    <costume anm2path="faces/astralvessel/base/face_andromeda.anm2" type="none" priority="0" />
+
     <costume anm2path="faces/astralvessel/face_isaac.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_isaac_nocry.anm2" type="none" priority="0" />
     <costume anm2path="faces/astralvessel/face_3dollar.anm2" type="none" priority="0" />

@@ -206,6 +206,7 @@ PSTAVessel.hairstyles = {
     {path="gfx/characters/hair/astralvessel/hair_venus.anm2"},
     {path="gfx/characters/hair/astralvessel/hair_tlilith.anm2"},
 }
+PSTAVessel.baseHairCostumePath = "gfx/characters/hair/astralvessel/hair_vessel.anm2"
 
 function PSTAVessel:addVesselHairstyle(costumePath, variation)
     if type(costumePath) ~= "string" then return end
@@ -384,6 +385,7 @@ PSTAVessel.facesList = {
     {path="gfx/characters/faces/astralvessel/face_balloftar3.anm2"},
     {path="gfx/characters/faces/astralvessel/face_terra.anm2"}
 }
+PSTAVessel.baseFaceCostumePath = "gfx/characters/faces/astralvessel/base/face_vessel.anm2"
 
 include("scripts.constellationsInitData")
 

@@ -1298,8 +1298,16 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addAndItem("The Sporepedia", {PSTAVConstellationType.COSMIC})
 
         -- Faces
-        table.insert(PSTAVessel.facesList, {path="gfx/characters/andromedabheadeyes.anm2", sourceMod="Andromeda"})
-        table.insert(PSTAVessel.facesList, {path="gfx/characters/andromedabheadeyes_blood.anm2", sourceMod="Andromeda"})
+        table.insert(PSTAVessel.facesList, {
+            path="gfx/characters/andromedabheadeyes.anm2",
+            baseSprite="gfx/characters/faces/astralvessel/base/face_andromeda.anm2",
+            sourceMod="Andromeda"
+        })
+        table.insert(PSTAVessel.facesList, {
+            path="gfx/characters/andromedabheadeyes_blood.anm2",
+            baseSprite="gfx/characters/faces/astralvessel/base/face_andromeda.anm2",
+            sourceMod="Andromeda"
+        })
 
         -- Hurt/Death SFX
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("AndromedaHurt"), "Andromeda Hurt", "Andromeda"})
