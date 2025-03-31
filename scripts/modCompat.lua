@@ -15,13 +15,13 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.facesList, {path="gfx/characters/black_moon_evangelion.anm2", sourceMod="Fiend Folio"})
 
 		-- Accessories
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GMO_CORN, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GMO_CORN, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.COOL_SUNGLASSES, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.FIENDS_HORN, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GOLEMS_ORB, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GOLEMS_ORB, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/sanguine_hook.anm2", sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.FETAL_FIEND, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SECRET_STASH, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SECRET_STASH, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILLED_EGG, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SMALL_PIPE, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SMALL_WOOD, sourceMod="Fiend Folio"}) -- hehe - wooky		
@@ -30,21 +30,21 @@ function PSTAVessel:initModCompat()
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.HAPPYHEAD_AXE, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.PENNY_ROLL, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.ROBOBABY3, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.NYX, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.NYX, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DICE_GOBLIN, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SPINDLE, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILS_DAGGER, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.X10KACHING, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.X10KACHING, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.X10BATOOMKLING, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.MOMS_STOCKINGS, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.HOST_ON_TOAST, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.BOX_TOP, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.HOST_ON_TOAST, sourceMod="Fiend Folio"}) -- conflicting head1
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.BOX_TOP, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.SMASH_TROPHY, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.GOLDSHI_LUNCH, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {path="gfx/characters/sculpted_pepper.anm2", sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.COMMUNITY_ACHIEVEMENT, sourceMod="Fiend Folio"})
-		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA, sourceMod="Fiend Folio"})
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.COMMUNITY_ACHIEVEMENT, sourceMod="Fiend Folio"}) -- conflicting head1
+		--table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA, sourceMod="Fiend Folio"}) -- conflicting head1
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DADS_WALLET, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.DEIMOS, sourceMod="Fiend Folio"})
 		table.insert(PSTAVessel.accessoryList, {item=FiendFolio.ITEM.COLLECTIBLE.BRIDGE_BOMBS, sourceMod="Fiend Folio"})
@@ -215,10 +215,10 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.WARM_COAT.ID, sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.WOOLEN_CAP.ID, sourceMod="Epiphany"})
         table.insert(PSTAVessel.accessoryList, {item=Epiphany.Item.PRINTER.ID, sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/lost_d_extra.anm2", sourceMod="Epiphany"})
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/lost_d_extra.anm2", sourceMod="Epiphany"}) -- conflicting head0
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_cain_extra.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_judas_1_extra.anm2", sourceMod="Epiphany"})
-        table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_keeper_extra.anm2", sourceMod="Epiphany"})
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_judas_1_extra.anm2", sourceMod="Epiphany"}) -- conflicting head0
+        --table.insert(PSTAVessel.accessoryList, {path="gfx/characters/tarnished_keeper_extra.anm2", sourceMod="Epiphany"}) -- conflicting head0
         table.insert(PSTAVessel.accessoryList, {path="gfx/characters/epiphany_anniversary.anm2", sourceMod="Epiphany"})
 
         -- Hairstyles

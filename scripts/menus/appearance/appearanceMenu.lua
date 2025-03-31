@@ -175,9 +175,9 @@ function PSTAVessel:initAppearanceMenu()
                         tmpAcc.costumeSprite.Color.A = 1
                         table.insert(renderList, {tmpAcc.costumeSprite, "Walk" .. charDir})
                         table.insert(renderList, {tmpAcc.costumeSprite, "Head" .. charDir})
-                    elseif tmpAcc.sprite then
+                    elseif tmpAcc.sprite and not tmpAcc.item then
                         tmpAcc.sprite.Color.A = 1
-                        table.insert(renderList, {tmpAcc.sprite, "ShopIdle"})
+                        table.insert(renderList, {tmpAcc.sprite, "Head" .. charDir})
                     end
                 end
             end

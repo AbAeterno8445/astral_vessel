@@ -222,7 +222,10 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
     PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
 
     -- Layer conflicts + display
-    local totalLayers = {}
+    local totalLayers = {
+        head0 = 1,
+        head1 = 1
+    }
     for _, tmpAcc in ipairs(PSTAVessel.accessoryList) do
         -- Add to total layers if selected (for conflicts)
         local tmpSprite = tmpAcc.sprite

@@ -4,6 +4,8 @@ function PSTAVessel:getChangelogList()
 
         "v0.2.4",
         "- Additional compatibility for the Rebekah, Daydream All Day and Sweet Halloween mods.",
+        "- Accessories using the 'head0' and 'head1' layers have been disabled as these are currently incompatible with the face/hair.",
+        "- Adjusted face rendering code for better layer compatibility (such as with Andromeda eyes).",
         "- Fixed error caused by the \"+% to the lowest stat\" modifier.",
         "",
 
