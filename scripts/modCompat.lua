@@ -1942,6 +1942,70 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRbItem("Dad's Smoke Sticks", {PSTAVConstellationType.MUNDANE})
     end
 
+    -- Rebekah
+    if yandereWaifu then -- yes that is really what it's called - wooky
+        -- Items
+        local function PSTAVessel_addRebItem(rebekahItem, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(rebekahItem)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Rebekah item '" .. rebekahItem .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Rebekah: The Cursed and Brokenhearted")
+		end
+        PSTAVessel_addRebItem("Love Deluxe", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Great Pheonix", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Finger Finger", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Moriah Diary", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Love = Power", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Cursed Spoon", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addRebItem("Snap!", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("A Beautiful Grave", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addRebItem("Eggshell Walk", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Oversized Sweater", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Eyes of the Dead", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addRebItem("Psoriasis", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Tech Hz", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Skimmed Milk", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Haphephobic Bombs", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Pencil Sharpener", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Narcolepsy", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Angel's Morningstar", {PSTAVConstellationType.DIVINE})
+        PSTAVessel_addRebItem("Miraculous Womb", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.DIVINE})
+        PSTAVessel_addRebItem("Eternal Bond", {PSTAVConstellationType.DIVINE})
+        PSTAVessel_addRebItem("Cheesy Pizza", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Boba Tea", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Fenrir's Eyes", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRebItem("Fenrir's Tooth", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRebItem("Fenrir's Head", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRebItem("Fenrir's Leash", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRebItem("Heartaches...", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.COSMIC})
+        PSTAVessel_addRebItem("Silphium", {PSTAVConstellationType.DIVINE})
+        PSTAVessel_addRebItem("Underpay", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addRebItem("Milk Wine", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Jacob's Tears", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Silent Treatment", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Silencer", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Full Fat Milk", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Cutie Patootie", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
+        
+        PSTAVessel_addRebItem("Doorstopper", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("The Shining", {PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRebItem("Defuse = Rewards", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addRebItem("Typical Rom-Com", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Dice of Fate", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Notebook of the Dead", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addRebItem("Hearts and Crafts", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRebItem("Jumpy Dumpty", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRebItem("Fenrir's Paw", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRebItem("Rebekah's Scrapbook", {PSTAVConstellationType.MUNDANE})
+        -- PSTAVessel_addRebItem("Giddy up!", {PSTAVConstellationType.MUTAGENIC}) -- i dont trust this one yet - wooky
+
+        -- Hurt/Death SFX
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("RebekahHurt"), "Rebekah Hurt", "Rebekah"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("RebekahDie"), "Rebekah Death", "Rebekah"})
+    end
+
     -- Heaven's Call
     if HeavensCall then
         -- Items
