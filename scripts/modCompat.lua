@@ -1988,7 +1988,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRebItem("Silencer", {PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addRebItem("Full Fat Milk", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addRebItem("Cutie Patootie", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.ELEMENTAL})
-        
+
         PSTAVessel_addRebItem("Doorstopper", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addRebItem("The Shining", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRebItem("Defuse = Rewards", {PSTAVConstellationType.MUTAGENIC})

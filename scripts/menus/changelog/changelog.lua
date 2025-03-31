@@ -3,6 +3,7 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.4",
+        "- Additional compatibility for the Rebekah mod.",
         "- Fixed error caused by the \"+% to the lowest stat\" modifier.",
         "",
 
