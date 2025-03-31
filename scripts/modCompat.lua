@@ -2102,7 +2102,7 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addPotatoPack1Item("Tear Helpers", {PSTAVConstellationType.ELEMENTAL})
 		PSTAVessel_addPotatoPack1Item("Water Bottle", {PSTAVConstellationType.MUNDANE})
 	end
-	
+
 	-- Sweet Halloween
 	if Isaac.GetCardIdByName("GreenCandy") ~= -1 then
 		-- Items
@@ -2122,7 +2122,7 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addSweetHalloweenItem("Chiropterophilia", {PSTAVConstellationType.MUTAGENIC})
 		PSTAVessel_addSweetHalloweenItem("Sweet Tooth", {PSTAVConstellationType.MUTAGENIC})
 	end
-	
+
 	--Daydream All Day
 	if ddad then
 		-- Items

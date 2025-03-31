@@ -3,7 +3,7 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.4",
-        "- Additional compatibility for the Rebekah mod.",
+        "- Additional compatibility for the Rebekah, Daydream All Day and Sweet Halloween mods.",
         "- Fixed error caused by the \"+% to the lowest stat\" modifier.",
         "",
 

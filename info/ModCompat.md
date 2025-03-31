@@ -32,6 +32,10 @@
 - **Balatro Jokers:** Items, Accessories.
 - **Red Baby:** Items.
 - **Potato Pack 1:** Items.
+- **Heaven's Call:** Items.
+- **Rebekah:** Items, Custom hurt/death SFX.
+- **Sweet Halloween:** Items.
+- **Daydream All Day:** Items.
 
 \*Fly familiars are friendly monsters spawned by the **Suzerain Of Flies** large node, under the empyrean mutagenic 'Dragonfly' constellation.
 
