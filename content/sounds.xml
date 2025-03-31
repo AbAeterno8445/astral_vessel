@@ -4,4 +4,8 @@
 		<sample weight="1" path="player/avessel_sirenhurt2.wav"/>
 		<sample weight="1" path="player/avessel_sirenhurt3.wav"/>
 	</sound>
+
+	<sound name="Touhou Pichuun (PSTAVessel)">
+		<sample weight="1" path="reverie/pichuun.wav">
+	</sound>
 </sounds>
