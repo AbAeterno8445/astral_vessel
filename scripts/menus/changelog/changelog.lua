@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.4",
+        "- Fixed error caused by the \"+% to the lowest stat\" modifier.",
+        "",
+
         "v0.2.3",
         "- Additional compatibility for the Balatro Jokers, Potato Pack 1, Red Baby and Heaven's Call mods.",
         "- Added some custom hurt/death SFX from Revelations and Retribution.",

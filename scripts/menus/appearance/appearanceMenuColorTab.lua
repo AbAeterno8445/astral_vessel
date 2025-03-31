@@ -69,4 +69,9 @@ function PSTAVessel:appearanceMenuColorTab(appearanceMenu, tScreen)
         tmpColor = PST.kcolors.BLUE1
     end
     PST.normalFont:DrawString("Blue: " .. PSTAVessel:getColorStr(PSTAVessel.charColor.B), tmpDrawX, tmpDrawY, tmpColor)
+
+    local tmpStr = "Up/Down to select color, Left/Right to decrease/increase. Hold shift to change faster."
+    tmpTextX = tScreen.screenW / 2 - PST.miniFont:GetStringWidth(tmpStr) / 4
+    tmpTextY = tmpDrawY + 50
+    PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
 end

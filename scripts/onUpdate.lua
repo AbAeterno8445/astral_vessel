@@ -145,7 +145,7 @@ function PSTAVessel:onUpdate()
                 }
                 local lowestStat
                 local lowestVal = 1000
-                for statName, statVal in ipairs(statList) do
+                for statName, statVal in pairs(statList) do
                     if statVal < lowestVal then
                         lowestStat = statName
                         lowestVal = statVal

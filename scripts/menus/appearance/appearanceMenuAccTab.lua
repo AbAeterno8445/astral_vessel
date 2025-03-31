@@ -215,6 +215,11 @@ function PSTAVessel:appearanceMenuAccTab(appearanceMenu, tScreen)
     tmpStr = "Press Q / Shift+Q to quickly select next/previous equipped accessory."
     tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
     PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
+    tmpTextY = tmpTextY + 10
+
+    tmpStr = "Shift + left/right to scroll quickly."
+    tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
+    PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
 
     -- Layer conflicts + display
     local totalLayers = {}

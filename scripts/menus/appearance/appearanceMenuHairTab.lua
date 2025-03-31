@@ -198,7 +198,12 @@ function PSTAVessel:appearanceMenuHairTab(appearanceMenu, tScreen)
     PST.normalFont:DrawString("Blue: " .. PSTAVessel:getColorStr(PSTAVessel.charHairColor.B), tmpTextX, tmpTextY, tmpColor)
 
     local tmpStr = "Press Q to switch between hair and color selection."
-    tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 2
+    tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
     tmpTextY = tmpDrawY + 70
-    PST.miniFont:DrawString(tmpStr, tmpTextX, tmpTextY, PST.kcolors.WHITE)
+    PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
+    tmpTextY = tmpTextY + 10
+
+    tmpStr = "Shift + left/right to scroll quickly."
+    tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
+    PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
 end

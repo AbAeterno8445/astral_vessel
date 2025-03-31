@@ -111,4 +111,9 @@ function PSTAVessel:appearanceMenuFaceTab(appearanceMenu, tScreen)
 
     -- Selection bubble
     bubbleSpr:Render(Vector(tmpDrawX, tmpDrawY - faceWheelRad - 18))
+
+    local tmpStr = "Shift + left/right to scroll quickly."
+    tmpTextX = tmpDrawX - PST.miniFont:GetStringWidth(tmpStr) / 4
+    tmpTextY = tmpDrawY + 70
+    PST.miniFont:DrawStringScaled(tmpStr, tmpTextX, tmpTextY, 0.5, 0.5, PST.kcolors.WHITE)
 end
