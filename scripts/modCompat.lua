@@ -2283,6 +2283,34 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addDDADItem("Work for Nothing", {PSTAVConstellationType.MERCANTILE})
 	end
 
+    -- Doki Doki Repentance!
+    if DDLC then
+        
+        -- Items
+		local function PSTAVessel_addDokiItem(dokiItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(dokiItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Doki Doki Repentance! item '" .. dokiItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Doki Doki Repentance!n")
+		end
+        PSTAVessel_addDDADItem("Amy Likes Spiders", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addDDADItem("Cryptic Poem", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addDDADItem("Hypergraphia", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.DEMONIC})
+
+        PSTAVessel_addDDADItem("Portrait of Markov", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addDDADItem("Cute Cupcake", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addDDADItem("Poet's Pen", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addDDADItem("Bottles", {PSTAVConstellationType.MUNDANE})
+
+        -- Custom Hurt/Death SFX
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Select"), "DDLC Select", "Doki Doki Repentance!"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Glitch"), "DDLC Glitch 1", "Doki Doki Repentance!"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Glitch2"), "DDLC Glitch 2", "Doki Doki Repentance!"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Playwithme"), "DDLC Neck Snap", "Doki Doki Repentance!"})
+    end
+
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
