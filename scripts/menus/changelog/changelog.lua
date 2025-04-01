@@ -4,6 +4,8 @@ function PSTAVessel:getChangelogList()
 
         "v0.2.5",
         "- Additional compatibility for the Doki Doki Repentance! mod, and Reverie/Reverie MGO costumes and custom hurt/death SFX.",
+        "- Added a Birthright effect to Astral Vessel: \"Non-progression item pedestals have a chance to cycle between its item and a",
+        "random item from a constellation pool you have affinity in. Higher affinity grants that type a higher chance to be picked.\"",
         "",
 
         "v0.2.4",

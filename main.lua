@@ -73,6 +73,9 @@ function PSTAVessel:initMod()
                 "Triggers a random Sidereal Meridion's effect.#Generates 200 energy for your selected Meridion.#You can see Sidereal Meridions' effects in the Sidereal Tree once unlocked."
             )
         end
+
+        -- Birthright effect
+        EID:addBirthright(PSTAVessel.vesselType, "Non-progression item pedestals have a chance to cycle between its item and a random item from a constellation pool you have affinity in.#Higher affinity grants that type a higher chance to be picked.")
     end
 
     -- Init callbacks

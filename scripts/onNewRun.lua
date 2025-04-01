@@ -68,12 +68,19 @@ function PSTAVessel:onNewRun(isContinued)
         end
 
         -- Snapshot loadout data for the run
-        PST:addModifiers({
+        local vesselModList = {
             vesselColor = {PSTAVessel.charColor.R, PSTAVessel.charColor.G, PSTAVessel.charColor.B},
             vesselHairColor = {PSTAVessel.charHairColor.R, PSTAVessel.charHairColor.G, PSTAVessel.charHairColor.B},
             vesselHair = PST:copyTable(PSTAVessel.charHair),
             vesselFace = PST:copyTable(PSTAVessel.charFace)
-        }, true)
+        }
+        for _, tmpType in pairs(PSTAVConstellationType) do
+            local allocData = PSTAVessel.constelAlloc[tmpType]
+            if allocData and allocData.affinity and allocData.affinity > 0 then
+                vesselModList["affinity" .. tmpType] = allocData.affinity
+            end
+        end
+        PST:addModifiers(vesselModList, true)
 
         -- Starting item loadout
         if #PSTAVessel.charStartItems > 0 then

@@ -16,6 +16,11 @@ function PSTAVessel:onNewLevel()
     local player = PST:getPlayer()
     local level = Game():GetLevel()
 
+    -- Birthright cache cleanup
+    if player:GetPlayerType() == PSTAVessel.vesselType then
+        PST.modData.treeModSnapshot.vesselBirthrightCache = {}
+    end
+
     -- Mod: When entering an angel room, % chance to begin the next level with no curses (reset)
     if PST:getTreeSnapshotMod("angelRoomCurseProc", false) then
         PST:addModifiers({ angelRoomCurseProc = false, naturalCurseCleanse = -100 }, true)
