@@ -77,6 +77,7 @@ function PSTAVessel:initCharData()
     PSTAVessel.charHurtRandpitch = false
 
     PSTAVessel.corpseRaiserChoice = {1, 1, 1}
+    PSTAVessel.weaponsmithType = 0
 end
 PSTAVessel:initCharData()
 
@@ -474,3 +475,5 @@ PSTAVessel.customDeathSFXList = {
     SoundEffect.SOUND_POT_BREAK_2, SoundEffect.SOUND_MIRROR_BREAK, SoundEffect.SOUND_ROCK_CRUMBLE, SoundEffect.SOUND_INHALE,
     SoundEffect.SOUND_BULB_FLASH, SoundEffect.SOUND_ANGEL_BEAM
 }
+
+PSTAVessel.SFXSmithy = Isaac.GetSoundIdByName("Astral Vessel Smith")

@@ -14,7 +14,8 @@ local AVesselTree = [[
 "28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "29": "{\"pos\":[-2,-4],\"type\":5239,\"size\":\"Large\",\"name\":\"Astral Vessel Changelog\",\"description\":[\"Press Allocate to open the changelog display.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
 "30": "{\"pos\":[2,-1],\"type\":5062,\"size\":\"Large\",\"name\":\"Mutagenic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mutagenic Constellations tree.\",\"This tree contains nodes that grant mutation/disease themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"31": "{\"pos\":[2,-4],\"type\":5303,\"size\":\"Large\",\"name\":\"Custom Hurt Sound\",\"description\":[\"Press Allocate to customize your on-hit and on-death sound effects.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}"
+"31": "{\"pos\":[2,-4],\"type\":5303,\"size\":\"Large\",\"name\":\"Custom Hurt Sound\",\"description\":[\"Press Allocate to customize your on-hit and on-death sound effects.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
+"32": "{\"pos\":[2,4],\"type\":5310,\"size\":\"Large\",\"name\":\"Blacksmith Side Weapon\",\"description\":[\"If you have the 'Blacksmith' constellation allocated, its Side Weapon stats will\",\"show up here while in a run.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}"
 }
 ]]
 
@@ -45,6 +46,7 @@ function PSTAVessel:initVesselTree()
 
     -- Info-only nodes
     PST:addPassiveInfoNode("Astral Vessel Unlocks")
+    PST:addPassiveInfoNode("Blacksmith Side Weapon")
 
     -- Constellation node special descriptions
     local function PSTAVessel_constNodeDesc(descName, tmpDescription, isAllocated, tScreen, extraData)
@@ -104,6 +106,16 @@ function PSTAVessel:initVesselTree()
             table.insert(newDesc, {"Base constellation: " .. reqs.vesselBaseConst, PST.kcolors.LIGHTBLUE1})
 
             if isAllocated then
+                -- Weaponsmith node, add selected weapon type + PST version warning
+                if descName == "Weaponsmith" and isAllocated then
+                    local wepData = PST.astralWepData[PSTAVessel.weaponsmithType]
+                    if wepData then
+                        table.insert(newDesc, {"Selected weapon type: " .. wepData.name, PST.kcolors.ANCIENT_ORANGE})
+                    end
+                    if not PST.astralWepApplyMods then
+                        table.insert(newDesc, {"Warning: PST version 1.2.5+ is required for this node to function properly! PST update required.", PST.kcolors.RED1})
+                    end
+                end
                 for _, tmpType in pairs(PSTAVConstellationType) do
                     local baseConstData = PSTAVessel.constelAlloc[tmpType][reqs.vesselBaseConst]
                     if baseConstData then
@@ -136,7 +148,7 @@ function PSTAVessel:initVesselTree()
         if descName == "Stellar Nexus" then
             newDesc = {table.unpack(tmpDescription)}
             table.insert(newDesc, {"Note: Starting items do not count towards transformations.", PST.kcolors.ANCIENT_ORANGE})
-            table.insert(newDesc, {"Note: Starting items cannot grant starting pickups (e.g. a '+5 bombs' items won't grant bombs).", PST.kcolors.ANCIENT_ORANGE})
+            table.insert(newDesc, {"Note: Starting items cannot grant starting pickups (e.g. '+5 bombs' items won't grant bombs).", PST.kcolors.ANCIENT_ORANGE})
             for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
                 if itemCfg then
@@ -203,6 +215,13 @@ function PSTAVessel:initVesselTree()
                 table.insert(newDesc, "Respec cost: " .. allocNodes)
             end
             return { name = descName, description = newDesc }
+        -- Blacksmith Side Weapon node, show side weapon data while in run
+        elseif descName == "Blacksmith Side Weapon" and Isaac.IsInGame() then
+            local wepData = PST:getTreeSnapshotMod("vesselSideWeapon", nil)
+            if wepData then
+                newDesc = PST:getAstralWepDesc(wepData, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
+                return { name = descName, description = newDesc }
+            end
         end
     end
     PST:addExtraNodeDescFunc("avesselConst", PSTAVessel_constNodeDesc)
@@ -287,9 +306,28 @@ function PSTAVessel:initVesselTree()
                 bubbleSpr:Render(Vector(x, y))
                 bubbleSpr.Color.A = 1
             end
+        -- Blacksmith Side Weapon node, draw current run weapon
+        elseif node.name == "Blacksmith Side Weapon" and Isaac.IsInGame() then
+            local wepData = PST:getTreeSnapshotMod("vesselSideWeapon", nil)
+            if wepData then
+                ---@type Sprite
+                local wepSprite = PST.treeScreen.modules.submenusModule.submenus[PSTAVessel.weaponsmithSubmenuID].weaponSprite
+                PST:renderAstralWepAt(wepData, wepSprite, x, y, PST.treeScreen.zoomScale)
+            end
         end
     end
     PST:addNodeDrawExtraFunc("avesselNodeDraw", PSTAVessel_nodeExtraDrawing)
+
+    -- Node visibility extra funcs
+    local function PSTAVessel_nodeVisibility(node)
+        -- Blacksmith Side Weapon node, make invisible if no side weapon or not in-game
+        if node.name == "Blacksmith Side Weapon" and (not Isaac.IsInGame() or not PST:getTreeSnapshotMod("vesselSideWeapon", nil)) then
+            return false
+        end
+    end
+    if PST.addNodeVisibilityExtraFunc then
+        PST:addNodeVisibilityExtraFunc("avesselNodeVis", PSTAVessel_nodeVisibility)
+    end
 
     -- Menu-opening nodes
     PST:addMenuNode("Vessel-Shaping", PSTAVessel.AppearanceMenuID)
@@ -302,6 +340,7 @@ function PSTAVessel:initVesselTree()
     -- Submenu-opening nodes
     PST:addSubmenuOpenNode("Vessel Loadouts", PSTAVessel.loadoutSubmenuID)
     PST:addSubmenuOpenNode("Corpse Raiser", PSTAVessel.corpseRaiserSubmenuID)
+    PST:addSubmenuOpenNode("Weaponsmith", PSTAVessel.weaponsmithSubmenuID)
     PST:addSubmenuOpenNode("Custom Hurt Sound", PSTAVessel.customSFXSubmenuID)
 
     -- Save when closing PST tree

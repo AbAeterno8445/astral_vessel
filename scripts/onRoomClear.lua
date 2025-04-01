@@ -60,6 +60,17 @@ function PSTAVessel:onRoomClear()
         Isaac.Spawn(EntityType.ENTITY_PICKUP, newPick[1], newPick[2], tmpPos, Vector.Zero, nil)
     end
 
+    -- Mod: % chance for the side weapon to gain 1 honing when completing rooms without taking damage past the first floor
+    tmpMod = PST:getTreeSnapshotMod("sideWepClearHoning", 0)
+    if tmpMod > 0 and not playerGotHit and not PST:isFirstOrigStage() and 100 * math.random() < tmpMod then
+        local wepData = PST:getTreeSnapshotMod("vesselSideWeapon", nil)
+        if wepData then
+            PST:astralWepForgeHone(wepData)
+            PST:astralWepApplyMods(wepData, false)
+            PST:createFloatTextFX("+1 side weapon honing", Vector.Zero, Color(), 0.13, 100, true)
+        end
+    end
+
     -- Boss room clear
     if roomType == RoomType.ROOM_BOSS then
         -- Mod: boss room soul conversion
@@ -104,6 +115,21 @@ function PSTAVessel:onRoomClear()
             if newItem ~= CollectibleType.COLLECTIBLE_BREAKFAST then
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, newItem, tmpPos, Vector.Zero, nil)
                 PST:addModifiers({ mushOnChallClear = 1 }, true)
+            end
+        end
+
+        -- Mod: clearing a challenge room will upgrade the side weapon from normal to magic (1mod), or from magic with 1 mod to 2 mods
+        if PST:getTreeSnapshotMod("challengeSideWepUpgrade", false) then
+            local wepData = PST:getTreeSnapshotMod("vesselSideWeapon", nil)
+            if wepData then
+                if PST:astralWepForgeTransmute(wepData) then
+                    SFXManager():Play(PSTAVessel.SFXSmithy, 1, 20, false, 0.85 + 0.3 * math.random())
+                    PST:createFloatTextFX("Side weapon upgraded to Magic!", Vector.Zero, Color(0.4, 0.5, 1), 0.1, 150, true)
+                elseif PST:astralWepForgeAdd(wepData) then
+                    SFXManager():Play(PSTAVessel.SFXSmithy, 1, 20, false, 0.85 + 0.3 * math.random())
+                    PST:createFloatTextFX("Added modifier to side weapon!", Vector.Zero, Color(0.6, 0.7, 1), 0.1, 150, true)
+                end
+                PST:astralWepApplyMods(wepData)
             end
         end
     end

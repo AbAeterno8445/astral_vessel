@@ -62,7 +62,8 @@ end
 
 -- Save variables thrown 'as-is'
 local asIsVars = {
-    "charAccessories", "charStartItems", "corpseRaiserChoice", "charHurtSFX", "charDeathSFX", "charHurtPitch", "charHurtRandpitch"
+    "charAccessories", "charStartItems", "corpseRaiserChoice", "charHurtSFX", "charDeathSFX", "charHurtPitch", "charHurtRandpitch",
+    "weaponsmithType"
 }
 
 -- Save current settings into the currently selected loadout (PSTAVessel.currentLoadout)

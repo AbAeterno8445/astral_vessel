@@ -77,37 +77,6 @@ function PSTAVessel:strSplit(str, delimiter)
     return result
 end
 
--- Completion events tracking and unlocks
-function PSTAVessel:onCompletion(event, noHard)
-    ---@type EntityPlayer
-    local player = PST:getPlayer()
-    if player and player:GetPlayerType() == PSTAVessel.vesselType then
-        PSTAVessel.charUnlocks[event] = true
-        if Game():IsHardMode() and not noHard then
-            PSTAVessel.charUnlocks[event .. "hard"] = true
-        end
-
-        local gameData = Isaac.GetPersistentGameData()
-        for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
-            local achievementID = Isaac.GetAchievementIdByName(achievementName)
-            if achievementID ~= -1 and not gameData:Unlocked(achievementID) then
-                local allUnlocked = true
-                for _, tmpUnlock in ipairs(tmpData.reqs) do
-                    if not PSTAVessel.charUnlocks[tmpUnlock] then
-                        allUnlocked = false
-                        break
-                    end
-                end
-                if allUnlocked then
-                    gameData:TryUnlock(achievementID)
-                end
-            end
-        end
-        PSTAVessel:save()
-        PSTAVessel:updateUnlockData()
-    end
-end
-
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer

@@ -1,11 +1,15 @@
 <sounds root="sfx/">
     <sound name="Siren Hurt (PSTAVessel)">
-		<sample weight="1" path="player/avessel_sirenhurt1.wav"/>
-		<sample weight="1" path="player/avessel_sirenhurt2.wav"/>
-		<sample weight="1" path="player/avessel_sirenhurt3.wav"/>
+		<sample weight="1" path="player/avessel_sirenhurt1.wav" />
+		<sample weight="1" path="player/avessel_sirenhurt2.wav" />
+		<sample weight="1" path="player/avessel_sirenhurt3.wav" />
+	</sound>
+
+	<sound name="Astral Vessel Smith">
+		<sample weight="1" path="player/avessel_smithy.wav" />
 	</sound>
 
 	<sound name="Touhou Pichuun (PSTAVessel)">
-		<sample weight="1" path="reverie/pichuun.wav">
+		<sample weight="1" path="reverie/pichuun.wav" />
 	</sound>
 </sounds>
