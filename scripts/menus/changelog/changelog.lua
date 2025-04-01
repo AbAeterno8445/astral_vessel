@@ -3,7 +3,7 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.5",
-        "- Additional compatibility for Reverie/Reverie MGO costumes and custom hurt/death SFX.",
+        "- Additional compatibility for the Doki Doki Repentance! mod, and Reverie/Reverie MGO costumes and custom hurt/death SFX.",
         "",
 
         "v0.2.4",

@@ -2,8 +2,8 @@
 
 - **Fiend Folio:** Items, Faces, Accessories, Hairstyles, Fly familiars\*.
 - **Epiphany:** Items, Faces, Accessories, Custom hurt/death SFX.
-- **Reverie:** Items, Fly familiars.
-- **Reverie MGO:** Items.
+- **Reverie:** Items, Accessories, Hairstyles, Custom hurt/death SFX, Fly familiars.
+- **Reverie MGO:** Items, Accessories.
 - **Repentance Plus! (mod):** Items, Fly familiars.
 - **Revelations:** Items, Custom hurt/death SFX.
 - **Retribution:** Items, Custom hurt/death SFX, Fly familiars.
@@ -36,6 +36,7 @@
 - **Rebekah:** Items, Custom hurt/death SFX.
 - **Sweet Halloween:** Items.
 - **Daydream All Day:** Items.
+- **Doki Doki Repentance!:** Items, Custom hurt/death SFX.
 
 \*Fly familiars are friendly monsters spawned by the **Suzerain Of Flies** large node, under the empyrean mutagenic 'Dragonfly' constellation.
 

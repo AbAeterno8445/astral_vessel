@@ -2285,7 +2285,6 @@ function PSTAVessel:initModCompat()
 
     -- Doki Doki Repentance!
     if DDLC then
-        
         -- Items
 		local function PSTAVessel_addDokiItem(dokiItemName, types, extraCost)
 			local tmpItem = Isaac.GetItemIdByName(dokiItemName)
@@ -2293,16 +2292,16 @@ function PSTAVessel:initModCompat()
 				print("[Astral Vessel] Warning: No Doki Doki Repentance! item '" .. dokiItemName .. "' found (mod compat).")
 				return
 			end
-			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Doki Doki Repentance!n")
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Doki Doki Repentance!")
 		end
-        PSTAVessel_addDDADItem("Amy Likes Spiders", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.MUTAGENIC})
-        PSTAVessel_addDDADItem("Cryptic Poem", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
-        PSTAVessel_addDDADItem("Hypergraphia", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addDokiItem("Amy Likes Spiders", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addDokiItem("Cryptic Poem", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addDokiItem("Hypergraphia", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.DEMONIC})
 
-        PSTAVessel_addDDADItem("Portrait of Markov", {PSTAVConstellationType.OCCULT})
-        PSTAVessel_addDDADItem("Cute Cupcake", {PSTAVConstellationType.MUNDANE})
-        PSTAVessel_addDDADItem("Poet's Pen", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
-        PSTAVessel_addDDADItem("Bottles", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addDokiItem("Portrait of Markov", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addDokiItem("Cute Cupcake", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addDokiItem("Poet's Pen", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addDokiItem("Bottles", {PSTAVConstellationType.MUNDANE})
 
         -- Custom Hurt/Death SFX
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Select"), "DDLC Select", "Doki Doki Repentance!"})
