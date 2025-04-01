@@ -297,6 +297,37 @@ function PSTAVessel:initModCompat()
 
     -- Reverie
     if Reverie then
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("3D Glasses"), sourceMod="Reverie"})
+        -- table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Technology 666"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Buckethead"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_buckethead_broken.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_buckethead_damaged.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_ghost_anchor.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_musician.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_the_infamies_anger.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_the_infamies_fearness.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_the_infamies_sorrow.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {path="gfx/reverie/characters/costume_the_infamies_pleasure.anm2", sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Dark Ribbon"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Carnival Hat"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Electrodynamics"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Frozen Sakura"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Kiketsu Family Blackmail"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("One of Nine Tails"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Oni's Horn"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Pure Fury"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Carrot Amulet"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Robe of Firerat"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Fortunate Coin"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Yamanba's Chopper"), sourceMod="Reverie"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Springy Spring of Spring"), sourceMod="Reverie"})
+
+
+        -- Hairstyles
+		table.insert(PSTAVessel.hairstyles, {path="gfx/reverie/characters/character_youmu_hair.anm2", sourceMod="Fiend Folio"})
+
         -- Items
         local function PSTAVessel_addRevItem(revItemName, types, extraCost)
             local tmpItem = Isaac.GetItemIdByName(revItemName)
@@ -486,10 +517,28 @@ function PSTAVessel:initModCompat()
 
 		-- Fly familiars
         table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Queen of the Clan"))
+
+        -- Hurt/Death SFX
+
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Touhou Pichuun (PSTAVessel)"), "Touhou Player Death", "Reverie"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Touhou Pichuun (PSTAVessel)"), "Touhou Player Death", "Reverie"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Touhou Destroy"), "Touhou Boss Death", "Reverie"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Bucket Hit"), "Buckethead Damage", "Reverie"})
+        table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Guppy Slurp"), "Guppy Fish Slurp", "Reverie"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Guppy Big Chomp"), "Guppy Fish Roar", "Reverie"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Megaphone Secret 2"), "Assorted Megaphone Secret Memes", "Reverie"})
     end
 
     -- Reverie: MGO
-    if ReverieMGO then
+    if ReverieMGO then     
+
+        -- Accessories
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Moon Rabbits Headset"), sourceMod="Reverie MGO"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Headband Headphones"), sourceMod="Reverie MGO"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Purified T-shirt"), sourceMod="Reverie MGO"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Curse of the Haunting God"), sourceMod="Reverie MGO"})
+        table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Shimenawa"), sourceMod="Reverie MGO"})
+
         -- Items
         local function PSTAVessel_addRevItem(revItemName, types, extraCost)
             local tmpItem = Isaac.GetItemIdByName(revItemName)
