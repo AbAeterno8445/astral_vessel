@@ -297,7 +297,6 @@ function PSTAVessel:initModCompat()
 
     -- Reverie
     if Reverie then
-
         -- Accessories
         table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("3D Glasses"), sourceMod="Reverie"})
         -- table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Technology 666"), sourceMod="Reverie"})
@@ -324,9 +323,8 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Yamanba's Chopper"), sourceMod="Reverie"})
         table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Springy Spring of Spring"), sourceMod="Reverie"})
 
-
         -- Hairstyles
-		table.insert(PSTAVessel.hairstyles, {path="gfx/reverie/characters/character_youmu_hair.anm2", sourceMod="Fiend Folio"})
+		table.insert(PSTAVessel.hairstyles, {path="gfx/reverie/characters/character_youmu_hair.anm2", sourceMod="Reverie"})
 
         -- Items
         local function PSTAVessel_addRevItem(revItemName, types, extraCost)
@@ -516,22 +514,20 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetItemIdByName("Parasitic Mushroom"))
 
 		-- Fly familiars
-        table.insert(PSTAVessel.mushroomItemsQ3, Isaac.GetEntityTypeByName("Queen of the Clan"))
+        table.insert(PSTAVessel.flyFamiliars, Isaac.GetEntityTypeByName("Queen of the Clan"))
 
         -- Hurt/Death SFX
-
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Touhou Pichuun (PSTAVessel)"), "Touhou Player Death", "Reverie"})
-        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Touhou Pichuun (PSTAVessel)"), "Touhou Player Death", "Reverie"})
-        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Touhou Destroy"), "Touhou Boss Death", "Reverie"})
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Bucket Hit"), "Buckethead Damage", "Reverie"})
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Guppy Slurp"), "Guppy Fish Slurp", "Reverie"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Touhou Pichuun (PSTAVessel)"), "Touhou Player Death", "Reverie"})
+        table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Touhou Destroy"), "Touhou Boss Death", "Reverie"})
         table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Guppy Big Chomp"), "Guppy Fish Roar", "Reverie"})
         table.insert(PSTAVessel.customDeathSFXList, {Isaac.GetSoundIdByName("Megaphone Secret 2"), "Assorted Megaphone Secret Memes", "Reverie"})
     end
 
     -- Reverie: MGO
-    if ReverieMGO then     
-
+    if ReverieMGO then
         -- Accessories
         table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Moon Rabbits Headset"), sourceMod="Reverie MGO"})
         table.insert(PSTAVessel.accessoryList, {item=Isaac.GetItemIdByName("Headband Headphones"), sourceMod="Reverie MGO"})

@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.5",
+        "- Additional compatibility for Reverie/Reverie MGO costumes and custom hurt/death SFX.",
+        "",
+
         "v0.2.4",
         "- Additional compatibility for the Rebekah, Daydream All Day and Sweet Halloween mods.",
         "- Accessories using the 'head0' and 'head1' layers have been disabled as these are currently incompatible with the face/hair.",
