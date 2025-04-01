@@ -270,7 +270,7 @@ function PSTAVessel:onPickupUpdate(pickup)
         ---@type EntityPlayer
         local player = PST:getPlayer()
         -- Birthright effect: % chance for item pedestals to cycle between the item and a random item from constellation pools you have affinity in
-        if player:GetPlayerType() == PSTAVessel.vesselType and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and
+        if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and player:GetPlayerType() == PSTAVessel.vesselType and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and
         not PSTAVessel:arrHasValue(PST.progressionItems, pickup.SubType) and math.random() <= 0.24 then
             local vesselBirthrightCache = PST:getTreeSnapshotMod("vesselBirthrightCache", {})
             if not vesselBirthrightCache[tostring(pickup.InitSeed)] then
