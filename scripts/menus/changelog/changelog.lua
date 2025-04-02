@@ -2,6 +2,11 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.6",
+        "- Added missing blurb for Vessel's Birthright.",
+        "- Fixed switching loadouts with different tree types allocated potentially returning more skill points than intended.",
+        "",
+
         "v0.2.5",
         "- Additional compatibility for the Doki Doki Repentance! mod, and Reverie/Reverie MGO costumes and custom hurt/death SFX.",
         "- Added the \"Blacksmith\" empyrean mundane constellation.",

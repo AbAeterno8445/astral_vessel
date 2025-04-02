@@ -140,39 +140,39 @@ function PSTAVessel:switchLoadout(loadoutID)
         end
     end
     -- 5. Constellation trees
+    local oldAllocated = 0
+    local newAllocated = 0
     for _, tmpType in pairs(PSTAVConstellationType) do
         local baseTree = PST.modData.treeNodes["Astral Vessel " .. tmpType]
         if baseTree then
             -- Get how many nodes are allocated for this tree in the current save
-            local tmpAllocated = 0
             for _, alloc in pairs(baseTree) do
                 if alloc == 1 then
-                    tmpAllocated = tmpAllocated + 1
+                    oldAllocated = oldAllocated + 1
                 end
             end
-            -- Reset skill points
-            local maxSP = PST.modData.charData["Astral Vessel"].level
-            PST.modData.charData["Astral Vessel"].skillPoints = math.min(maxSP, PST.modData.charData["Astral Vessel"].skillPoints + tmpAllocated)
 
             if newLoadout and newLoadout.constTrees and newLoadout.constTrees[tmpType] then
                 -- Set base tree to new save
                 PST.modData.treeNodes["Astral Vessel " .. tmpType] = PSTAVessel:copyTable(newLoadout.constTrees[tmpType])
                 -- Get how many nodes are allocated in new save, and subtract SP accordingly
-                tmpAllocated = 0
                 for _, alloc in pairs(newLoadout.constTrees[tmpType]) do
                     if alloc == 1 then
-                        tmpAllocated = tmpAllocated + 1
+                        newAllocated = newAllocated + 1
                     end
                 end
-                PST.modData.charData["Astral Vessel"].skillPoints = math.max(0, PST.modData.charData["Astral Vessel"].skillPoints - tmpAllocated)
             else
                 -- Reset base tree if no data is loaded
                 PST.modData.treeNodes["Astral Vessel " .. tmpType] = {}
             end
         end
-        PSTAVessel:sanitizeTrees()
-        PST:save()
     end
+    -- Reset skill points
+    local maxSP = PST.modData.charData["Astral Vessel"].level
+    PST.modData.charData["Astral Vessel"].skillPoints = math.max(0, math.min(maxSP, PST.modData.charData["Astral Vessel"].skillPoints + oldAllocated - newAllocated))
+
+    PSTAVessel:sanitizeTrees()
+    PST:save()
 
     ---- Mod data validation ----
     -- Accessories
