@@ -16,9 +16,9 @@ function PSTAVessel:onDeath(entity)
             end
         end
 
-        -- Mod: % chance for enemies with at least 10 HP to drop a vanishing 1/2 soul heart on death, if you have less than 4 soul hearts
+        -- Mod: % chance for enemies with at least 10 HP to drop a vanishing 1/2 soul heart on death, if you have less than 3 soul hearts
         local tmpMod = PST:getTreeSnapshotMod("tempSoulOnKill", 0)
-        if tmpMod > 0 and entity.MaxHitPoints >= 10 and player:GetSoulHearts() < 8 and 100 * math.random() < tmpMod then
+        if tmpMod > 0 and entity.MaxHitPoints >= 10 and player:GetSoulHearts() < 6 and 100 * math.random() < tmpMod then
             local newSoulHeart = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL, entity.Position, RandomVector() * 3, nil)
             newSoulHeart:ToPickup().Timeout = 90
         end

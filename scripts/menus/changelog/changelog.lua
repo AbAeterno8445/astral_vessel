@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.7",
+        "- Adjusted \"Soul Hearts On Kill\" and \"Beam Of Light On Hit\" modifiers from the Seraph divine constellation.",
+        "",
+
         "v0.2.6",
         "- Additional compatibility for the Birthcake Rebaked mod, granting the Birthcake trinket an unique effect for Vessel.",
         "- Added missing blurb for Vessel's Birthright.",
