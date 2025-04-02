@@ -228,6 +228,39 @@ function PSTAVessel:onPickupInit(pickup, firstSpawn)
             pickup:Morph(pickup.Type, pickup.Variant, pickup.SubType | PillColor.PILL_GIANT_FLAG, true)
         end
 
+        -- Birthcake mod compat
+        if not isShop and PSTAVessel:vesselHasBirthcake(PST:getPlayer()) then
+            -- Heart conversion effects
+            if pickup.Variant == PickupVariant.PICKUP_HEART then
+                local constelHeartConvTypes = {
+                    [PSTAVConstellationType.DIVINE] = HeartSubType.HEART_ETERNAL,
+                    [PSTAVConstellationType.DEMONIC] = HeartSubType.HEART_BLACK,
+                    [PSTAVConstellationType.OCCULT] = HeartSubType.HEART_BONE,
+                    [PSTAVConstellationType.MERCANTILE] = HeartSubType.HEART_GOLDEN,
+                    [PSTAVConstellationType.MUTAGENIC] = HeartSubType.HEART_ROTTEN
+                }
+                for tmpType, tmpHeartType in pairs(constelHeartConvTypes) do
+                    local tmpConvRate = PST:getTreeSnapshotMod("affinity" .. tmpType, 0) * PSTAVessel.vesselBirthcakeEffectData[tmpType].rate
+                    if tmpConvRate > 0 and 100 * math.random() < tmpConvRate then
+                        pickup:Morph(pickup.Type, pickup.Variant, tmpHeartType)
+                        break
+                    end
+                end
+            end
+
+            -- Mundane normal pickup duplication
+            if (pickup.Variant == PickupVariant.PICKUP_COIN and pickup.SubType == CoinSubType.COIN_PENNY) or
+            (pickup.Variant == PickupVariant.PICKUP_BOMB and pickup.SubType == BombSubType.BOMB_NORMAL) or
+            (pickup.Variant == PickupVariant.PICKUP_KEY and pickup.SubType == KeySubType.KEY_NORMAL) or
+            (pickup.Variant == PickupVariant.PICKUP_HEART and (pickup.SubType == HeartSubType.HEART_FULL or pickup.SubType == HeartSubType.HEART_HALF)) then
+                local tmpChance = PST:getTreeSnapshotMod("affinityMundane", 0) * PSTAVessel.vesselBirthcakeEffectData[PSTAVConstellationType.MUNDANE].rate
+                if tmpChance > 0 and PSTAVessel.modCooldowns.birthcakeDupe == 0 and 100 * math.random() < tmpChance then
+                    PSTAVessel.modCooldowns.birthcakeDupe = 10
+                    Isaac.Spawn(pickup.Type, pickup.Variant, pickup.SubType, pickup.Position, RandomVector() * 3, nil)
+                end
+            end
+        end
+
         -- Collectibles
         if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
             local itemRerolled = false

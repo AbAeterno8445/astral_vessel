@@ -33,6 +33,18 @@ for tmpType, kcol in pairs(PSTAVessel.constelKColors) do
     PSTAVessel.constelColors[tmpType] = Color(kcol.Red, kcol.Green, kcol.Blue, kcol.Alpha)
 end
 
+-- Constellation EID icons
+PSTAVessel.constelEIDIcons = {
+    [PSTAVConstellationType.DIVINE] = "{{AngelRoom}}",
+    [PSTAVConstellationType.DEMONIC] = "{{DevilRoom}}",
+    [PSTAVConstellationType.OCCULT] = "{{MiniBoss}}",
+    [PSTAVConstellationType.MERCANTILE] = "{{Shop}}",
+    [PSTAVConstellationType.MUNDANE] = "{{Slow}}",
+    [PSTAVConstellationType.MUTAGENIC] = "{{BatteryBeggar}}",
+    [PSTAVConstellationType.ELEMENTAL] = "{{Burning}}",
+    [PSTAVConstellationType.COSMIC] = "{{Planetarium}}"
+}
+
 -- Constellation allocation + affinity tracker
 -- e.g. Cherub constellation data: PSTAVessel.constelAlloc["Divine"]["Cherub"] = {tier = 1, max = 21, alloc = 5, affinity = 1}
 -- e.g. Total Divine affinity: PSTAVessel.constelAlloc["Divine"].affinity

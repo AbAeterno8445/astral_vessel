@@ -10,8 +10,14 @@ function PSTAVessel:copyTable(dataTable)
 	return tmpTable
 end
 
+function PSTAVessel:roundFloat(number, digit)
+	local precision = 10 ^ digit
+	number = number + (precision / 2)
+	return math.floor(number / precision) * precision
+end
+
 function PSTAVessel:getColorStr(col)
-    return tostring(PST:roundFloat(255 * (col / 2), 0))
+    return tostring(PSTAVessel:roundFloat(255 * (col / 2), 0))
 end
 
 local costumeLayers = {"body", "head"}
@@ -181,4 +187,15 @@ function PSTAVessel:strHash(str)
         hash = (hash * 31 + str:byte(i)) % 0x7FFFFFFF
     end
     return hash
+end
+
+-- Format a string utilizing curly braces to place variables
+---@param str string String to parse, such as "I'm looking for the value {{targetValue}}"
+---@param values table Table of values to format into the string, such as { targetValue = 123 }
+---@param keepExtra? boolean If true, keep strings between double curly braces that don't match any of the given keys
+function PSTAVessel:formatString(str, values, keepExtra)
+	local result = str:gsub("{{(%w+)}}", function(key)
+        return values[key] or (keepExtra and ("{{" .. key .. "}}") or "")
+    end)
+	return result
 end

@@ -64,6 +64,10 @@ function PSTAVessel:initMod()
 
     -- EID
     if EID then
+        -- Vessel icon
+        local plIcon = Sprite("gfx/soul_of_the_vessel.anm2", true)
+        EID:addIcon("Player" .. PSTAVessel.vesselType, "HUDSmall", 0, 16, 16, 5, 5, plIcon)
+
         -- Constellation type colors
         for _, tmpType in pairs(PSTAVConstellationType) do
             EID:addColor("AVessel" .. tmpType, PSTAVessel.constelKColors[tmpType])

@@ -659,6 +659,19 @@ function PSTAVessel:onUpdate()
         PSTAVessel.modCooldowns.mutagenicTear = 150 - math.floor(PST:getTreeSnapshotMod("mutagenicTearDelay", 0) * 30)
     end
 
+    -- Birthcake mod compat - Cosmic: planetarium chance per affinity point
+    if roomFrame % 15 == 0 then
+        if not PST:getTreeSnapshotMod("cosmicBirthcakeApplied", false) and PSTAVessel:vesselHasBirthcake(player) then
+            local tmpChance = PST:getTreeSnapshotMod("affinityCosmic", 0) * PSTAVessel.vesselBirthcakeEffectData[PSTAVConstellationType.COSMIC].rate
+            if tmpChance > 0 then
+                PST:addModifiers({ planetariumChance = tmpChance, cosmicBirthcakeApplied = true }, true)
+            end
+        elseif PST:getTreeSnapshotMod("cosmicBirthcakeApplied", false) and not PSTAVessel:vesselHasBirthcake(player) then
+            local tmpChance = PST:getTreeSnapshotMod("affinityCosmic", 0) * PSTAVessel.vesselBirthcakeEffectData[PSTAVConstellationType.COSMIC].rate
+            PST:addModifiers({ planetariumChance = -tmpChance, cosmicBirthcakeApplied = false }, true)
+        end
+    end
+
     -- Level 100 unlock
     if roomFrame % 30 == 0 then
         local charData = PST.modData.charData["Astral Vessel"]

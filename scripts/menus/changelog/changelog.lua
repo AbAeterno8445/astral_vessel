@@ -3,6 +3,7 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.6",
+        "- Additional compatibility for the Birthcake Rebaked mod, granting the Birthcake trinket an unique effect for Vessel.",
         "- Added missing blurb for Vessel's Birthright.",
         "- Fixed switching loadouts with different tree types allocated potentially returning more skill points than intended.",
         "",

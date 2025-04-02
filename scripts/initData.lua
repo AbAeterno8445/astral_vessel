@@ -26,7 +26,8 @@ PSTAVessel.modCooldowns = {
     mutagenicTear = 0,
     causticBite = 0,
     mephitCurseKillBuff = 0,
-    playerDmgWindow = 0
+    playerDmgWindow = 0,
+    birthcakeDupe = 0
 }
 PSTAVessel.firingCooldowns = {
     ritualPurpleFlame = 0,
@@ -477,3 +478,15 @@ PSTAVessel.customDeathSFXList = {
 }
 
 PSTAVessel.SFXSmithy = Isaac.GetSoundIdByName("Astral Vessel Smith")
+
+-- Birthcake mod compat - effect descriptions and rates (% per affinity point)
+PSTAVessel.vesselBirthcakeEffectData = {
+    [PSTAVConstellationType.DIVINE] = { desc = "Divine: {{totalAff}}% chance to convert dropped hearts into eternal hearts.", rate = 0.12},
+    [PSTAVConstellationType.DEMONIC] = { desc = "Demonic: {{totalAff}}% chance to convert dropped hearts into black hearts.", rate = 0.12},
+    [PSTAVConstellationType.OCCULT] = { desc = "Occult: {{totalAff}}% chance to convert dropped hearts into bone hearts.", rate = 0.12},
+    [PSTAVConstellationType.MERCANTILE] = { desc = "Mercantile: {{totalAff}}% chance to convert dropped hearts into gold hearts.", rate = 0.12},
+    [PSTAVConstellationType.MUNDANE] = { desc = "Mundane: {{totalAff}}% chance to duplicate normal {{Coin}}{{Key}}{{Bomb}}{{Heart}} drops. 0.33 second cooldown.", rate = 0.2},
+    [PSTAVConstellationType.MUTAGENIC] = { desc = "Mutagenic: {{totalAff}}% chance to convert dropped hearts into rotten hearts.", rate = 0.12},
+    [PSTAVConstellationType.ELEMENTAL] = { desc = "Elemental: {{totalAff}}% chance to regain 1 charge when using active items.", rate = 1},
+    [PSTAVConstellationType.COSMIC] = { desc = "Cosmic: +{{totalAff}}% planetarium chance.", rate = 0.1}
+}

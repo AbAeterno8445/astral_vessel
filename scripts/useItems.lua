@@ -96,6 +96,14 @@ function PSTAVessel:onUseItem(itemType, RNG, player, useFlags, slot, customVarDa
                     SFXManager():Play(SoundEffect.SOUND_SIREN_SING, 0.75, 2, false, 0.85 + 0.25 * math.random())
                 end
             end
+
+            -- Birthcake mod compat - Elemental: % chance per affinity to regain charges when using active items
+            if isNormalCharge and usedCharges >= 1 and PSTAVessel:vesselHasBirthcake(player) then
+                local tmpChance = PST:getTreeSnapshotMod("affinityElemental", 0) * PSTAVessel.vesselBirthcakeEffectData[PSTAVConstellationType.ELEMENTAL].rate
+                if tmpChance > 0 and 100 * math.random() < tmpChance then
+                    PSTAVessel.chargeGainProc = 1
+                end
+            end
         end
     end
 end

@@ -2310,9 +2310,49 @@ function PSTAVessel:initModCompat()
         table.insert(PSTAVessel.customHurtSFXList, {Isaac.GetSoundIdByName("Playwithme"), "DDLC Neck Snap", "Doki Doki Repentance!"})
     end
 
+    -- Birthcake: Rebaked
+    if BirthcakeRebaked then
+        BirthcakeRebaked.API:AddBirthcakePickupText(PSTAVessel.vesselType, "Stronger affinity")
+        BirthcakeRebaked.API:AddBirthcakeSprite(PSTAVessel.vesselType, {
+            SpritePath = "gfx/items/pick ups/avessel_birthcake.png"
+        })
+
+        if EID then
+            BirthcakeRebaked.API:AddEIDDescription(PSTAVessel.vesselType, "Gain effects based on your total affinity with each constellation type.")
+
+            local function EIDVesselBirthcakeCondition(descObj)
+                if descObj.ObjType == EntityType.ENTITY_PICKUP and descObj.ObjVariant == PickupVariant.PICKUP_TRINKET and
+                descObj.ObjSubType == BirthcakeRebaked.Birthcake.ID and PST:getPlayer():GetPlayerType() == PSTAVessel.vesselType then
+                    return true
+                end
+            end
+            local function EIDVesselBirthcakeDescMod(descObj)
+                for _, tmpType in pairs(PSTAVConstellationType) do
+                    local tmpAff = PST:getTreeSnapshotMod("affinity" .. tmpType, 0)
+                    if tmpAff and tmpAff > 0 then
+                        local effectData = PSTAVessel.vesselBirthcakeEffectData[tmpType]
+                        local effectTotal = PSTAVessel:roundFloat(effectData.rate * tmpAff, -2)
+                        EID:appendToDescription(descObj, "#" .. PSTAVessel.constelEIDIcons[tmpType] .. " " .. PSTAVessel:formatString(effectData.desc, { totalAff = effectTotal }, true))
+                    end
+                end
+                return descObj
+            end
+            EID:addDescriptionModifier("Vessel Birthcake Modifier", EIDVesselBirthcakeCondition, EIDVesselBirthcakeDescMod)
+        end
+    end
+
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
+end
+
+-- Birthcake mod compat - check if player has Birthcake
+---@param player EntityPlayer
+function PSTAVessel:vesselHasBirthcake(player)
+    if BirthcakeRebaked and player:GetPlayerType() == PSTAVessel.vesselType and player:HasTrinket(BirthcakeRebaked.Birthcake.ID) then
+        return true
+    end
+    return false
 end
 
 include("scripts.modCompatSteven")
