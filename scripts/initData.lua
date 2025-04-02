@@ -146,8 +146,11 @@ PSTAVessel.unlocksData = {
             CompletionType.MOTHER .. "hard", CompletionType.SATAN .. "hard", CompletionType.ULTRA_GREED,
             CompletionType.ULTRA_GREEDIER
         },
-        desc = "Obtain all hard completion marks: Unlock Soul of the Vessel soul stone.",
-        func = function() PSTAVessel.soulstoneUnlock = true end
+        desc = "Obtain all hard completion marks: Unlock Soul of the Vessel soul stone & +1 greater constellation choice.",
+        func = function()
+            PSTAVessel.soulstoneUnlock = true
+            PSTAVessel.charMaxConsts[2] = PSTAVessel.charMaxConsts[2] + 1
+        end
     },
     ["AVesselIngrained"] = {
         reqs = {"lvl100"},

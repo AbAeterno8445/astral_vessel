@@ -7,8 +7,7 @@ PSTAVConstellationType = {
     ELEMENTAL = "Elemental",
     MUNDANE = "Mundane",
     MUTAGENIC = "Mutagenic",
-    COSMIC = "Cosmic",
-    --OTHERWORLDLY = "Otherworldly"
+    COSMIC = "Cosmic"
 }
 
 -- Constellation tier names
