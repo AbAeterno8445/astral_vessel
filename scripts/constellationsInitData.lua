@@ -103,14 +103,14 @@ local tmpAddedItems = {}
 function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost, sourceMod)
     local itemCfg = Isaac.GetItemConfig():GetCollectible(itemType)
     if not itemCfg or not itemType or itemType == -1 then
-        print("[Astral Vessel] Warning: attempted to add constellation item type -1.", "(" .. (extraCost or 0) .. ", " .. sourceMod .. ")")
+        print("[Astral Vessel] Warning: attempted to add constellation item type -1.", "(" .. (extraCost or 0) .. ", " .. (sourceMod or "N/A") .. ")")
         local typesStr = ""
         for _, tmpType in ipairs(itemCategories) do typesStr = typesStr .. tmpType .. " " end
         print("   Constellation types:", typesStr)
         return
     end
     if itemCfg and itemCfg.Quality >= 4 then
-        print("[Astral Vessel] Warning: attempted to include item quality 4+ to starting item list.", "(" .. (extraCost or 0) .. ", " .. sourceMod .. ")")
+        print("[Astral Vessel] Warning: attempted to include item quality 4+ to starting item list.", "(" .. (extraCost or 0) .. ", " .. (sourceMod or "N/A") .. ")")
         local typesStr = ""
         for _, tmpType in ipairs(itemCategories) do typesStr = typesStr .. tmpType .. " " end
         print("   Constellation types:", typesStr)

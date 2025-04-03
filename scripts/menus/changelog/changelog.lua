@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.8",
+        "- Fixed potential error when initializing base starting items.",
+        "",
+
         "v0.2.7",
         "- Adjusted \"Soul Hearts On Kill\" and \"Beam Of Light On Hit\" modifiers from the Seraph divine constellation.",
         "- Unlocking all hard completion marks with Vessel now additionally grants +1 greater constellation choice.",
