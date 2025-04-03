@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.9",
+        "- Fixed loadouts past page 1 not selecting the correct ID.",
+        "",
+
         "v0.2.8",
         "- Fixed potential error when initializing base starting items.",
         "",

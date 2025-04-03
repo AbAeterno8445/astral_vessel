@@ -58,7 +58,7 @@ function PSTAVessel:initLoadoutSubmenu()
                     if self.hoveredLoadoutID == nil then
                         if tScreen.camCenterX > drawX - 16 and tScreen.camCenterX < drawX + 16 and
                         tScreen.camCenterY > drawY - 16 and tScreen.camCenterY < drawY + 16 then
-                            self.hoveredLoadoutID = i
+                            self.hoveredLoadoutID = loadoutID
                             tScreen.cursorHighlight = true
                         else
                             self.loadoutUISprite.Color.A = 0.5
