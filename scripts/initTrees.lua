@@ -1,23 +1,4 @@
-local AVesselTree = [[
-{
-"11": "{\"pos\":[-1,-2],\"type\":5055,\"size\":\"Large\",\"name\":\"Divine Constellations\",\"description\":[\"Once allocated, press Allocate to access the Divine Constellations tree.\",\"This tree contains nodes that grant holy themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"13": "{\"pos\":[-2,-1],\"type\":5061,\"size\":\"Large\",\"name\":\"Cosmic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Cosmic Constellations tree.\",\"This tree contains nodes that grant space/zodiac themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"14": "{\"pos\":[-2,1],\"type\":5060,\"size\":\"Large\",\"name\":\"Mundane Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mundane Constellations tree.\",\"This tree contains nodes that grant regular/everyday themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"15": "{\"pos\":[-1,2],\"type\":5059,\"size\":\"Large\",\"name\":\"Elemental Constellations\",\"description\":[\"Once allocated, press Allocate to access the Elemental Constellations tree.\",\"This tree contains nodes that grant elemental/status effect themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"16": "{\"pos\":[1,2],\"type\":5057,\"size\":\"Large\",\"name\":\"Occult Constellations\",\"description\":[\"Once allocated, press Allocate to access the Occult Constellations tree.\",\"This tree contains nodes that grant occult/undead themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"17": "{\"pos\":[2,1],\"type\":5056,\"size\":\"Large\",\"name\":\"Demonic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Demonic Constellations tree.\",\"This tree contains nodes that grant demon/evil themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"20": "{\"pos\":[1,-2],\"type\":5058,\"size\":\"Large\",\"name\":\"Mercantile Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mercantile Constellations tree.\",\"This tree contains nodes that grant wealth/luck themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"23": "{\"pos\":[0,-4],\"type\":5000,\"size\":\"Large\",\"name\":\"Vessel-Shaping\",\"description\":[\"Once allocated, press Allocate to access a menu that allows customizing\",\"Astral Vessel's appearance.\",\"Note: Bear in mind that faces/hairstyles/accessories granted by other mods require\",\"the target mod to be enabled.\",\"Disabling these mods will remove their additional customization options.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"25": "{\"pos\":[0,-3],\"type\":5063,\"size\":\"Large\",\"name\":\"Astral Vessel Unlocks\",\"description\":[\"\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"26": "{\"pos\":[0,-5],\"type\":5001,\"size\":\"Large\",\"name\":\"Vessel Loadouts\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to switch between different\",\"loadouts.\",\"Loadouts store your customization, constellation and starting item settings.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"27": "{\"pos\":[0,0],\"type\":5002,\"size\":\"Large\",\"name\":\"Stellar Nexus\",\"description\":[\"Once allocated, press Allocate to open a menu that allows you to pick your starting items.\",\"Items are divided into categories matching constellation types, and require affinity with\",\"those constellations to choose.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}",
-"28": "{\"pos\":[0,4],\"type\":5238,\"size\":\"Large\",\"name\":\"Ingrained Power\",\"description\":[\"When beginning a run, smelt your starting trinket, if you have one.\"],\"modifiers\":{\"ingrainedPower\":true},\"adjacent\":[],\"reqs\":{\"vesselIngrained\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"29": "{\"pos\":[-2,-4],\"type\":5239,\"size\":\"Large\",\"name\":\"Astral Vessel Changelog\",\"description\":[\"Press Allocate to open the changelog display.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"30": "{\"pos\":[2,-1],\"type\":5062,\"size\":\"Large\",\"name\":\"Mutagenic Constellations\",\"description\":[\"Once allocated, press Allocate to access the Mutagenic Constellations tree.\",\"This tree contains nodes that grant mutation/disease themed powers.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"31": "{\"pos\":[2,-4],\"type\":5303,\"size\":\"Large\",\"name\":\"Custom Hurt Sound\",\"description\":[\"Press Allocate to customize your on-hit and on-death sound effects.\"],\"modifiers\":{},\"adjacent\":[],\"reqs\":{\"noSP\":true},\"alwaysAvailable\":true,\"customID\":\"astralvessel\"}",
-"32": "{\"pos\":[2,4],\"type\":5310,\"size\":\"Large\",\"name\":\"Blacksmith Side Weapon\",\"description\":[\"If you have the 'Blacksmith' constellation allocated, its Side Weapon stats will\",\"show up here while in a run.\"],\"modifiers\":{},\"adjacent\":[],\"alwaysAvailable\":true,\"customID\":\"astralvessel\",\"reqs\":{}}"
-}
-]]
+local AVesselMainTree = include("scripts.constellationTrees.mainVesselTreeBank")
 
 local bubbleSpr = Sprite("gfx/ui/astralvessel/selection_bubble.anm2", true)
 bubbleSpr.Color.A = 0.8
@@ -42,7 +23,7 @@ function PSTAVessel:initVesselTree()
     PST.SkillTreesAPI.InitCustomNodeImage("astralvessel", vesselNodesSprite)
 
     -- Init main tree
-    PST.SkillTreesAPI.AddCharacterTree("Astral Vessel", true, AVesselTree)
+    PST.SkillTreesAPI.AddCharacterTree("Astral Vessel", true, AVesselMainTree)
 
     -- Info-only nodes
     PST:addPassiveInfoNode("Astral Vessel Unlocks")
@@ -98,6 +79,15 @@ function PSTAVessel:initVesselTree()
             end
 
             return { name = descName, description = newDesc }
+        end
+        -- Coalescing soul achievement req
+        if reqs and reqs.vesselSoulUnlock then
+            local tmpAchievementID = Isaac.GetAchievementIdByName("AVesselSoul")
+            if tmpAchievementID ~= -1 and not Isaac.GetPersistentGameData():Unlocked(tmpAchievementID) then
+                local newDesc = {table.unpack(tmpDescription)}
+                table.insert(newDesc, {"Locked. Requires unlocking the Soul of the Vessel soul stone.", PST.kcolors.RED1})
+                return { name = descName, description = newDesc }
+            end
         end
         -- Constellation nodes
         local newDesc
@@ -251,6 +241,12 @@ function PSTAVessel:initVesselTree()
             end
             if reqs.vesselIngrained and not PSTAVessel.ingrainedUnlock then
                 return false
+            end
+            if reqs.vesselSoulUnlock then
+                local tmpAchievementID = Isaac.GetAchievementIdByName("AVesselSoul")
+                if tmpAchievementID ~= -1 and not Isaac.GetPersistentGameData():Unlocked(tmpAchievementID) then
+                    return false
+                end
             end
         end
         local mods = node.modifiers

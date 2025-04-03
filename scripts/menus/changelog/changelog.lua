@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.10",
+        "- Added XP nodes and a Coalescing Soul node cluster to Astral Vessel's main tree.",
+        "",
+
         "v0.2.9",
         "- Fixed loadouts past page 1 not selecting the correct ID.",
         "",
