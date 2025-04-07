@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.11",
+        "- Updated how unlocks are checked, which should also fix the 'all completion marks' unlock not working.",
+        "",
+
         "v0.2.10",
         "- Added XP nodes and a Coalescing Soul node cluster to Astral Vessel's main tree.",
         "",

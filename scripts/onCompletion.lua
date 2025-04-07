@@ -8,23 +8,6 @@ function PSTAVessel:onCompletion(event, noHard)
             PSTAVessel.charUnlocks[event .. "hard"] = true
         end
 
-        local gameData = Isaac.GetPersistentGameData()
-        for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
-            local achievementID = Isaac.GetAchievementIdByName(achievementName)
-            if achievementID ~= -1 and not gameData:Unlocked(achievementID) then
-                local allUnlocked = true
-                for _, tmpUnlock in ipairs(tmpData.reqs) do
-                    if not PSTAVessel.charUnlocks[tmpUnlock] then
-                        allUnlocked = false
-                        break
-                    end
-                end
-                if allUnlocked then
-                    gameData:TryUnlock(achievementID)
-                end
-            end
-        end
-
         -- Mod: upgrade side weapon to random ancient of its type when defeating Mom's Heart/It Lives
         if PST:getTreeSnapshotMod("sideWepAncientUpgrade", false) and event == CompletionType.MOMS_HEART then
             local wepData = PST:getTreeSnapshotMod("vesselSideWeapon", nil)

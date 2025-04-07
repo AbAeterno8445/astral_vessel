@@ -139,13 +139,7 @@ PSTAVessel.unlocksData = {
         func = function() PSTAVessel.charObolBonus = PSTAVessel.charObolBonus + 12 end
     },
     ["AVesselSoul"] = {
-        reqs = {
-            CompletionType.BEAST .. "hard", CompletionType.BLUE_BABY .. "hard", CompletionType.BOSS_RUSH .. "hard",
-            CompletionType.DELIRIUM .. "hard", CompletionType.HUSH .. "hard", CompletionType.ISAAC .. "hard",
-            CompletionType.LAMB .. "hard", CompletionType.MEGA_SATAN .. "hard", CompletionType.MOMS_HEART .. "hard",
-            CompletionType.MOTHER .. "hard", CompletionType.SATAN .. "hard", CompletionType.ULTRA_GREED,
-            CompletionType.ULTRA_GREEDIER
-        },
+        reqs = {"all"},
         desc = "Obtain all hard completion marks: Unlock Soul of the Vessel soul stone & +1 greater constellation choice.",
         func = function()
             PSTAVessel.soulstoneUnlock = true
@@ -182,8 +176,30 @@ function PSTAVessel:updateUnlockData()
     local gameData = Isaac.GetPersistentGameData()
     for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
         local achievementID = Isaac.GetAchievementIdByName(achievementName)
-        if achievementID ~= -1 and gameData:Unlocked(achievementID) and tmpData.func then
-            tmpData.func()
+        if achievementID ~= -1 then
+            if not gameData:Unlocked(achievementID) then
+                local allUnlocked = true
+                for _, tmpUnlock in ipairs(tmpData.reqs) do
+                    if tmpUnlock == "all" then
+                        local markFill = Isaac.AllMarksFilled(PSTAVessel.vesselType)
+                        if markFill and markFill >= 2 then
+                            PSTAVessel.charUnlocks["all"] = true
+                        end
+                    end
+                    if not PSTAVessel.charUnlocks[tmpUnlock] then
+                        allUnlocked = false
+                        break
+                    end
+                end
+                if allUnlocked then
+                    gameData:TryUnlock(achievementID)
+                end
+            end
+            if gameData:Unlocked(achievementID) then
+                if tmpData.func then tmpData.func() end
+            end
+        else
+            print("[Astral Vessel] Warning: Could not locate achievement with name '" .. achievementName "' while updating unlocks.")
         end
     end
 end
