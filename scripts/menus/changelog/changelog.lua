@@ -4,6 +4,7 @@ function PSTAVessel:getChangelogList()
 
         "v0.2.11",
         "- Updated how unlocks are checked, which should also fix the 'all completion marks' unlock not working.",
+        "- Fixed Birthright effect triggering again on item pedestals that didn't get an item cycle.",
         "",
 
         "v0.2.10",

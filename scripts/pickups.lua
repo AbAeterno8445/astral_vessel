@@ -304,36 +304,38 @@ function PSTAVessel:onPickupUpdate(pickup)
         local player = PST:getPlayer()
         -- Birthright effect: % chance for item pedestals to cycle between the item and a random item from constellation pools you have affinity in
         if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and player:GetPlayerType() == PSTAVessel.vesselType and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and
-        not PSTAVessel:arrHasValue(PST.progressionItems, pickup.SubType) and math.random() <= 0.24 then
+        not PSTAVessel:arrHasValue(PST.progressionItems, pickup.SubType) then
             local vesselBirthrightCache = PST:getTreeSnapshotMod("vesselBirthrightCache", {})
             if not vesselBirthrightCache[tostring(pickup.InitSeed)] then
-                local itemConstType
-                local constWeights = {}
-                local totalWeight = 0
-                for _, tmpType in pairs(PSTAVConstellationType) do
-                    local tmpAff = PST:getTreeSnapshotMod("affinity" .. tmpType, 0) * 10
-                    if tmpAff > 0 then
-                        constWeights[tmpType] = tmpAff
-                        totalWeight = totalWeight + tmpAff
+                if math.random() <= 0.24 then
+                    local itemConstType
+                    local constWeights = {}
+                    local totalWeight = 0
+                    for _, tmpType in pairs(PSTAVConstellationType) do
+                        local tmpAff = PST:getTreeSnapshotMod("affinity" .. tmpType, 0) * 10
+                        if tmpAff > 0 then
+                            constWeights[tmpType] = tmpAff
+                            totalWeight = totalWeight + tmpAff
+                        end
                     end
-                end
-                local randWeight = math.random(totalWeight)
-                for tmpType, tmpWeight in pairs(constWeights) do
-                    randWeight = randWeight - tmpWeight
-                    if randWeight <= 0 then
-                        itemConstType = tmpType
-                        break
+                    local randWeight = math.random(totalWeight)
+                    for tmpType, tmpWeight in pairs(constWeights) do
+                        randWeight = randWeight - tmpWeight
+                        if randWeight <= 0 then
+                            itemConstType = tmpType
+                            break
+                        end
                     end
-                end
-                if itemConstType then
-                    local newCycleItem = Game():GetItemPool():GetCollectibleFromList(PSTAVessel.constelItemPools[itemConstType])
-                    local failsafe = 0
-                    while player:HasCollectible(newCycleItem) and failsafe < 200 do
-                        newCycleItem = Game():GetItemPool():GetCollectibleFromList(PSTAVessel.constelItemPools[itemConstType])
-                        failsafe = failsafe + 1
-                    end
-                    if failsafe < 200 then
-                        pickup:AddCollectibleCycle(newCycleItem)
+                    if itemConstType then
+                        local newCycleItem = Game():GetItemPool():GetCollectibleFromList(PSTAVessel.constelItemPools[itemConstType])
+                        local failsafe = 0
+                        while player:HasCollectible(newCycleItem) and failsafe < 200 do
+                            newCycleItem = Game():GetItemPool():GetCollectibleFromList(PSTAVessel.constelItemPools[itemConstType])
+                            failsafe = failsafe + 1
+                        end
+                        if failsafe < 200 then
+                            pickup:AddCollectibleCycle(newCycleItem)
+                        end
                     end
                 end
                 vesselBirthrightCache[tostring(pickup.InitSeed)] = true
