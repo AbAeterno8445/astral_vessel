@@ -199,7 +199,7 @@ function PSTAVessel:updateUnlockData()
                 if tmpData.func then tmpData.func() end
             end
         else
-            print("[Astral Vessel] Warning: Could not locate achievement with name '" .. achievementName "' while updating unlocks.")
+            print("[Astral Vessel] Warning: Could not locate achievement with name '" .. achievementName .. "' while updating unlocks.")
         end
     end
 end
