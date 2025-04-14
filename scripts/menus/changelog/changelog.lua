@@ -4,7 +4,7 @@ function PSTAVessel:getChangelogList()
 
         "v0.2.13",
         "- Changed internal ID for the quality 3 items unlock achievement, in an attempt to fix initialization failure.",
-        "- Slight optimizations on-hit and on-death functions.",
+        "- Slight optimizations to on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
         "",
 
