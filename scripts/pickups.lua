@@ -1,6 +1,8 @@
 ---@param pickup EntityPickup
 ---@param collider Entity
 function PSTAVessel:prePickup(pickup, collider, low)
+    if collider.Type ~= EntityType.ENTITY_PLAYER then return end
+
     local player = collider:ToPlayer()
     if player then
         -- Eternal hearts
@@ -36,6 +38,8 @@ local coinWorth = {
 ---@param low boolean
 ---@param forced boolean
 function PSTAVessel:onPickup(pickup, collider, low, forced)
+    if collider.Type ~= EntityType.ENTITY_PLAYER then return end
+
     local player = collider:ToPlayer()
 
     -- Squeeze Blood From Stone node (Baphomet demonic constellation)

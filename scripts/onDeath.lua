@@ -174,17 +174,19 @@ function PSTAVessel:onDeath(entity)
         -- Mod: % chance for enemies to leave a hovering Mucormycosis tear on death
         tmpMod = PST:getTreeSnapshotMod("mucorOnDeath", 0)
         if tmpMod > 0 and 100 * math.random() < tmpMod then
-            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SPORE, 0, entity.Position, Vector.Zero, player)
-            newTear:ToTear():AddTearFlags(TearFlags.TEAR_SPORE)
-            newTear:ToTear().FallingAcceleration = -0.1
-            newTear:ToTear().FallingSpeed = -0.1
-            newTear:ToTear().Height = -20
-            Isaac.CreateTimer(function()
-                if newTear and newTear:Exists() then
-                    newTear:ToTear().FallingSpeed = 0
-                    newTear:ToTear().FallingAcceleration = 0.2
-                end
-            end, 150, 1, false)
+            local newTear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SPORE, 0, entity.Position, Vector.Zero, player):ToTear()
+            if newTear then
+                newTear:AddTearFlags(TearFlags.TEAR_SPORE)
+                newTear.FallingAcceleration = -0.1
+                newTear.FallingSpeed = -0.1
+                newTear.Height = -20
+                Isaac.CreateTimer(function()
+                    if newTear and newTear:Exists() then
+                        newTear.FallingSpeed = 0
+                        newTear.FallingAcceleration = 0.2
+                    end
+                end, 150, 1, false)
+            end
         end
 
         -- Mod: % chance to spawn a clot when killing an enemy, up to 3 per room, up to 5 max present
@@ -251,8 +253,11 @@ function PSTAVessel:onDeath(entity)
         -- NPC checks
         local tmpNPC = entity:ToNPC()
         if tmpNPC then
+            local NPCisBoss = tmpNPC:IsBoss()
+            local NPCisChampion = tmpNPC:IsChampion()
+
             -- Carrion Harvest node (Ritualist occult constellation)
-            if not tmpNPC:IsBoss() and PST:getEntData(entity).PST_carrionCurse then
+            if not NPCisBoss and PST:getEntData(entity).PST_carrionCurse then
                 if #PSTAVessel.carrionMobs < 3 then
                     table.insert(PSTAVessel.carrionMobs, {entity.Type, entity.Variant, entity.SubType, entity.MaxHitPoints})
                 else
@@ -265,7 +270,7 @@ function PSTAVessel:onDeath(entity)
 
             -- Mod: % chance for bosses/champions to drop a pill on death, up to 3 per floor
             tmpMod = PST:getTreeSnapshotMod("bossChampPill", 0)
-            if tmpMod > 0 and (tmpNPC:IsBoss() or tmpNPC:IsChampion()) and PST:getTreeSnapshotMod("bossChampPillProcs", 0) < 3 and
+            if tmpMod > 0 and (NPCisBoss or NPCisChampion) and PST:getTreeSnapshotMod("bossChampPillProcs", 0) < 3 and
             100 * math.random() < tmpMod then
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, entity.Position, RandomVector() * 3, nil)
                 PST:addModifiers({ bossChampPillProcs = 1 }, true)
@@ -273,26 +278,26 @@ function PSTAVessel:onDeath(entity)
 
             -- Mod: % chance for champions to drop a cracked key on death, up to 3 per floor
             tmpMod = PST:getTreeSnapshotMod("champCrackedKey", 0)
-            if tmpMod > 0 and tmpNPC:IsChampion() and PST:getTreeSnapshotMod("champCrackedKeyProcs", 0) < 3 and 100 * math.random() < tmpMod then
+            if tmpMod > 0 and NPCisChampion and PST:getTreeSnapshotMod("champCrackedKeyProcs", 0) < 3 and 100 * math.random() < tmpMod then
                 Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, entity.Position, RandomVector() * 3, nil)
                 PST:addModifiers({ champCrackedKeyProcs = 1 }, true)
             end
 
             -- Mod: gain +% damage against final bosses when killing a boss enemy
             tmpMod = PST:getTreeSnapshotMod("bossKillFinalDmg", 0)
-            if tmpMod > 0 and tmpNPC:IsBoss() and PST:getTreeSnapshotMod("bossKillFinalDmgProcs", 0) < 50 then
+            if tmpMod > 0 and NPCisBoss and PST:getTreeSnapshotMod("bossKillFinalDmgProcs", 0) < 50 then
                 PST:addModifiers({ finalBossDmg = tmpMod, bossKillFinalDmgProcs = 1 }, true)
             end
 
             -- Mod: % chance to spawn a spider when killing enemies within 6 seconds of entering a room
             tmpMod = PST:getTreeSnapshotMod("quickKillSpider", 0)
-            if tmpNPC:IsChampion() then
+            if NPCisChampion then
                 tmpMod = tmpMod * 2
             end
             if tmpMod > 0 and Game():GetRoom():GetFrameCount() <= 180 and 100 * math.random() < tmpMod then
                 Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil)
                 local maxSpiders = 1
-                if tmpNPC:IsChampion() then maxSpiders = 2 end
+                if NPCisChampion then maxSpiders = 2 end
                 for _=1,maxSpiders do
                     player:ThrowBlueSpider(entity.Position, entity.Position + RandomVector() * 70)
 

@@ -8,7 +8,8 @@ function PSTAVessel:onNewRoom()
     local roomType = room:GetType()
     local firstVisit = room:IsFirstVisit()
 
-    local player = Isaac.GetPlayer()
+    ---@type EntityPlayer
+    local player = PST:getPlayer()
     local isVessel = (player:GetPlayerType() == PSTAVessel.vesselType)
 
     if isVessel then
