@@ -103,7 +103,7 @@ PSTAVessel.unlocksData = {
         desc = "Complete the Boss Rush: Can now pick a starting active item.",
         func = function() PSTAVessel.charActivesAllowed = true end
     },
-    ["AVesselQual3"] = {
+    ["AVesselBetterQual"] = {
         reqs = {CompletionType.HUSH .. "hard"},
         desc = "Defeat Hush (hard mode): Can now pick items of up to quality 3.",
         func = function() PSTAVessel.charMaxQuality = 3 end
@@ -153,7 +153,7 @@ PSTAVessel.unlocksData = {
     }
 }
 PSTAVessel.unlocksDisplayOrder = {
-    "AVesselExtraItem1", "AVesselLesser1", "AVesselLesser2", "AVesselActives", "AVesselQual3",
+    "AVesselExtraItem1", "AVesselLesser1", "AVesselLesser2", "AVesselActives", "AVesselBetterQual",
     "AVesselExtraItem2", "AVesselGreater1", "AVesselEmpyrean1", "AVesselTrinkets", "AVesselExp1",
     "AVesselObols1", "AVesselSoul", "AVesselIngrained"
 }

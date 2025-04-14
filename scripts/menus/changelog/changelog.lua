@@ -2,6 +2,14 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.13",
+        "- Changed internal ID for the quality 3 items unlock achievement, in an attempt to fix initialization failure.",
+        "",
+
+        "v0.2.12",
+        "- Fixed error that could occur if any achievement failed to initialize.",
+        "",
+
         "v0.2.11",
         "- Updated how unlocks are checked, which should also fix the 'all completion marks' unlock not working.",
         "- Fixed Birthright effect triggering again on item pedestals that didn't get an item cycle.",
