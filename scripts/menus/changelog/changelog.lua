@@ -3,6 +3,7 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.13",
+        "- Additional compatibility for Pudding and Wakaba mod items, and new items from Reverie: MGO.",
         "- Changed internal ID for the quality 3 items unlock achievement, in an attempt to fix initialization failure.",
         "- Slight optimizations to on-hit and on-death functions.",
         "- Black hole damage ticks no longer trigger on-hit effects.",
