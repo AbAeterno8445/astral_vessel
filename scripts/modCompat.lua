@@ -2343,13 +2343,12 @@ function PSTAVessel:initModCompat()
 
     -- Pudding and Wakaba
     if _wakaba then
-
         local function PSTAVessel_addPNWItem(pnwItemName, types, extraCost)
-            if not wakaba.Enums.Collectibles[pnwItemName] then
-                print("[Astral Vessel] Warning: No Pudding and Wakaba item '" .. ffItemName .."' found (mod compat).")
+            if not _wakaba.Enums.Collectibles[pnwItemName] then
+                print("[Astral Vessel] Warning: No Pudding and Wakaba item '" .. pnwItemName .."' found (mod compat).")
                 return
             end
-            PSTAVessel:addConstellationItem(FiendFolio.ITEM.COLLECTIBLE[ffItemName], types, extraCost or 0, "Pudding and Wakaba")
+            PSTAVessel:addConstellationItem(_wakaba.Enums.Collectibles[pnwItemName], types, extraCost or 0, "Pudding and Wakaba")
         end
         PSTAVessel_addPNWItem("LIL_MOE", {PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addPNWItem("LIL_SHIVA", {PSTAVConstellationType.ELEMENTAL})
@@ -2421,8 +2420,6 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addPNWItem("RIRAS_BRA", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addPNWItem("BOOK_OF_AMPLITUDE", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addPNWItem("CLEAR_FILE", {PSTAVConstellationType.MUNDANE})
-        
-
     end
 
     PSTAVessel:sortConstellationItems()
