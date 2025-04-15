@@ -335,6 +335,7 @@ PSTAVessel.accessoryList = {
     {item=CollectibleType.COLLECTIBLE_BOZO},
     {item=CollectibleType.COLLECTIBLE_MERCURIUS},
     {path="gfx/characters/accessories/astralvessel/accessory_marked.anm2"},
+    {item=CollectibleType.COLLECTIBLE_BOMBER_BOY}
 }
 
 -- Maps accessory IDs to their list entry
