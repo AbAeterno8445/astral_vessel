@@ -563,6 +563,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("Sing-Along Buddy", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addRevItem("Treasure Scout Mouse", {PSTAVConstellationType.MERCANTILE})
         PSTAVessel_addRevItem("Deep Reading", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRevItem("Lost and Found", {PSTAVConstellationType.MUNDANE})
 
         PSTAVessel_addRevItem("Impulse to Destroy", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRevItem("Blood Gem", {PSTAVConstellationType.DEMONIC})
@@ -570,6 +571,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("D58", {PSTAVConstellationType.MERCANTILE}, 6)
         PSTAVessel_addRevItem("Quantum Peach", {PSTAVConstellationType.DIVINE})
         PSTAVessel_addRevItem("Sonic Screwdriver", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRevItem("Deep Seek", {PSTAVConstellationType.MUNDANE})
 
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, Isaac.GetItemIdByName("Cucumber Battery"))
