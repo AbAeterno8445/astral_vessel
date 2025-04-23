@@ -288,6 +288,8 @@
         "PSTAstralWepType",
         "PSTAstralWepRarity",
         "BirthcakeRebaked",
-        "_wakaba"
+        "_wakaba",
+        "wakaba",
+        "_FOKS_BOOSTER_PACK_MOD"
   ]
 }

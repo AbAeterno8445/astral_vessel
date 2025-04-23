@@ -2431,8 +2431,7 @@ function PSTAVessel:initModCompat()
 
     -- Foks' Booster Pack
     if _FOKS_BOOSTER_PACK_MOD then
-
-                -- Items
+        -- Items
 		local function PSTAVessel_addFoksItem(foksItemName, types, extraCost)
 			local tmpItem = Isaac.GetItemIdByName(foksItemName)
 			if tmpItem == -1 then
@@ -2460,7 +2459,6 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addFoksItem("Baal's Altar", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
         PSTAVessel_addFoksItem("Toy Shovel", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addFoksItem("Box Cutter", {PSTAVConstellationType.MUNDANE})
-
     end
 
     PSTAVessel:sortConstellationItems()

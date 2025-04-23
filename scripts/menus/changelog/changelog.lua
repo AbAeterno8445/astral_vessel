@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.14",
+        "- Additional compatibility for Foks' Booster Pack mod items, and new items from Reverie: MGO.",
+        "",
+
         "v0.2.13",
         "- Additional compatibility for Pudding and Wakaba mod items, and new items from Reverie: MGO.",
         "- Changed internal ID for the quality 3 items unlock achievement, in an attempt to fix initialization failure.",
