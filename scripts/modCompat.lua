@@ -2429,6 +2429,40 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addPNWItem("CLEAR_FILE", {PSTAVConstellationType.MUNDANE})
     end
 
+    -- Foks' Booster Pack
+    if _FOKS_BOOSTER_PACK_MOD then
+
+                -- Items
+		local function PSTAVessel_addFoksItem(foksItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(foksItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No Foks' Booster Pack item '" .. foksItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "Foks' Booster Pack")
+		end
+        PSTAVessel_addFoksItem("Toy Soldier", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Ephemeral Torch", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addFoksItem("Asherah Pole", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addFoksItem("Covenant", {PSTAVConstellationType.DIVINE})
+        PSTAVessel_addFoksItem("Battle Banner", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Demise of the Faithful", {PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addFoksItem("Appetizer", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Happy Fly", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addFoksItem("Grocery Bag", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Cracked Mirror", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addFoksItem("Plastic Brick", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Dirge Bell", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addFoksItem("Dead Orange", {PSTAVConstellationType.MUTAGENIC})
+        PSTAVessel_addFoksItem("Snared Fox", {PSTAVConstellationType.MUTAGENIC})
+
+        PSTAVessel_addFoksItem("Clay Jar", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Baal's Altar", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addFoksItem("Toy Shovel", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addFoksItem("Box Cutter", {PSTAVConstellationType.MUNDANE})
+
+    end
+
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
