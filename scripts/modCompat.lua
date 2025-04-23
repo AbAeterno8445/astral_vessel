@@ -2346,11 +2346,11 @@ function PSTAVessel:initModCompat()
     -- Pudding and Wakaba
     if _wakaba then
         local function PSTAVessel_addPNWItem(pnwItemName, types, extraCost)
-            if not _wakaba.Enums.Collectibles[pnwItemName] then
+            if not wakaba.Enums.Collectibles[pnwItemName] then
                 print("[Astral Vessel] Warning: No Pudding and Wakaba item '" .. pnwItemName .."' found (mod compat).")
                 return
             end
-            PSTAVessel:addConstellationItem(_wakaba.Enums.Collectibles[pnwItemName], types, extraCost or 0, "Pudding and Wakaba")
+            PSTAVessel:addConstellationItem(wakaba.Enums.Collectibles[pnwItemName], types, extraCost or 0, "Pudding and Wakaba")
         end
         PSTAVessel_addPNWItem("LIL_MOE", {PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addPNWItem("LIL_SHIVA", {PSTAVConstellationType.ELEMENTAL})
