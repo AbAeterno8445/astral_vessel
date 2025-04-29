@@ -569,6 +569,8 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("Occult Ball[1]", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addRevItem("Occult Ball[3]", {PSTAVConstellationType.OCCULT})
         PSTAVessel_addRevItem("Sister Shion", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addRevItem("Hannya Mask", {PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRevItem("Frost Orb", {PSTAVConstellationType.ELEMENTAL})
 
         PSTAVessel_addRevItem("Impulse to Destroy", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRevItem("Blood Gem", {PSTAVConstellationType.DEMONIC})
