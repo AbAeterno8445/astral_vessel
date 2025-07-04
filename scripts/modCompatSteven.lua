@@ -277,7 +277,7 @@ function PSTAVessel:initFutureStevenDialogue()
                 end
             end
         end
-        if PST.modData.charData["Astral Vessel"].level >= 100 then
+        if PST.modData.charData["Astral Vessel"] and PST.modData.charData["Astral Vessel"].level >= 100 then
             table.insert(tfStevenDialogues, {
                 "that world-weary look...",
                 "like you've seen it all, and more",

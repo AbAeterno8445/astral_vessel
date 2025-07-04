@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.15",
+        "- Fixed error when starting a new savefile and Astral Vessel was uninitialized.",
+        "",
+
         "v0.2.14",
         "- Additional compatibility for Foks' Booster Pack mod items, and new items from Reverie: MGO.",
         "",
