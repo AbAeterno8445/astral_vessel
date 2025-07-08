@@ -71,6 +71,13 @@ function PSTAVessel:onRoomClear()
         end
     end
 
+    -- Mod: % chance to gain an additional gold heart when completing a room without taking damage, if you don't currently have one
+    tmpMod = PST:getTreeSnapshotMod("goldHeartOnRoomComp", 0)
+    if tmpMod > 0 and not playerGotHit and player:GetGoldenHearts() == 0 and 100 * math.random() < tmpMod then
+        player:AddGoldenHearts(1)
+        SFXManager():Play(SoundEffect.SOUND_GOLD_HEART, 0.8)
+    end
+
     -- Boss room clear
     if roomType == RoomType.ROOM_BOSS then
         -- Mod: boss room soul conversion

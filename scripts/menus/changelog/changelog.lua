@@ -3,6 +3,10 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.15",
+        "- The \"Gold-Bound\" node (Greed mercantile constellation) now has the following lines:",
+        "   \"Lose a coin heart when entering the second floor.\",",
+        "   \"You can only have up to 4 coin hearts.\"",
+        "- Changed the \"Gold Heart On Penny Pickup\" nodes to \"Gold Heart On Room Completion\" in the Greed mercantile constellation.",
         "- Disabled Reverie's \"Vicious Curse\" from starting items.",
         "- Fixed error when starting a new savefile and Astral Vessel was uninitialized.",
         "- Fixed occasional error when familiars dealt damage.",

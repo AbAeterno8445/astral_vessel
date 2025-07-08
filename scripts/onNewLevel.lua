@@ -172,5 +172,13 @@ function PSTAVessel:onNewLevel()
         PST:addModifiers({ allstatsPerc = -tmpMod, divinatorRuneBuffApplied = { value = 0, set = true } }, true)
     end
 
+    -- Gold-Bound node (Greed mercantile constellation)
+    if PST:getTreeSnapshotMod("goldBound", false) and not PST:isFirstOrigStage() and not PST:getTreeSnapshotMod("goldBoundLifeProc", false) then
+        PST:addModifiers({ goldBoundLifeProc = true }, true)
+        if player:GetMaxHearts() > 2 then
+            player:AddMaxHearts(-2)
+        end
+    end
+
     PSTAVessel.floorFirstUpdate = true
 end

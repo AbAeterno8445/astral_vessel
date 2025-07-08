@@ -659,6 +659,14 @@ function PSTAVessel:onUpdate()
         PSTAVessel.modCooldowns.mutagenicTear = 150 - math.floor(PST:getTreeSnapshotMod("mutagenicTearDelay", 0) * 30)
     end
 
+    -- Gold-Bound node (Greed mercantile constellation)
+    if PST:getTreeSnapshotMod("goldBound", false) then
+        local tmpMaxHearts = player:GetMaxHearts()
+        if tmpMaxHearts > 8 then
+            player:AddMaxHearts(8 - tmpMaxHearts)
+        end
+    end
+
     -- Birthcake mod compat - Cosmic: planetarium chance per affinity point
     if roomFrame % 15 == 0 then
         if not PST:getTreeSnapshotMod("cosmicBirthcakeApplied", false) and PSTAVessel:vesselHasBirthcake(player) then
