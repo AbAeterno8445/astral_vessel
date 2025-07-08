@@ -2,7 +2,8 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
-        "v0.2.15",
+        "v0.2.14",
+        "- Additional compatibility for Foks' Booster Pack mod items, and new items from Reverie: MGO.",
         "- The \"Gold-Bound\" node (Greed mercantile constellation) now has the following lines:",
         "   \"Lose a coin heart when entering the second floor.\",",
         "   \"You can only have up to 4 coin hearts.\"",
@@ -15,10 +16,6 @@ function PSTAVessel:getChangelogList()
         "- Fixed Cat's-Eye Prism Ancient Jewel not transforming you into Guppy if any starting items were selected.",
         "- Fixed allocation of main constellation nodes not updating total allocations properly.",
         "- Fixed lesser constellation main nodes staying available regardless of allocation status in certain circumstances.",
-        "",
-
-        "v0.2.14",
-        "- Additional compatibility for Foks' Booster Pack mod items, and new items from Reverie: MGO.",
         "",
 
         "v0.2.13",
