@@ -105,56 +105,59 @@ function PSTAVessel:onDamage(target, damage, flag, source)
         elseif target:IsVulnerableEnemy() and target:IsActiveEnemy(false) and not EntityRef(target).IsFriendly then
             if source and source.Entity then
                 -- Check if a familiar hit enemy
-                if source.Type == EntityType.ENTITY_FAMILIAR or source.SpawnerType == EntityType.ENTITY_FAMILIAR then
-                    tmpFamiliar = source.Entity:ToFamiliar() or source.Entity.SpawnerEntity:ToFamiliar()
-                    if tmpFamiliar then
-                        -- Wisp hit
-                        if tmpFamiliar.Variant == FamiliarVariant.WISP then
-                            -- Mod: Wisps inherit % of your damage
-                            tmpMod = PST:getTreeSnapshotMod("vesselWispInherit", 0)
-                            if tmpMod > 0 then
-                                dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
-                            end
-                        -- Blue spider hit
-                        elseif tmpFamiliar.Variant == FamiliarVariant.BLUE_SPIDER then
-                            -- Mod: blue spiders inherit +% of your damage
-                            tmpMod = PST:getTreeSnapshotMod("blueSpiderDmgInherit", 0)
-                            if tmpMod > 0 then
-                                dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
-                            end
+                local tmpFamiliar = nil
+                if source.Type == EntityType.ENTITY_FAMILIAR then
+                    tmpFamiliar = source.Entity:ToFamiliar()
+                elseif source.SpawnerType == EntityType.ENTITY_FAMILIAR and source.Entity.SpawnerEntity then
+                    tmpFamiliar = source.Entity.SpawnerEntity:ToFamiliar()
+                end
+                if tmpFamiliar then
+                    -- Wisp hit
+                    if tmpFamiliar.Variant == FamiliarVariant.WISP then
+                        -- Mod: Wisps inherit % of your damage
+                        tmpMod = PST:getTreeSnapshotMod("vesselWispInherit", 0)
+                        if tmpMod > 0 then
+                            dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
+                        end
+                    -- Blue spider hit
+                    elseif tmpFamiliar.Variant == FamiliarVariant.BLUE_SPIDER then
+                        -- Mod: blue spiders inherit +% of your damage
+                        tmpMod = PST:getTreeSnapshotMod("blueSpiderDmgInherit", 0)
+                        if tmpMod > 0 then
+                            dmgExtra = dmgExtra + srcPlayer.Damage * (tmpMod / 100)
+                        end
 
-                            -- Mod: blue spiders petrify slowed enemies on hit
-                            tmpMod = PST:getTreeSnapshotMod("blueSpiderPetriSlow", 0)
-                            if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) then
-                                target:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod * 30))
-                            end
+                        -- Mod: blue spiders petrify slowed enemies on hit
+                        tmpMod = PST:getTreeSnapshotMod("blueSpiderPetriSlow", 0)
+                        if tmpMod > 0 and (target:GetSlowingCountdown() > 0 or target:GetSpeedMultiplier() < 1) then
+                            target:AddFreeze(EntityRef(srcPlayer), math.ceil(tmpMod * 30))
+                        end
 
-                            -- Caustic Bite node (Tarantula mutagenic constellation)
-                            if PST:getTreeSnapshotMod("causticBite", false) then
-                                target:AddPoison(EntityRef(srcPlayer), 120, srcPlayer.Damage)
-                            end
+                        -- Caustic Bite node (Tarantula mutagenic constellation)
+                        if PST:getTreeSnapshotMod("causticBite", false) then
+                            target:AddPoison(EntityRef(srcPlayer), 120, srcPlayer.Damage)
+                        end
 
-                            -- Blue spider death
-                            if source.Entity:HasMortalDamage() then
-                                PSTAVessel.roomBlueSpiderDeaths = PSTAVessel.roomBlueSpiderDeaths + 1
+                        -- Blue spider death
+                        if source.Entity:HasMortalDamage() then
+                            PSTAVessel.roomBlueSpiderDeaths = PSTAVessel.roomBlueSpiderDeaths + 1
 
-                                -- Mod: % chance for blue spiders to leave slowing creep on death
-                                tmpMod = PST:getTreeSnapshotMod("blueSpiderSlowCreep", 0)
-                                if tmpMod > 0 and 100 * math.random() < tmpMod then
-                                    local newCreep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_WHITE, 0, source.Position, Vector.Zero, nil)
-                                    newCreep:ToEffect().Scale = 2
-                                end
+                            -- Mod: % chance for blue spiders to leave slowing creep on death
+                            tmpMod = PST:getTreeSnapshotMod("blueSpiderSlowCreep", 0)
+                            if tmpMod > 0 and 100 * math.random() < tmpMod then
+                                local newCreep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_WHITE, 0, source.Position, Vector.Zero, nil)
+                                newCreep:ToEffect().Scale = 2
                             end
-                        -- Blue fly hit
-                        elseif tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY then
-                            -- Blue fly death
-                            if source.Entity:HasMortalDamage() then
-                                -- Mod: % chance for blue flies to turn into a blue locust for the current room on death, up to 10x
-                                tmpMod = PST:getTreeSnapshotMod("blueFlyLocust", 0)
-                                if tmpMod > 0 and PST:getTreeSnapshotMod("blueFlyLocustProcs", 0) < 10 and 100 * math.random() < tmpMod then
-                                    local newLocust = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ABYSS_LOCUST, 0, source.Position, Vector.Zero, srcPlayer)
-                                    newLocust.Color = Color(0, 0.3, 1, 1, 0, 0, 0.6)
-                                end
+                        end
+                    -- Blue fly hit
+                    elseif tmpFamiliar.Variant == FamiliarVariant.BLUE_FLY then
+                        -- Blue fly death
+                        if source.Entity:HasMortalDamage() then
+                            -- Mod: % chance for blue flies to turn into a blue locust for the current room on death, up to 10x
+                            tmpMod = PST:getTreeSnapshotMod("blueFlyLocust", 0)
+                            if tmpMod > 0 and PST:getTreeSnapshotMod("blueFlyLocustProcs", 0) < 10 and 100 * math.random() < tmpMod then
+                                local newLocust = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ABYSS_LOCUST, 0, source.Position, Vector.Zero, srcPlayer)
+                                newLocust.Color = Color(0, 0.3, 1, 1, 0, 0, 0.6)
                             end
                         end
                     end

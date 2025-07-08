@@ -4,6 +4,7 @@ function PSTAVessel:getChangelogList()
 
         "v0.2.15",
         "- Fixed error when starting a new savefile and Astral Vessel was uninitialized.",
+        "- Fixed occasional error when familiars dealt damage.",
         "",
 
         "v0.2.14",
