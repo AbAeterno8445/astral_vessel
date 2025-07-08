@@ -11,6 +11,7 @@ function PSTAVessel:getChangelogList()
         "- Fixed error when starting a new savefile and Astral Vessel was uninitialized.",
         "- Fixed occasional error when familiars dealt damage.",
         "- Fixed \"Rune On Secret Rooms\" nodes triggering every time you re-entered a visited secret room, instead of just the first time.",
+        "- Fixed Cat's-Eye Prism Ancient Jewel not transforming you into Guppy if any starting items were selected.",
         "- Fixed allocation of main constellation nodes not updating total allocations properly.",
         "- Fixed lesser constellation main nodes staying available regardless of allocation status in certain circumstances.",
         "",

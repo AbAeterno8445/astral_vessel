@@ -36,7 +36,10 @@ function PSTAVessel:onNewRun(isContinued)
         itemPool:RemoveCollectible(item)
         -- Decrease transformation counters
         for _, tmpForm in pairs(PlayerForm) do
-            player:IncrementPlayerFormCounter(tmpForm, -1)
+            -- Exception for Guppy with Cat's-Eye Prism Ancient Jewel
+            if not (tmpForm == PlayerForm.PLAYERFORM_GUPPY and PST:SC_getSnapshotMod("catseyePrism", false)) then
+                player:IncrementPlayerFormCounter(tmpForm, -1)
+            end
         end
         -- Return pickups to pre-item addition (prevents +pickup items)
         player:AddCoins(plPickups.coins - player:GetNumCoins())
