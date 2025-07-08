@@ -195,7 +195,7 @@ function PSTAVessel:onDeath(entity)
             local totalClots = #Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY)
             if totalClots < 5 then
                 local clotType = PSTAVessel:getClotSubtypeFromHearts(player)
-                local newClot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, clotType, player.Position, RandomVector() * 3, player)
+                local newClot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, clotType, player.Position, RandomVector() * 3, nil)
                 newClot:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
                 PST:addModifiers({ vesselClotOnKillProcs = 1 }, true)
             end
