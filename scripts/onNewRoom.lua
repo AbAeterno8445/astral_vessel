@@ -248,6 +248,31 @@ function PSTAVessel:onNewRoom()
                 }, true)
             end
         end
+
+        -- Mod: % chance to spawn a random rune or soul stone when first entering a secret room
+        tmpMod = PST:getTreeSnapshotMod("secretRoomRune", 0)
+        if tmpMod > 0 and (roomType == RoomType.ROOM_SECRET or roomType == RoomType.ROOM_SUPERSECRET or roomType == RoomType.ROOM_ULTRASECRET) then
+            local soulChance = 0.15
+            if roomType == RoomType.ROOM_SUPERSECRET then
+                tmpMod = tmpMod * 2
+                soulChance = 0.3
+            elseif roomType == RoomType.ROOM_ULTRASECRET then
+                tmpMod = tmpMod * 4
+                soulChance = 0.5
+            end
+            if 100 * math.random() < tmpMod then
+                local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
+                if math.random() < soulChance then
+                    -- Random Soulstone
+                    local newSoulstone = PST:getMatchingSoulstone(nil)
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newSoulstone, tmpPos, Vector.Zero, nil)
+                else
+                    -- Random Rune
+                    local newRune = PST.allRune[math.random(#PST.allRunes)]
+                    Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newRune, tmpPos, Vector.Zero, nil)
+                end
+            end
+        end
     end
 
     -- Mod: % chance to gain up to 1/2 lost heart in the room when killing enemies
@@ -385,30 +410,5 @@ function PSTAVessel:onNewRoom()
             end
         end
         PST:addModifiers({ suzerainSwarmProc = false }, true)
-    end
-
-    -- Mod: % chance to spawn a random rune or soul stone when first entering a secret room
-    tmpMod = PST:getTreeSnapshotMod("secretRoomRune", 0)
-    if tmpMod > 0 and (roomType == RoomType.ROOM_SECRET or roomType == RoomType.ROOM_SUPERSECRET or roomType == RoomType.ROOM_ULTRASECRET) then
-        local soulChance = 0.15
-        if roomType == RoomType.ROOM_SUPERSECRET then
-            tmpMod = tmpMod * 2
-            soulChance = 0.3
-        elseif roomType == RoomType.ROOM_ULTRASECRET then
-            tmpMod = tmpMod * 4
-            soulChance = 0.5
-        end
-        if 100 * math.random() < tmpMod then
-            local tmpPos = Isaac.GetFreeNearPosition(room:GetCenterPos(), 40)
-            if math.random() < soulChance then
-                -- Random Soulstone
-                local newSoulstone = PST:getMatchingSoulstone(nil)
-                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newSoulstone, tmpPos, Vector.Zero, nil)
-            else
-                -- Random Rune
-                local newRune = PST.allRune[math.random(#PST.allRunes)]
-                Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, newRune, tmpPos, Vector.Zero, nil)
-            end
-        end
     end
 end

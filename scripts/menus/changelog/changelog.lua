@@ -3,8 +3,10 @@ function PSTAVessel:getChangelogList()
         "",
 
         "v0.2.15",
+        "- Disabled Reverie's \"Vicious Curse\" from starting items.",
         "- Fixed error when starting a new savefile and Astral Vessel was uninitialized.",
         "- Fixed occasional error when familiars dealt damage.",
+        "- Fixed \"Rune On Secret Rooms\" nodes triggering every time you re-entered a visited secret room, instead of just the first time.",
         "",
 
         "v0.2.14",
