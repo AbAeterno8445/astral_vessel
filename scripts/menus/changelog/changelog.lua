@@ -7,6 +7,8 @@ function PSTAVessel:getChangelogList()
         "- Fixed error when starting a new savefile and Astral Vessel was uninitialized.",
         "- Fixed occasional error when familiars dealt damage.",
         "- Fixed \"Rune On Secret Rooms\" nodes triggering every time you re-entered a visited secret room, instead of just the first time.",
+        "- Fixed allocation of main constellation nodes not updating total allocations properly.",
+        "- Fixed lesser constellation main nodes staying available regardless of allocation status in certain circumstances.",
         "",
 
         "v0.2.14",

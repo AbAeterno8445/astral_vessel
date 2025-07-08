@@ -219,7 +219,7 @@ function PSTAVessel:initVesselTree()
     -- Constellation node allocation update callback
     local function PSTAVessel_onConstNodeAlloc(node)
         local reqs = node.reqs
-        if reqs and reqs.vesselBaseConst then
+        if reqs and (reqs.vesselBaseConst or reqs.vesselConstType) then
             PSTAVessel:calcConstellationAffinities()
         end
         PSTAVessel:save()
@@ -230,7 +230,7 @@ function PSTAVessel:initVesselTree()
     local function PSTAVessel_constNodeReqs(node)
         local reqs = node.reqs
         if reqs then
-            if reqs.vesselConstType and reqs.vesselConstTier and reqs.vesselConstTier > 1 then
+            if reqs.vesselConstType and reqs.vesselConstTier then
                 local affinityReq = PSTAVessel:getConstTierAffinityCost(reqs.vesselConstTier)
                 local tierAllocTotal = PSTAVessel.tiersAlloc[reqs.vesselConstTier]
                 local tmpAllocData = PSTAVessel.constelAlloc[reqs.vesselConstType]
