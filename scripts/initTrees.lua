@@ -286,7 +286,10 @@ function PSTAVessel:initVesselTree()
         end
         -- Vessel Loadouts node, show loadout ID
         if node.name == "Vessel Loadouts" then
-            PST.miniFont:DrawStringScaled(tostring(PSTAVessel.currentLoadout or 1), x + 5 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
+            PST.miniFont:DrawStringScaled(tostring(PSTAVessel:getCurrentLoadoutID()), x + 5 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
+        -- Vessel Profiles node, show profile ID
+        elseif node.name == "Vessel Profiles" and PSTAVessel.currentProfile then
+            PST.miniFont:DrawStringScaled(tostring(PSTAVessel.currentProfile), x + 5 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
         -- Changelog node, show version
         elseif node.name == "Astral Vessel Changelog" then
             PST.miniFont:DrawStringScaled(PSTAVessel.version, x - 7 * z, y + 5 * z, z, z, PST.kcolors.WHITE)
@@ -335,6 +338,7 @@ function PSTAVessel:initVesselTree()
     end
     -- Submenu-opening nodes
     PST:addSubmenuOpenNode("Vessel Loadouts", PSTAVessel.loadoutSubmenuID)
+    PST:addSubmenuOpenNode("Vessel Profiles", PSTAVessel.profileSubmenuID)
     PST:addSubmenuOpenNode("Corpse Raiser", PSTAVessel.corpseRaiserSubmenuID)
     PST:addSubmenuOpenNode("Weaponsmith", PSTAVessel.weaponsmithSubmenuID)
     PST:addSubmenuOpenNode("Custom Hurt Sound", PSTAVessel.customSFXSubmenuID)

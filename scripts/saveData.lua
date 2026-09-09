@@ -24,6 +24,8 @@ function PSTAVessel:save()
         charUnlocks = PSTAVessel.charUnlocks,
         currentLoadout = PSTAVessel.currentLoadout,
         charLoadouts = PSTAVessel.charLoadouts,
+        currentProfile = PSTAVessel.currentProfile,
+        charProfiles = PSTAVessel.charProfiles,
         lastVersion = PSTAVessel.version
     }
     PSTAVessel:SaveData(json.encode(modData))
@@ -41,8 +43,14 @@ function PSTAVessel:load()
     if #loadData ~= 0 then
         local decoded = json.decode(loadData)
         PSTAVessel.charUnlocks = decoded.charUnlocks or {}
-        PSTAVessel.charLoadouts = decoded.charLoadouts
-        PSTAVessel:switchLoadout(decoded.currentLoadout)
+        PSTAVessel.charLoadouts = decoded.charLoadouts or {}
+        PSTAVessel.charProfiles = decoded.charProfiles or {}
+        PSTAVessel.currentLoadout = decoded.currentLoadout
+        if decoded.currentProfile then
+            PSTAVessel:switchProfile(decoded.currentProfile)
+        else
+            PSTAVessel:switchProfile(nil)
+        end
 
         PSTAVessel.lastVersion = decoded.lastVersion
     else
@@ -50,7 +58,7 @@ function PSTAVessel:load()
         PSTAVessel.charLoadouts = {}
         PSTAVessel:switchLoadout("1")
     end
-    PSTAVessel:updateUnlockData()
+    PSTAVessel:updateUnlockData(true)
     PSTAVessel:calcConstellationAffinities()
 
     -- Version
@@ -58,6 +66,23 @@ function PSTAVessel:load()
 		PSTAVessel.lastVersion = PSTAVessel.version
 		PSTAVessel.isNewVersion = true
 	end
+end
+
+function PSTAVessel:getCurrentLoadoutID()
+    local tmpProfile = PSTAVessel:getCurrentProfile()
+    if tmpProfile then
+        return tmpProfile.currentLoadout or "1"
+    end
+    return PSTAVessel.currentLoadout
+end
+
+-- Attempt to get the given loadout, considering currently loaded profile
+function PSTAVessel:getLoadout(loadoutID)
+    local tmpProfile = PSTAVessel:getCurrentProfile()
+    if tmpProfile then
+        return tmpProfile.charLoadouts[loadoutID]
+    end
+    return PSTAVessel.charLoadouts[loadoutID]
 end
 
 -- Save variables thrown 'as-is'
@@ -101,21 +126,35 @@ function PSTAVessel:saveLoadout()
         newLoadout.constAffinities[tmpType] = PSTAVessel.constelAlloc[tmpType].affinity or 0
     end
 
-    PSTAVessel.charLoadouts[PSTAVessel.currentLoadout] = newLoadout
+    local charProfile = PSTAVessel:getCurrentProfile()
+    if charProfile then
+        charProfile.charLoadouts[charProfile.currentLoadout] = newLoadout
+    else
+        PSTAVessel.charLoadouts[PSTAVessel.currentLoadout] = newLoadout
+    end
 end
 
 local firstLoadDone = false
 -- Switch to the given loadout, loading its data
-function PSTAVessel:switchLoadout(loadoutID)
+function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
     if type(loadoutID) == "number" then
         loadoutID = tostring(loadoutID)
     end
 
-    PSTAVessel.currentLoadout = loadoutID
+    print("[Astral Vessel] Switching to loadout:", loadoutID)
+
+    local charProfile = PSTAVessel:getCurrentProfile()
+    if charProfile then
+        print("[Astral Vessel] Loadout set on current profile", charProfile.name)
+        charProfile.currentLoadout = loadoutID
+    else
+        PSTAVessel.currentLoadout = loadoutID
+    end
 
     -- Create new loadout with current data if it doesn't exist, or load existing one
     PSTAVessel:initCharData()
-    local newLoadout = PSTAVessel.charLoadouts[loadoutID]
+
+    local newLoadout = PSTAVessel:getLoadout(loadoutID)
 
     if newLoadout then
         -- 1. Character color
@@ -168,8 +207,18 @@ function PSTAVessel:switchLoadout(loadoutID)
         end
     end
     -- Reset skill points
-    local maxSP = PST.modData.charData["Astral Vessel"].level
-    PST.modData.charData["Astral Vessel"].skillPoints = math.max(0, math.min(maxSP, PST.modData.charData["Astral Vessel"].skillPoints + oldAllocated - newAllocated))
+    if not skipAllocCheck then
+        local maxSP = PST.modData.charData[PSTAVessel:getCharProfName()].level
+        print(PSTAVessel:getCharProfName())
+        print("orig", PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints, "oldalloc", oldAllocated, "newalloc", newAllocated)
+        PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints = math.max(
+            0,
+            math.min(
+                maxSP,
+                PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints + oldAllocated - newAllocated
+            )
+        )
+    end
 
     PSTAVessel:sanitizeTrees()
     PST:save()

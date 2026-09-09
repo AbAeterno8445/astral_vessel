@@ -2,6 +2,12 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.15",
+        "- Added a Profiles system, which allows switching between different data profiles for Astral Vessel. Profiles store data",
+        "separately, such as progression, level/xp, node allocations, and unlocks, allowing you to start new builds from level 1.",
+        "Each Profile also has its own set of loadouts to switch between.",
+        "",
+
         "v0.2.14",
         "- Additional compatibility for Foks' Booster Pack mod items, and new items from Reverie: MGO.",
         "- The \"Gold-Bound\" node (Greed mercantile constellation) now has the following lines:",

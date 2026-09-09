@@ -35,7 +35,7 @@ function PSTAVessel:treeRenderLate()
                         if PST.modData.respecPoints >= allocNodes or PST.debugOptions.infRespec then
                             if not PST.debugOptions.infRespec then
                                 PST.modData.respecPoints = PST.modData.respecPoints - allocNodes
-                                PST.modData.charData["Astral Vessel"].skillPoints = PST.modData.charData["Astral Vessel"].skillPoints + allocNodes
+                                PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints = PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints + allocNodes
                             end
                             for nodeID, _ in pairs(PST.modData.treeNodes[tonicTree]) do
                                 PST.modData.treeNodes[tonicTree][nodeID] = 0

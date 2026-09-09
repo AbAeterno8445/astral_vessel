@@ -682,7 +682,7 @@ function PSTAVessel:onUpdate()
 
     -- Level 100 unlock
     if roomFrame % 30 == 0 then
-        local charData = PST.modData.charData["Astral Vessel"]
+        local charData = PST.modData.charData[PSTAVessel:getCharProfName()]
         if not Isaac.GetPersistentGameData():Unlocked(Isaac.GetAchievementIdByName("AVesselIngrained")) and charData and charData.level >= 100 then
             PSTAVessel:onCompletion("lvl100", true)
         end

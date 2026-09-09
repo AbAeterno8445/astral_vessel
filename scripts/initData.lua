@@ -58,10 +58,13 @@ PSTAVessel.inSolarFireRing = false
 PSTAVessel.vesselFliesSpeedBuff = 0
 PSTAVessel.roomBlueSpiderDeaths = 0
 
+PSTAVessel.charProfiles = {}
 PSTAVessel.charUnlocks = {}
 PSTAVessel.charLoadouts = {}
 PSTAVessel.currentLoadout = "1"
 PSTAVessel.maxLoadouts = 100
+PSTAVessel.currentProfile = nil
+PSTAVessel.maxProfiles = 50
 PSTAVessel.accessoryLimit = 5
 
 -- Character save data (for loadouts)
@@ -157,7 +160,7 @@ PSTAVessel.unlocksDisplayOrder = {
     "AVesselExtraItem2", "AVesselGreater1", "AVesselEmpyrean1", "AVesselTrinkets", "AVesselExp1",
     "AVesselObols1", "AVesselSoul", "AVesselIngrained"
 }
-function PSTAVessel:updateUnlockData()
+function PSTAVessel:updateUnlockData(silent)
     PSTAVessel.charMaxStartItems = 2
     PSTAVessel.charMaxQuality = 2
     PSTAVessel.charMaxPerQuality = {4, 4, 3, 2, 1}
@@ -173,6 +176,12 @@ function PSTAVessel:updateUnlockData()
     -- Allocation % for constellations to give their full affinity value
     PSTAVessel.charConstAffinityReq = 0.75
 
+    local targetUnlocksTable = PSTAVessel.charUnlocks
+    local charProfile = PSTAVessel:getCurrentProfile()
+    if charProfile then
+        targetUnlocksTable = charProfile.charUnlocks
+    end
+
     local gameData = Isaac.GetPersistentGameData()
     for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
         local achievementID = Isaac.GetAchievementIdByName(achievementName)
@@ -183,18 +192,19 @@ function PSTAVessel:updateUnlockData()
                     if tmpUnlock == "all" then
                         local markFill = Isaac.AllMarksFilled(PSTAVessel.vesselType)
                         if markFill and markFill >= 2 then
-                            PSTAVessel.charUnlocks["all"] = true
+                            targetUnlocksTable["all"] = true
                         end
                     end
-                    if not PSTAVessel.charUnlocks[tmpUnlock] then
+                    if not targetUnlocksTable[tmpUnlock] then
                         allUnlocked = false
                         break
                     end
                 end
                 if allUnlocked then
-                    gameData:TryUnlock(achievementID)
+                    gameData:TryUnlock(achievementID, silent)
                 end
             end
+            -- TODO: remove acquired achievements if not obtained in current profile/unlocks?
             if gameData:Unlocked(achievementID) then
                 if tmpData.func then tmpData.func() end
             end
@@ -203,7 +213,17 @@ function PSTAVessel:updateUnlockData()
         end
     end
 end
-PSTAVessel:updateUnlockData()
+PSTAVessel:updateUnlockData(true)
+
+function PSTAVessel:resetUnlocks()
+    --local gameData = Isaac.GetPersistentGameData()
+    for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
+        local achievementID = Isaac.GetAchievementIdByName(achievementName)
+        if achievementID ~= -1 then
+            Isaac.ExecuteCommand("lockachievement " .. achievementID)
+        end
+    end
+end
 
 ---- HAIRSTYLE DATA
 PSTAVessel.hairstyles = {

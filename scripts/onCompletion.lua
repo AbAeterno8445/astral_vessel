@@ -3,9 +3,14 @@ function PSTAVessel:onCompletion(event, noHard)
     ---@type EntityPlayer
     local player = PST:getPlayer()
     if player and player:GetPlayerType() == PSTAVessel.vesselType then
-        PSTAVessel.charUnlocks[event] = true
+        local targetUnlockTable = PSTAVessel.charUnlocks
+        local charProfile = PSTAVessel:getCurrentProfile()
+        if charProfile then
+            targetUnlockTable = charProfile.charUnlocks
+        end
+        targetUnlockTable[event] = true
         if Game():IsHardMode() and not noHard then
-            PSTAVessel.charUnlocks[event .. "hard"] = true
+            targetUnlockTable[event .. "hard"] = true
         end
 
         -- Mod: upgrade side weapon to random ancient of its type when defeating Mom's Heart/It Lives

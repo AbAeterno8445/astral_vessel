@@ -25,7 +25,7 @@ function PSTAVessel:initLoadoutSubmenu()
 
     function loadoutSubmenu:Update()
         -- Input: Allocate
-        if self.hoveredLoadoutID and tostring(self.hoveredLoadoutID) ~= PSTAVessel.currentLoadout then
+        if self.hoveredLoadoutID and tostring(self.hoveredLoadoutID) ~= PSTAVessel:getCurrentLoadoutID() then
             if PST:isKeybindActive(PSTKeybind.ALLOCATE_NODE) then
                 PSTAVessel:saveLoadout()
                 PSTAVessel:switchLoadout(tostring(self.hoveredLoadoutID))
@@ -46,7 +46,7 @@ function PSTAVessel:initLoadoutSubmenu()
             function()
                 for i=1,loadoutsPerPage do
                     local loadoutID = i + self.invPage * loadoutsPerPage
-                    local tmpLoadout = PSTAVessel.charLoadouts[tostring(loadoutID)]
+                    local tmpLoadout = PSTAVessel:getLoadout(tostring(loadoutID))
                     local drawX = self.menuX * tScreen.zoomScale - 64 + ((i - 1) % 5) * 32
                     local drawY = self.menuY * tScreen.zoomScale + 52 + math.floor((i - 1) / 5) * 32
 
@@ -67,7 +67,7 @@ function PSTAVessel:initLoadoutSubmenu()
                         self.loadoutUISprite.Color.A = 0.5
                     end
 
-                    if tmpLoadout or PSTAVessel.currentLoadout == tostring(loadoutID) then
+                    if tmpLoadout or PSTAVessel:getCurrentLoadoutID() == tostring(loadoutID) then
                         self.loadoutUISprite:SetFrame("Default", 0)
                         if tmpLoadout.charColor then
                             self.loadoutUISprite.Color.R = tmpLoadout.charColor[1]
@@ -83,7 +83,7 @@ function PSTAVessel:initLoadoutSubmenu()
 
                     PST.miniFont:DrawString(tostring(loadoutID), finalDrawX + 7, finalDrawY, PST.kcolors.WHITE)
 
-                    if PSTAVessel.currentLoadout == tostring(loadoutID) then
+                    if PSTAVessel:getCurrentLoadoutID() == tostring(loadoutID) then
                         self.loadoutUISprite.Color.A = 1
                         self.loadoutUISprite:SetFrame("Default", 2)
                         self.loadoutUISprite:Render(Vector(finalDrawX, finalDrawY))

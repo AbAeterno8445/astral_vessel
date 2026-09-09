@@ -196,7 +196,7 @@ function PSTAVessel:onNewRun(isContinued)
 
     -- Weaponsmith node (Blacksmith mundane constellation)
     if PST:getTreeSnapshotMod("weaponsmith", false) and PST.astralWepApplyMods then
-        local wepTier = math.min(5, math.floor(PST.modData.charData["Astral Vessel"].level / 20))
+        local wepTier = math.min(5, math.floor(PST.modData.charData[PSTAVessel:getCharProfName()].level / 20))
         local newWeapon = PST:createAstralWep(PSTAVessel.weaponsmithType, PSTAstralWepRarity.NORMAL, wepTier)
         PST:addModifiers({ vesselSideWeapon = newWeapon }, true)
 
