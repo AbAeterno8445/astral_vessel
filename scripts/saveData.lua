@@ -48,7 +48,7 @@ function PSTAVessel:load()
         PSTAVessel.currentLoadout = decoded.currentLoadout
         if decoded.currentProfile then
             PSTAVessel:switchProfile(decoded.currentProfile)
-        else
+        elseif PSTAVessel.currentProfile then
             PSTAVessel:switchProfile(nil)
         end
 

@@ -20,6 +20,12 @@ function PSTAVessel:onNewRun(isContinued)
     if isContinued then
         if isVessel then
             PSTAVessel:updateHairAndFace(player)
+
+            local runProfile = PST:getTreeSnapshotMod("PSTAVesselProfile", nil)
+            if runProfile then
+                print("[Astral Vessel] Found run profile", runProfile, "- Switching...")
+                PSTAVessel:switchProfile(runProfile)
+            end
         end
         return
     end
@@ -98,6 +104,11 @@ function PSTAVessel:onNewRun(isContinued)
                     end
                 end
             end
+        end
+
+        -- Set current profile as a run-specific modifier (to switch to on continue)
+        if PSTAVessel.currentProfile then
+            PST:addModifiers({ PSTAVesselProfile = PSTAVessel.currentProfile }, true)
         end
 
         PSTAVessel:applyCostumes()
