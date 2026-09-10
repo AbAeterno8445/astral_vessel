@@ -290,7 +290,9 @@
     "BirthcakeRebaked",
     "_wakaba",
     "wakaba",
-    "_FOKS_BOOSTER_PACK_MOD"
+    "_FOKS_BOOSTER_PACK_MOD",
+        "NoCostumesMod",
+        "addCostumeToIgnoreList"
   ],
   "runtime.plugin": "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.15.2\\out\\plugin\\plugin.lua"
 }

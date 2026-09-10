@@ -6,9 +6,12 @@ function PSTAVessel:applyCostumes(clearOld)
         -- Apply custom face
         if PSTAVessel.charFace then
             local faceCostumeID = Isaac.GetCostumeIdByPath(PSTAVessel.baseFaceCostumePath)
+            -- No Costume mod compat
+            if NoCostumesMod then addCostumeToIgnoreList(PSTAVessel.baseFaceCostumePath) end
             for _, tmpFaceEntry in ipairs(PSTAVessel.facesList) do
                 if tmpFaceEntry.path == PSTAVessel.charFace.path and tmpFaceEntry.baseSprite then
                     faceCostumeID = Isaac.GetCostumeIdByPath(tmpFaceEntry.baseSprite)
+                    if NoCostumesMod then addCostumeToIgnoreList(tmpFaceEntry.baseSprite) end
                     break
                 end
             end
@@ -22,6 +25,7 @@ function PSTAVessel:applyCostumes(clearOld)
             local hairCostumeID = Isaac.GetCostumeIdByPath(PSTAVessel.baseHairCostumePath)
             if hairCostumeID ~= -1 then
                 player:AddNullCostume(hairCostumeID)
+                if NoCostumesMod then addCostumeToIgnoreList(PSTAVessel.baseHairCostumePath) end
             end
         end
 
@@ -33,6 +37,7 @@ function PSTAVessel:applyCostumes(clearOld)
                     local costID = Isaac.GetCostumeIdByPath(accData.path)
                     if costID ~= -1 then
                         player:AddNullCostume(costID)
+                        if NoCostumesMod then addCostumeToIgnoreList(accData.path) end
                     end
                 elseif accData.item then
                     local itemCfg = Isaac.GetItemConfig():GetCollectible(accData.item)
