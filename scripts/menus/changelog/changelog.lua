@@ -7,6 +7,7 @@ function PSTAVessel:getChangelogList()
         "separately, such as progression, level/xp, node allocations, and unlocks, allowing you to start new builds from level 1.",
         "Each Profile also has its own set of loadouts to switch between.",
         "- Compatibility for No Costumes mod: starting hair/face/accessories for Astral Vessel should now be unaffected.",
+        "- Additional compatibility for items from Fiend Folio, Reverie: MGO, Restored Edith mods (wookywok).",
         "",
 
         "v0.2.14",
