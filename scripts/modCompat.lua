@@ -290,6 +290,7 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addFFItem("MYSTERIOUS_FEDORA", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addFFItem("SKIBIDI_BABY", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addFFItem("ELECTRIC_DICE", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addFFItem("CHIRUMIRU", {PSTAVConstellationType.ELEMENTAL})
 
         PSTAVessel_addFFItem("FIEND_FOLIO", {PSTAVConstellationType.OCCULT}, 2)
         PSTAVessel_addFFItem("D2", {PSTAVConstellationType.MERCANTILE})
@@ -370,6 +371,9 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addFFItem("GUNSLINGERS_GRIT", {PSTAVConstellationType.ELEMENTAL})
         PSTAVessel_addFFItem("YCUK_HEART", {PSTAVConstellationType.COSMIC, PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addFFItem("BAPHOMETS_EXCHANGE", {PSTAVConstellationType.OCCULT, PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addFFItem("STORE_WHISTLE", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addFFItem("YICK_HEART", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addFFItem("PURPLE_PUTTY", {PSTAVConstellationType.DEMONIC, PSTAVConstellationType.MUTAGENIC})
 
         -- Battery Items
         table.insert(PSTAVessel.batteryItems, FiendFolio.ITEM.COLLECTIBLE.DADS_BATTERY)
