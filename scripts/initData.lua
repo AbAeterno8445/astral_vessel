@@ -258,7 +258,7 @@ end
 
 -- Add Eden hair variations programmatically
 local function PSTAVessel_loadEdenHair()
-    for i=1,40 do
+    for i=1,54 do
         PSTAVessel:addVesselHairstyle(
             "gfx/characters/hair/astralvessel/hair_eden.anm2",
             "gfx/characters/costumes/character_009_edenhair" .. tostring(i) .. ".png"
