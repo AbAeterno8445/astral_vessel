@@ -8,7 +8,7 @@ function PSTAVessel:getChangelogList()
         "Each Profile also has its own set of loadouts to switch between.",
         "- New Rep+ Eden hairstyles are now available as hair choices for Astral Vessel.",
         "- Compatibility for No Costumes mod: starting hair/face/accessories for Astral Vessel should now be unaffected.",
-        "- Additional compatibility for items from Fiend Folio, Reverie: MGO, Restored Edith mods (wookywok).",
+        "- Additional compatibility support for new mod items and entities (wookywok).",
         "",
 
         "v0.2.14",
