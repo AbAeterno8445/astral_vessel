@@ -25,6 +25,9 @@ function PSTAVessel:onNewRun(isContinued)
             if runProfile then
                 print("[Astral Vessel] Found run profile", runProfile, "- Switching...")
                 PSTAVessel:switchProfile(runProfile)
+            elseif PSTAVessel.currentProfile ~= nil then
+                print("[Astral Vessel] No run profile, switching back to default data.")
+                PSTAVessel:switchProfile(nil)
             end
         end
         return
