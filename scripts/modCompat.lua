@@ -2811,6 +2811,32 @@ function PSTAVessel:initModCompat()
     PSTAVessel:sortConstellationItems()
     PSTAVessel:updateAccessoryMap()
     modCompatInit = true
+
+	-- The Serpent
+    if TheSerpent then
+        -- Items
+		local function PSTAVessel_addSerpentItem(serpentItemName, types, extraCost)
+			local tmpItem = Isaac.GetItemIdByName(serpentItemName)
+			if tmpItem == -1 then
+				print("[Astral Vessel] Warning: No The Serpent item '" .. serpentItemName .. "' found (mod compat).")
+				return
+			end
+			PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "The Serpent")
+		end
+
+		PSTAVessel_addSerpentItem("Snake Eyes", {PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addSerpentItem("Sack of Shards", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addSerpentItem("Slick Liquor", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addSerpentItem("Baron's Hat", {PSTAVConstellationType.MERCANTILE})
+		PSTAVessel_addSerpentItem("Crossroads Sign", {PSTAVConstellationType.DIVINE, PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addSerpentItem("Grief", {PSTAVConstellationType.DIVINE})
+		PSTAVessel_addSerpentItem("Scry", {PSTAVConstellationType.OCCULT})
+		PSTAVessel_addSerpentItem("Predator", {PSTAVConstellationType.DEMONIC})
+
+		PSTAVessel_addSerpentItem("The Fruit", {PSTAVConstellationType.DIVINE})
+		PSTAVessel_addSerpentItem("Ruby Rod", {PSTAVConstellationType.DEMONIC})
+		PSTAVessel_addSerpentItem("Craps", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUTAGENIC})
+	end
 end
 
 -- Birthcake mod compat - check if player has Birthcake
