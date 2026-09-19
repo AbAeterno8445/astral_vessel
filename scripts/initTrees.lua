@@ -31,6 +31,10 @@ function PSTAVessel:initVesselTree()
 
     -- Constellation node special descriptions
     local function PSTAVessel_constNodeDesc(descName, tmpDescription, isAllocated, tScreen, extraData)
+        if not (PST.treeScreen.currentTree and PSTAVessel:strStartsWith(PST.treeScreen.currentTree, "Astral Vessel")) then
+            return
+        end
+
         local reqs = extraData.node.reqs
         if reqs and reqs.vesselConstType then
             local newDesc = {}
@@ -218,6 +222,10 @@ function PSTAVessel:initVesselTree()
 
     -- Constellation node allocation update callback
     local function PSTAVessel_onConstNodeAlloc(node)
+        if not (PST.treeScreen.currentTree and PSTAVessel:strStartsWith(PST.treeScreen.currentTree, "Astral Vessel")) then
+            return
+        end
+
         local reqs = node.reqs
         if reqs and (reqs.vesselBaseConst or reqs.vesselConstType) then
             PSTAVessel:calcConstellationAffinities()
@@ -228,6 +236,10 @@ function PSTAVessel:initVesselTree()
 
     -- Constellation node special allocation requirements function
     local function PSTAVessel_constNodeReqs(node)
+        if not (PST.treeScreen.currentTree and PSTAVessel:strStartsWith(PST.treeScreen.currentTree, "Astral Vessel")) then
+            return
+        end
+
         local reqs = node.reqs
         if reqs then
             if reqs.vesselConstType and reqs.vesselConstTier then
@@ -259,6 +271,10 @@ function PSTAVessel:initVesselTree()
 
     -- Node extra drawing funcs
     local function PSTAVessel_nodeExtraDrawing(node, x, y, isAllocated)
+        if not (PST.treeScreen.currentTree and PSTAVessel:strStartsWith(PST.treeScreen.currentTree, "Astral Vessel")) then
+            return
+        end
+
         -- Constellation nodes, show corresponding affinity
         local z = PST.treeScreen.zoomScale
         if isAllocated then

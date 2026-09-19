@@ -9,6 +9,7 @@ function PSTAVessel:getChangelogList()
         "- New Rep+ Eden hairstyles are now available as hair choices for Astral Vessel.",
         "- Compatibility for No Costumes mod: starting hair/face/accessories for Astral Vessel should now be unaffected.",
         "- Additional compatibility support for new mod items and entities (wookywok).",
+        "- Fixed constellation warnings appearing in many non-Vessel nodes.",
         "",
 
         "v0.2.14",
