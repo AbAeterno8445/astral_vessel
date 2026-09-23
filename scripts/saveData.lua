@@ -71,7 +71,6 @@ end
 function PSTAVessel:onSaveSlot(saveSlot, isSlotSelected, rawSlot)
     if not isSlotSelected then return end
     if PSTAVessel.saveslotLoadingEnabled then
-        print("[Astral Vessel] SAVESLOT", saveSlot, isSlotSelected, rawSlot)
         PSTAVessel:load()
     end
 end
