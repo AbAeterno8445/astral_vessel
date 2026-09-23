@@ -165,18 +165,23 @@ function PSTAVessel:initNexusMenu()
                 local canQuality = self.hoveredItem.qual <= PSTAVessel.charMaxQuality
                 local canQualityMax = PSTAVessel:charGetQualStartingQuant(self.hoveredItem.qual) < PSTAVessel.charMaxPerQuality[self.hoveredItem.qual + 1]
                 -- Whether starting item limit is reached
-                local canPick = #PSTAVessel.charStartItems < PSTAVessel.charMaxStartItems
+                local canPick = PSTAVessel:GetStartItemsCount() < PSTAVessel.charMaxStartItems
 
                 if canAfford and canActive and canQuality and canQualityMax and canPick and not PSTAVessel:charHasStartingItem(self.hoveredItem.item) then
-                    table.insert(PSTAVessel.charStartItems, {
-                        item = self.hoveredItem.item,
-                        active = self.hoveredItem.active,
-                        spent = itemCost,
-                        spentType = currentType,
-                        qual = self.hoveredItem.qual
-                    })
-                    PSTAVessel:calcConstellationAffinities()
-                    SFXManager():Play(SoundEffect["SOUND_POWERUP" .. math.max(1, math.min(3, self.hoveredItem.qual))], 0.8)
+                    for i, tmpItem in ipairs(PSTAVessel.charStartItems) do
+                        if tmpItem.item == nil then
+                            PSTAVessel.charStartItems[i] = {
+                                item = self.hoveredItem.item,
+                                active = self.hoveredItem.active,
+                                spent = itemCost,
+                                spentType = currentType,
+                                qual = self.hoveredItem.qual
+                            }
+                            PSTAVessel:calcConstellationAffinities()
+                            SFXManager():Play(SoundEffect["SOUND_POWERUP" .. math.max(1, math.min(3, self.hoveredItem.qual))], 0.8)
+                            break
+                        end
+                    end
                 else
                     SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN, 0.8)
                 end
@@ -193,7 +198,7 @@ function PSTAVessel:initNexusMenu()
                 local removeIdx = nil
                 if not self.invSelected then
                     for i, startItem in ipairs(PSTAVessel.charStartItems) do
-                        if tmpItem.item == startItem.item and startItem.spentType == currentType then
+                        if startItem.item and tmpItem.item == startItem.item and startItem.spentType == currentType then
                             removeIdx = i
                             break
                         end
@@ -202,7 +207,7 @@ function PSTAVessel:initNexusMenu()
                     removeIdx = self.invSelected
                 end
                 if removeIdx then
-                    table.remove(PSTAVessel.charStartItems, removeIdx)
+                    PSTAVessel.charStartItems[removeIdx] = {}
                     PSTAVessel:calcConstellationAffinities()
                     SFXManager():Play(SoundEffect.SOUND_BUTTON_PRESS)
                 end
@@ -382,7 +387,7 @@ function PSTAVessel:initNexusMenu()
                     end
 
                     -- Whether starting item limit is reached
-                    local canPick = #PSTAVessel.charStartItems < PSTAVessel.charMaxStartItems
+                    local canPick = PSTAVessel:GetStartItemsCount() < PSTAVessel.charMaxStartItems
                     if not canPick then
                         table.insert(tmpLines, "{{ColorError}}You have reached the max amount of starting items!")
                     end
@@ -474,7 +479,7 @@ function PSTAVessel:initNexusMenu()
         for itemIdx=1,4 do
             local startItem = PSTAVessel.charStartItems[itemIdx]
             local tmpFrame = 0
-            if startItem then
+            if startItem and startItem.item then
                 tmpFrame = 1
                 if startItem.cannotAfford then tmpFrame = 3 end
             end
@@ -496,7 +501,7 @@ function PSTAVessel:initNexusMenu()
 
             local tmpDescX = startItemX + 17
             local tmpDescY = startItemY - 8
-            if startItem then
+            if startItem and startItem.item then
                 local itemCfg = Isaac.GetItemConfig():GetCollectible(startItem.item)
                 if itemCfg then
                     self.itemSprite.Color.A = 1
@@ -521,7 +526,7 @@ function PSTAVessel:initNexusMenu()
                 end
             end
 
-            if isSelected and not startItem then
+            if isSelected and (not startItem or not startItem.item) then
                 if itemIdx <= PSTAVessel.charMaxStartItems then
                     tScreen:DrawNodeBox("Empty Slot", {"Empty starting item slot."}, tmpDescX, tmpDescY, true)
                 else

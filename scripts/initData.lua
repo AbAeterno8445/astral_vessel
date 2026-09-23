@@ -41,6 +41,7 @@ PSTAVessel.updateTrackers = {
     rottenHearts = 0,
     primarySlotCharge = 0
 }
+PSTAVessel.saveslotLoadingEnabled = true
 PSTAVessel.floorFirstUpdate = false
 PSTAVessel.roomFirstFire = false
 
@@ -75,6 +76,9 @@ function PSTAVessel:initCharData()
     PSTAVessel.charFace = nil
     PSTAVessel.charAccessories = {}
     PSTAVessel.charStartItems = {}
+    for _=1,4 do
+        table.insert(PSTAVessel.charStartItems, {})
+    end
     PSTAVessel.charHurtSFX = SoundEffect.SOUND_ISAAC_HURT_GRUNT
     PSTAVessel.charDeathSFX = SoundEffect.SOUND_ISAACDIES
     PSTAVessel.charHurtPitch = 1

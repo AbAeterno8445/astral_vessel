@@ -144,18 +144,20 @@ function PSTAVessel:initVesselTree()
             table.insert(newDesc, {"Note: Starting items do not count towards transformations.", PST.kcolors.ANCIENT_ORANGE})
             table.insert(newDesc, {"Note: Starting items cannot grant starting pickups (e.g. '+5 bombs' items won't grant bombs).", PST.kcolors.ANCIENT_ORANGE})
             for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-                local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
-                if itemCfg then
-                    local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-		            if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
+                if tmpItem.item then
+                    local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
+                    if itemCfg then
+                        local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+                        if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
 
-                    local affordExtra = ""
-                    local tmpColor = PST.kcolors.LIGHTBLUE1
-                    if tmpItem.cannotAfford then
-                        affordExtra = " (Cannot afford)"
-                        tmpColor = PST.kcolors.RED1
+                        local affordExtra = ""
+                        local tmpColor = PST.kcolors.LIGHTBLUE1
+                        if tmpItem.cannotAfford then
+                            affordExtra = " (Cannot afford)"
+                            tmpColor = PST.kcolors.RED1
+                        end
+                        table.insert(newDesc, {"Starting item: " .. itemName .. affordExtra, tmpColor})
                     end
-                    table.insert(newDesc, {"Starting item: " .. itemName .. affordExtra, tmpColor})
                 end
             end
             return { name = descName, description = newDesc }
@@ -216,6 +218,12 @@ function PSTAVessel:initVesselTree()
                 newDesc = PST:getAstralWepDesc(wepData, PST:isKeybindActive(PSTKeybind.PAN_FASTER, true))
                 return { name = descName, description = newDesc }
             end
+        -- Vessel Profiles node beta warning
+        elseif descName == "Vessel Profiles" then
+            newDesc = {table.unpack(tmpDescription)}
+            table.insert(newDesc, "")
+            table.insert(newDesc, {"[WARNING] This feature is in BETA state! Savedata safety is not fully guaranteed!", PST.kcolors.ANCIENT_ORANGE})
+            return { name = descName, description = newDesc }
         end
     end
     PST:addExtraNodeDescFunc("avesselConst", PSTAVessel_constNodeDesc)
@@ -504,7 +512,7 @@ end
 
 function PSTAVessel:charHasStartingItem(itemType)
     for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-        if tmpItem.item == itemType then return true end
+        if tmpItem.item and tmpItem.item == itemType then return true end
     end
     return false
 end
@@ -519,7 +527,7 @@ end
 function PSTAVessel:charGetQualStartingQuant(qual)
     local quant = 0
     for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-        if tmpItem.qual == qual then quant = quant + 1 end
+        if tmpItem.qual and tmpItem.qual == qual then quant = quant + 1 end
     end
     return quant
 end

@@ -48,7 +48,7 @@ function PSTAVessel:load()
         PSTAVessel.currentLoadout = decoded.currentLoadout
         if decoded.currentProfile then
             PSTAVessel:switchProfile(decoded.currentProfile)
-        elseif PSTAVessel.currentProfile then
+        else
             PSTAVessel:switchProfile(nil)
         end
 
@@ -66,6 +66,14 @@ function PSTAVessel:load()
 		PSTAVessel.lastVersion = PSTAVessel.version
 		PSTAVessel.isNewVersion = true
 	end
+end
+
+function PSTAVessel:onSaveSlot(saveSlot, isSlotSelected, rawSlot)
+    if not isSlotSelected then return end
+    if PSTAVessel.saveslotLoadingEnabled then
+        print("[Astral Vessel] SAVESLOT", saveSlot, isSlotSelected, rawSlot)
+        PSTAVessel:load()
+    end
 end
 
 function PSTAVessel:getCurrentLoadoutID()
@@ -209,8 +217,8 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
     -- Reset skill points
     if not skipAllocCheck then
         local maxSP = PST.modData.charData[PSTAVessel:getCharProfName()].level
-        print(PSTAVessel:getCharProfName())
-        print("orig", PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints, "oldalloc", oldAllocated, "newalloc", newAllocated)
+        --print(PSTAVessel:getCharProfName())
+        --print("orig", PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints, "oldalloc", oldAllocated, "newalloc", newAllocated)
         PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints = math.max(
             0,
             math.min(
@@ -221,7 +229,6 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
     end
 
     PSTAVessel:sanitizeTrees()
-    PST:save()
 
     ---- Mod data validation ----
     -- Accessories
@@ -235,9 +242,11 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
     -- Starting items
     for i=#PSTAVessel.charStartItems,1,-1 do
         local startItem = PSTAVessel.charStartItems[i]
-        if Isaac.GetItemConfig():GetCollectible(startItem.item) == -1 then
+        if startItem.item and not Isaac.GetItemConfig():GetCollectible(startItem.item) then
             print("[Astral Vessel] Removed starting item ID", startItem.item, "- no longer present.")
-            table.remove(PSTAVessel.charStartItems, i)
+            PSTAVessel.charStartItems[i] = {}
+        elseif not startItem then
+            PSTAVessel.charStartItems[i] = {}
         end
     end
 
@@ -248,3 +257,9 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
 
     firstLoadDone = true
 end
+
+-- Load saveslots only while in the menu (Isaac API triggers tons of saveslot loads when returning from game before menu renders)
+function PSTAVessel:MenuEnableSaveslots()
+    PSTAVessel.saveslotLoadingEnabled = true
+end
+PSTAVessel:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, PSTAVessel.MenuEnableSaveslots)

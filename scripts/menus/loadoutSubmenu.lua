@@ -123,11 +123,13 @@ function PSTAVessel:initLoadoutSubmenu()
                 end
                 -- Display starting items
                 for _, tmpItem in ipairs(loadoutData.charStartItems) do
-                    local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
-                    if itemCfg then
-                        local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-                        if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
-                        table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolors.LIGHTBLUE1})
+                    if tmpItem.item then
+                        local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
+                        if itemCfg then
+                            local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
+                            if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
+                            table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolors.LIGHTBLUE1})
+                        end
                     end
                 end
                 tScreen:DrawNodeBox("Loadout " .. self.hoveredLoadoutID, newDesc)

@@ -17,6 +17,7 @@ function PSTAVessel:onNewRun(isContinued)
         player:GetSprite().Color = PSTAVessel:getRunVesselColor()
     end
 
+    PSTAVessel.saveslotLoadingEnabled = false
     if isContinued then
         if isVessel then
             PSTAVessel:updateHairAndFace(player)
@@ -95,9 +96,9 @@ function PSTAVessel:onNewRun(isContinued)
         PST:addModifiers(vesselModList, true)
 
         -- Starting item loadout
-        if #PSTAVessel.charStartItems > 0 then
+        if PSTAVessel:GetStartItemsCount() > 0 then
             for _, startItem in ipairs(PSTAVessel.charStartItems) do
-                if not startItem.cannotAfford then
+                if startItem.item and not startItem.cannotAfford then
                     -- Walking Nullifier node (Voidborn cosmic constellation) - Don't add active items, spawn them as pedestals in first room
                     if PST:getTreeSnapshotMod("walkingNullifier", false) and startItem.active then
                         local tmpPos = Isaac.GetFreeNearPosition(Game():GetRoom():GetCenterPos() + Vector(150, 40), 40)

@@ -6,9 +6,11 @@ function PSTAVessel:getChangelogList()
         "- Added a Profiles system, which allows switching between different data profiles for Astral Vessel. Profiles store data",
         "separately, such as progression, level/xp, node allocations, and unlocks, allowing you to start new builds from level 1.",
         "Each Profile also has its own set of loadouts to switch between.",
+        {"This feature is currently in BETA state, use with caution! Savedata safety is not yet fully guaranteed!", PST.kcolors.ANCIENT_ORANGE},
         "- New Rep+ Eden hairstyles are now available as hair choices for Astral Vessel.",
         "- Compatibility for No Costumes mod: starting hair/face/accessories for Astral Vessel should now be unaffected.",
         "- Additional compatibility support for new mod items and entities (wookywok).",
+        "- Disabling mods should no longer shuffle existing starting item loadouts that had items from the disabled mods.",
         "- Fixed constellation warnings appearing in many non-Vessel nodes.",
         "",
 
