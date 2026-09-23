@@ -245,7 +245,7 @@ function PSTAVessel:initVesselTree()
     -- Constellation node special allocation requirements function
     local function PSTAVessel_constNodeReqs(node)
         if not (PST.treeScreen.currentTree and PSTAVessel:strStartsWith(PST.treeScreen.currentTree, "Astral Vessel")) then
-            return
+            return true
         end
 
         local reqs = node.reqs

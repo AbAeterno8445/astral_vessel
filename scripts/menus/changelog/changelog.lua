@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.16",
+        "- Fixed node allocation being disabled with Vessel.",
+        "",
+
         "v0.2.15",
         "- Added a Profiles system, which allows switching between different data profiles for Astral Vessel. Profiles store data",
         "separately, such as progression, level/xp, node allocations, and unlocks, allowing you to start new builds from level 1.",
