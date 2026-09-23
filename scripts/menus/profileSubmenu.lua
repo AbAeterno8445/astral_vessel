@@ -20,6 +20,7 @@ function PSTAVessel:initProfileSubmenu()
 
     function profileSubmenu:OnOpen(openData)
         if not openData then return end
+        self.hoveredProfileID = nil
         for k, v in pairs(openData) do
             if self[k] ~= nil then self[k] = v end
         end
@@ -139,7 +140,7 @@ function PSTAVessel:initProfileSubmenu()
                     if profCharData then
                         table.insert(newDesc, {"Level: " .. profCharData.level, PST.kcolors.LIGHTBLUE1})
                         table.insert(newDesc, {"Skill Points: " .. profCharData.skillPoints, PST.kcolors.LIGHTBLUE1})
-                        table.insert(newDesc, {"Unlocks: " .. #profileData.charUnlocks, PST.kcolors.LIGHTBLUE1})
+                        table.insert(newDesc, {"Unlocks: " .. PSTAVessel:GetUnlocksCount(profileData.charUnlocks), PST.kcolors.LIGHTBLUE1})
                     end
 
                     table.insert(newDesc, "Selected Loadout: " .. profileData.currentLoadout)

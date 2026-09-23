@@ -76,7 +76,7 @@ function PSTAVessel:updateHairAndFace(player)
     if charFace then
         local tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath(PSTAVessel.baseFaceCostumePath))
         for _, tmpFaceEntry in ipairs(PSTAVessel.facesList) do
-            if tmpFaceEntry.path == PSTAVessel.charFace.path and tmpFaceEntry.baseSprite then
+            if tmpFaceEntry.path == charFace.path and tmpFaceEntry.baseSprite then
                 tmpCostumeID = Isaac.GetItemConfig():GetNullItem(Isaac.GetCostumeIdByPath(tmpFaceEntry.baseSprite))
                 break
             end

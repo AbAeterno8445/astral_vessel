@@ -239,9 +239,9 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
         end
     end
     -- Starting items
-    for i=#PSTAVessel.charStartItems,1,-1 do
+    for i=4,1,-1 do
         local startItem = PSTAVessel.charStartItems[i]
-        if startItem.item and not Isaac.GetItemConfig():GetCollectible(startItem.item) then
+        if startItem and startItem.item and not Isaac.GetItemConfig():GetCollectible(startItem.item) then
             print("[Astral Vessel] Removed starting item ID", startItem.item, "- no longer present.")
             PSTAVessel.charStartItems[i] = {}
         elseif not startItem then

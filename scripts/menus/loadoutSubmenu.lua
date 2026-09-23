@@ -18,6 +18,7 @@ function PSTAVessel:initLoadoutSubmenu()
 
     function loadoutSubmenu:OnOpen(openData)
         if not openData then return end
+        self.hoveredLoadoutID = nil
         for k, v in pairs(openData) do
             if self[k] ~= nil then self[k] = v end
         end
