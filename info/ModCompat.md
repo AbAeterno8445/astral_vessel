@@ -38,6 +38,14 @@
 - **Daydream All Day:** Items.
 - **Doki Doki Repentance!:** Items, Custom hurt/death SFX.
 - **Birthcake Rebaked:** Birthcake trinket provides an unique effect for Vessel + birthcake sprite.
+- **Pudding and Wakaba:** Items.
+- **Foks' Booster Pack:** Items.
+- **Restored Edith:** Items.
+- **The Serpent:** Items.
+- **Furtherance:** Items.
+- **ENA:** Items.
+- **Edith: Rebuilt:** Items.
+- **Anathema:** Items.
 
 \*Fly familiars are friendly monsters spawned by the **Suzerain Of Flies** large node, under the empyrean mutagenic 'Dragonfly' constellation.
 
