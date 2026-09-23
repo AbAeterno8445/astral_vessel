@@ -8,6 +8,7 @@ function PSTAVessel:getChangelogList()
         "Each Profile also has its own set of loadouts to switch between.",
         {"This feature is currently in BETA state, use with caution! Savedata safety is not yet fully guaranteed!", PST.kcolors.ANCIENT_ORANGE},
         "- New Rep+ Eden hairstyles are now available as hair choices for Astral Vessel.",
+        "- Added mod compat for Furtherance, ENA, Edith: Rebuilt and Anathema, as well as new items from existing mods (wookywok).",
         "- Compatibility for No Costumes mod: starting hair/face/accessories for Astral Vessel should now be unaffected.",
         "- Additional compatibility support for new mod items and entities (wookywok).",
         "- Disabling mods should no longer shuffle existing starting item loadouts that had items from the disabled mods.",

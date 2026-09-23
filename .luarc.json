@@ -296,7 +296,11 @@
         "EdithRestored",
 
     "Renderer",
-        "TheSerpent"
+        "TheSerpent",
+        "VTRemaster",
+        "EdithRebuilt",
+        "ENAmod",
+        "Furtherance"
   ],
   "runtime.plugin": "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.16.0\\out\\plugin\\plugin.lua"
 }
