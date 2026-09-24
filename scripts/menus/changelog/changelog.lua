@@ -7,6 +7,7 @@ function PSTAVessel:getChangelogList()
         "these will go missing but still occupy the slot, and display a warning message. You can remove missing items with Respec input as usual.",
         "Re-enabling the mod for missing items will return them to their slot if not removed.",
         "- Fixed certain achievements not being loaded properly for unlocks.",
+        "- Fixed loadouts displaying no hover info for profiles.",
         "",
 
         "v0.2.16",
