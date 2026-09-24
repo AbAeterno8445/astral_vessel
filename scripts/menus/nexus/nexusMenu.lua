@@ -177,6 +177,14 @@ function PSTAVessel:initNexusMenu()
                                 spentType = currentType,
                                 qual = self.hoveredItem.qual
                             }
+                            -- Item name and source mod if relevant
+                            local itemCfg = Isaac.GetItemConfig():GetCollectible(self.hoveredItem.item)
+                            if itemCfg then
+                                PSTAVessel.charStartItems[i].itemName = itemCfg.Name
+                            end
+                            if self.hoveredItem.sourceMod then
+                                PSTAVessel.charStartItems[i].sourceMod = self.hoveredItem.sourceMod
+                            end
                             PSTAVessel:calcConstellationAffinities()
                             SFXManager():Play(SoundEffect["SOUND_POWERUP" .. math.max(1, math.min(3, self.hoveredItem.qual))], 0.8)
                             break
@@ -481,7 +489,7 @@ function PSTAVessel:initNexusMenu()
             local tmpFrame = 0
             if startItem and startItem.item then
                 tmpFrame = 1
-                if startItem.cannotAfford then tmpFrame = 3 end
+                if startItem.cannotAfford or startItem.isMissing then tmpFrame = 3 end
             end
             if itemIdx > PSTAVessel.charMaxStartItems then
                 tmpFrame = 2
@@ -512,16 +520,35 @@ function PSTAVessel:initNexusMenu()
                 end
 
                 if isSelected then
-                    local itemDesc = {
-                        "Obtained with: " .. startItem.spent .. " " .. startItem.spentType .. " Affinity.",
-                        "Press Respec to refund this item choice."
-                    }
-                    if startItem and startItem.cannotAfford then
-                        table.insert(itemDesc, 2, {"This item won't be granted when starting a run.", PST.kcolors.RED1})
-                        table.insert(itemDesc, 2, {"You can no longer afford this item with your current total affinity.", PST.kcolors.RED1})
+                    local itemDesc = {}
+                    if startItem.spent and startItem.spentType then
+                        table.insert(itemDesc, "Obtained with: " .. startItem.spent .. " " .. startItem.spentType .. " Affinity.")
                     end
-                    local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-		            if itemName == "StringTable::InvalidKey" then itemName = "Unknown Item" end
+
+                    local itemName = Isaac.GetLocalizedString("Items", startItem.itemName or (itemCfg and itemCfg.Name) or "Unknown Item", "en")
+                    if itemName == "StringTable::InvalidKey" then itemName = "Unknown Item" end
+
+                    if not startItem.isMissing then
+                        if startItem.sourceMod then
+                            table.insert(itemDesc, {"Source Mod: " .. startItem.sourceMod, PST.kcolors.LIGHTBLUE1})
+                        end
+                        table.insert(itemDesc, "Press Respec to refund this item choice.")
+                        if startItem.cannotAfford then
+                            table.insert(itemDesc, 2, {"This item won't be granted when starting a run.", PST.kcolors.RED1})
+                            table.insert(itemDesc, 2, {"You can no longer afford this item with your current total affinity.", PST.kcolors.RED1})
+                        end
+                    else
+                        -- Missing item (most likely from disabled mod)
+                        table.insert(itemDesc, {"An item was here but it has gone missing! This is likely due to disabling its source mod.", PST.kcolors.ANCIENT_ORANGE})
+                        table.insert(itemDesc, {"If this is the case, re-enabling the source mod will return the original item.", PST.kcolors.ANCIENT_ORANGE})
+                        if startItem.itemName then
+                            table.insert(itemDesc, {"Item Name: " .. startItem.itemName, PST.kcolors.ANCIENT_ORANGE})
+                        end
+                        if startItem.sourceMod then
+                            table.insert(itemDesc, {"Source Mod: " .. startItem.sourceMod, PST.kcolors.ANCIENT_ORANGE})
+                        end
+                        table.insert(itemDesc, "You may press Respec to reset this slot.")
+                    end
                     tScreen:DrawNodeBox(itemName, itemDesc, tmpDescX, tmpDescY, true)
                 end
             end

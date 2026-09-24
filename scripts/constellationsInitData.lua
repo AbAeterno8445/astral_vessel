@@ -96,6 +96,9 @@ PSTAVessel.constelItemPools = {}
 }
 ]]
 
+-- Table holding what mod each added item belongs to, if provided (modCompat)
+PSTAVessel.modCompatItemList = {}
+
 local tmpAddedItems = {}
 -- Add an item to the constellation pool
 ---@param itemType CollectibleType
@@ -125,7 +128,10 @@ function PSTAVessel:addConstellationItem(itemType, itemCategories, extraCost, so
         }
         if extraCost then newEntry.extraCost = extraCost end
         if itemCfg.Type == ItemType.ITEM_ACTIVE then newEntry.active = true end
-        if sourceMod then newEntry.sourceMod = sourceMod end
+        if sourceMod then
+            newEntry.sourceMod = sourceMod
+            PSTAVessel.modCompatItemList[itemCfg.Name] = sourceMod
+        end
 
         local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
 		if itemName ~= "StringTable::InvalidKey" then newEntry.name = itemName end

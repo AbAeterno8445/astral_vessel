@@ -239,12 +239,41 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
         end
     end
     -- Starting items
+    local itmConfig = Isaac.GetItemConfig()
     for i=4,1,-1 do
+        local loadSuccess = false
         local startItem = PSTAVessel.charStartItems[i]
-        if startItem and startItem.item and not Isaac.GetItemConfig():GetCollectible(startItem.item) then
-            print("[Astral Vessel] Removed starting item ID", startItem.item, "- no longer present.")
-            PSTAVessel.charStartItems[i] = {}
-        elseif not startItem then
+
+        if startItem and startItem.item then
+            startItem.isMissing = nil
+
+            if startItem.itemName then
+                loadSuccess = true
+
+                -- Check if ID is valid for name
+                local tmpNewID = Isaac.GetItemIdByName(startItem.itemName)
+                if tmpNewID ~= -1 then
+                    startItem.item = tmpNewID
+                else
+                    startItem.isMissing = true
+                end
+            else
+                local tmpItem = itmConfig:GetCollectible(startItem.item)
+                if tmpItem then
+                    startItem.itemName = tmpItem.Name
+                    loadSuccess = true
+                else
+                    print("[Astral Vessel] Removed starting item ID", startItem.item, "- no longer present.")
+                end
+            end
+        end
+
+        if loadSuccess then
+            local tmpSourceMod = PSTAVessel.modCompatItemList[startItem.itemName]
+            if tmpSourceMod then
+                startItem.sourceMod = tmpSourceMod
+            end
+        elseif not loadSuccess then
             PSTAVessel.charStartItems[i] = {}
         end
     end
