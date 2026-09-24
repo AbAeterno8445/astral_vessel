@@ -11,9 +11,6 @@ function PSTAVessel:onDeath(entity)
         -- Mom death procs
         if entity.Type == EntityType.ENTITY_MOM then
             PSTAVessel:onCompletion("Mom")
-            if Game():IsHardMode() then
-                PSTAVessel:onCompletion("Momhard")
-            end
         end
 
         -- Mod: % chance for enemies with at least 10 HP to drop a vanishing 1/2 soul heart on death, if you have less than 3 soul hearts

@@ -9,7 +9,7 @@ PSTAVessel.consoleCommands = {
             PSTAVessel:onCompletion("all")
             for _, tmpType in pairs(CompletionType) do
                 PSTAVessel:onCompletion(tmpType)
-                PSTAVessel:onCompletion(tmpType .. "hard")
+                PSTAVessel:onCompletion(tmpType .. "hard", true)
             end
             print("Astral Vessel - Triggered all completion events.")
         end

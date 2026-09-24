@@ -1,5 +1,5 @@
 PSTAVessel = RegisterMod("PST_AV", 1)
-PSTAVessel.version = "0.2.17"
+PSTAVessel.version = "0.2.18"
 
 include("scripts.utility")
 include("scripts.charProfiles")
