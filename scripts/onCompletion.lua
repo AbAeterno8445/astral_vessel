@@ -8,7 +8,7 @@ function PSTAVessel:onCompletion(event, noHard)
         if charProfile then
             targetUnlockTable = charProfile.charUnlocks
         end
-        targetUnlockTable[event] = true
+        targetUnlockTable[tostring(event)] = true
         if Game():IsHardMode() and not noHard then
             targetUnlockTable[event .. "hard"] = true
         end

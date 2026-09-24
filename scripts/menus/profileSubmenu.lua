@@ -140,7 +140,6 @@ function PSTAVessel:initProfileSubmenu()
                     if profCharData then
                         table.insert(newDesc, {"Level: " .. profCharData.level, PST.kcolors.LIGHTBLUE1})
                         table.insert(newDesc, {"Skill Points: " .. profCharData.skillPoints, PST.kcolors.LIGHTBLUE1})
-                        --table.insert(newDesc, {"Unlocks: " .. PSTAVessel:GetUnlocksCount(profileData.charUnlocks), PST.kcolors.LIGHTBLUE1})
                     end
 
                     table.insert(newDesc, "Selected Loadout: " .. profileData.currentLoadout)

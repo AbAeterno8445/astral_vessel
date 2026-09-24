@@ -199,7 +199,7 @@ function PSTAVessel:updateUnlockData(silent)
                             targetUnlocksTable["all"] = true
                         end
                     end
-                    if not targetUnlocksTable[tmpUnlock] then
+                    if not targetUnlocksTable[tostring(tmpUnlock)] then
                         allUnlocked = false
                         break
                     end
@@ -208,7 +208,6 @@ function PSTAVessel:updateUnlockData(silent)
                     gameData:TryUnlock(achievementID, silent)
                 end
             end
-            -- TODO: remove acquired achievements if not obtained in current profile/unlocks?
             if gameData:Unlocked(achievementID) then
                 if tmpData.func then tmpData.func() end
             end
@@ -220,8 +219,7 @@ end
 PSTAVessel:updateUnlockData(true)
 
 function PSTAVessel:resetUnlocks()
-    --local gameData = Isaac.GetPersistentGameData()
-    for achievementName, tmpData in pairs(PSTAVessel.unlocksData) do
+    for achievementName, _ in pairs(PSTAVessel.unlocksData) do
         local achievementID = Isaac.GetAchievementIdByName(achievementName)
         if achievementID ~= -1 then
             Isaac.ExecuteCommand("lockachievement " .. achievementID)

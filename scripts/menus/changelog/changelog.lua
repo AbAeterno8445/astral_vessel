@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.17",
+        "- Fixed certain achievements not being loaded properly for unlocks.",
+        "",
+
         "v0.2.16",
         "- Fixed node allocation being disabled with Vessel.",
         "",
