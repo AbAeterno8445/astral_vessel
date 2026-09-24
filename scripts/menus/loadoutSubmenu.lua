@@ -106,7 +106,7 @@ function PSTAVessel:initLoadoutSubmenu()
 
         -- Hovered loadout
         if self.hoveredLoadoutID then
-            local loadoutData = PSTAVessel.charLoadouts[tostring(self.hoveredLoadoutID)]
+            local loadoutData = PSTAVessel:getLoadout(tostring(self.hoveredLoadoutID))
             if loadoutData then
                 local newDesc = {}
                 -- Display affinities (if saved)
