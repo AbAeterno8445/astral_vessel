@@ -152,7 +152,6 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
 
     local charProfile = PSTAVessel:getCurrentProfile()
     if charProfile then
-        print("[Astral Vessel] Loadout set on current profile", charProfile.name)
         charProfile.currentLoadout = loadoutID
     else
         PSTAVessel.currentLoadout = loadoutID
@@ -216,8 +215,6 @@ function PSTAVessel:switchLoadout(loadoutID, skipAllocCheck)
     -- Reset skill points
     if not skipAllocCheck then
         local maxSP = PST.modData.charData[PSTAVessel:getCharProfName()].level
-        --print(PSTAVessel:getCharProfName())
-        --print("orig", PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints, "oldalloc", oldAllocated, "newalloc", newAllocated)
         PST.modData.charData[PSTAVessel:getCharProfName()].skillPoints = math.max(
             0,
             math.min(
