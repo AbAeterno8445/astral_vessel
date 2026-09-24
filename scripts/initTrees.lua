@@ -144,20 +144,17 @@ function PSTAVessel:initVesselTree()
             table.insert(newDesc, {"Note: Starting items do not count towards transformations.", PST.kcolors.ANCIENT_ORANGE})
             table.insert(newDesc, {"Note: Starting items cannot grant starting pickups (e.g. '+5 bombs' items won't grant bombs).", PST.kcolors.ANCIENT_ORANGE})
             for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-                if tmpItem.item then
-                    local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
-                    if itemCfg then
-                        local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-                        if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
+                if not tmpItem.isMissing and tmpItem.itemName then
+                    local itemName = Isaac.GetLocalizedString("Items", tmpItem.itemName, "en")
+                    if itemName == "StringTable::InvalidKey" then itemName = tmpItem.itemName end
 
-                        local affordExtra = ""
-                        local tmpColor = PST.kcolors.LIGHTBLUE1
-                        if tmpItem.cannotAfford then
-                            affordExtra = " (Cannot afford)"
-                            tmpColor = PST.kcolors.RED1
-                        end
-                        table.insert(newDesc, {"Starting item: " .. itemName .. affordExtra, tmpColor})
+                    local affordExtra = ""
+                    local tmpColor = PST.kcolors.LIGHTBLUE1
+                    if tmpItem.cannotAfford then
+                        affordExtra = " (Cannot afford)"
+                        tmpColor = PST.kcolors.RED1
                     end
+                    table.insert(newDesc, {"Starting item: " .. itemName .. affordExtra, tmpColor})
                 end
             end
             return { name = descName, description = newDesc }
@@ -483,7 +480,7 @@ function PSTAVessel:calcConstellationAffinities()
     local tmpSpent = {}
     for i=#PSTAVessel.charStartItems,1,-1 do
         local startItem = PSTAVessel.charStartItems[i]
-        if startItem and startItem.spentType then
+        if startItem and not startItem.isMissing and startItem.spentType then
             local tmpType = startItem.spentType
             PSTAVessel.charStartItems[i].cannotAfford = nil
 
@@ -519,7 +516,7 @@ end
 
 function PSTAVessel:charHasStartingActive()
     for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-        if tmpItem.active then return true end
+        if not tmpItem.isMissing and tmpItem.active then return true end
     end
     return false
 end
@@ -527,7 +524,7 @@ end
 function PSTAVessel:charGetQualStartingQuant(qual)
     local quant = 0
     for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-        if tmpItem.qual and tmpItem.qual == qual then quant = quant + 1 end
+        if not tmpItem.isMissing and tmpItem.qual and tmpItem.qual == qual then quant = quant + 1 end
     end
     return quant
 end

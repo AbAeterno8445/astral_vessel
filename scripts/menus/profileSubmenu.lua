@@ -160,13 +160,10 @@ function PSTAVessel:initProfileSubmenu()
                         end
                         -- Display starting items
                         for _, tmpItem in ipairs(loadoutData.charStartItems) do
-                            if tmpItem.item then
-                                local itemCfg = Isaac.GetItemConfig():GetCollectible(tmpItem.item)
-                                if itemCfg then
-                                    local itemName = Isaac.GetLocalizedString("Items", itemCfg.Name, "en")
-                                    if itemName == "StringTable::InvalidKey" then itemName = itemCfg.Name end
-                                    table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolors.LIGHTBLUE1})
-                                end
+                            if not tmpItem.isMissing and tmpItem.itemName then
+                                local itemName = Isaac.GetLocalizedString("Items", tmpItem.itemName, "en")
+                                if itemName == "StringTable::InvalidKey" then itemName = tmpItem.itemName end
+                                table.insert(newDesc, {"Starting item: " .. itemName, PST.kcolors.LIGHTBLUE1})
                             end
                         end
                     end

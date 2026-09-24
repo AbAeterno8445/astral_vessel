@@ -87,7 +87,7 @@ end
 function PSTAVessel:GetStartItemsCount()
     local tmpCount = 0
     for _, tmpItem in ipairs(PSTAVessel.charStartItems) do
-        if tmpItem.item then tmpCount = tmpCount + 1 end
+        if not tmpItem.isMissing and tmpItem.item then tmpCount = tmpCount + 1 end
     end
     return tmpCount
 end
