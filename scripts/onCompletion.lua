@@ -2,7 +2,7 @@
 function PSTAVessel:onCompletion(event, noHard)
     ---@type EntityPlayer
     local player = PST:getPlayer()
-    if player and player:GetPlayerType() == PSTAVessel.vesselType then
+    if not Isaac.IsInGame() or (player and player:GetPlayerType() == PSTAVessel.vesselType) then
         local targetUnlockTable = PSTAVessel.charUnlocks
         local charProfile = PSTAVessel:getCurrentProfile()
         if charProfile then

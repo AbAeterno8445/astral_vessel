@@ -6,6 +6,7 @@ PSTAVessel.consoleCommands = {
             PSTAVessel:onCompletion("Mom")
             PSTAVessel:onCompletion("Momhard")
             PSTAVessel:onCompletion("lvl100")
+            PSTAVessel:onCompletion("all")
             for _, tmpType in pairs(CompletionType) do
                 PSTAVessel:onCompletion(tmpType)
                 PSTAVessel:onCompletion(tmpType .. "hard")

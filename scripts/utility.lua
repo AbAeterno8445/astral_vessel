@@ -92,16 +92,6 @@ function PSTAVessel:GetStartItemsCount()
     return tmpCount
 end
 
-function PSTAVessel:GetUnlocksCount(unlockData)
-    local tmpCount = 0
-    for _, unlockVal in pairs(unlockData) do
-        if unlockVal ~= nil then
-            tmpCount = tmpCount + 1
-        end
-    end
-    return tmpCount
-end
-
 ---- Function by TheCatWizard, taken from Modding of Isaac Discord ----
 -- Returns the actual amount of black hearts the player has
 ---@param player EntityPlayer
