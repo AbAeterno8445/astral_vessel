@@ -1,5 +1,5 @@
 PSTAVessel = RegisterMod("PST_AV", 1)
-PSTAVessel.version = "0.2.19"
+PSTAVessel.version = "0.2.20"
 
 include("scripts.utility")
 include("scripts.charProfiles")
@@ -37,6 +37,7 @@ include("scripts.entities")
 include("scripts.rendering")
 include("scripts.useCardsPills")
 include("scripts.sounds")
+include("scripts.tears")
 include("scripts.consoleCommands")
 
 local initFlag = false
@@ -115,6 +116,7 @@ function PSTAVessel:initMod()
     PSTAVessel:AddCallback(ModCallbacks.MC_PLAYER_GET_HEALTH_TYPE, PSTAVessel.playerHealthType)
     PSTAVessel:AddCallback(ModCallbacks.MC_POST_RENDER, PSTAVessel.onRender)
     PSTAVessel:AddCallback(ModCallbacks.MC_PRE_SFX_PLAY, PSTAVessel.preSFXPlay)
+    PSTAVessel:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, PSTAVessel.postFireTear)
 
     -- Entity debug
     --[[PSTAVessel:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, function(self, entityType, variant, subtype)

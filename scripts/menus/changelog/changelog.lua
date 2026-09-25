@@ -2,6 +2,12 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.20",
+        "- Paladin's Swordstorm (Divine Constellation) now turns your regular tears into sword projectiles.",
+        "- Reduced damage granted by Paladin (Divine Constellation) \"Soul Sword Projectile Damage\" nodes (from total +7% per full soul heart to +4.2%).",
+        "- Fixed application of various damage modifiers.",
+        "",
+
         "v0.2.19",
         "- Fixed starting pickup (coins, keys, bombs) nodes not granting the pickups reliably on run start.",
         "",

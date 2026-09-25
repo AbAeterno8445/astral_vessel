@@ -542,7 +542,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
             end
         end
 
-        if dmgMult ~= 1 and dmgExtra ~= 0 then
+        if dmgMult ~= 1 or dmgExtra ~= 0 then
             return { Damage = damage * math.max(0.01, dmgMult) + dmgExtra }
         end
     end
