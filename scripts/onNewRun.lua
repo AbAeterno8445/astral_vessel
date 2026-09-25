@@ -209,6 +209,27 @@ function PSTAVessel:onNewRun(isContinued)
         end
     end
 
+    -- Mod: % chance to start with additional coins
+    tmpMod = PST:getTreeSnapshotMod("vesselStartCoinChance", 0)
+    while tmpMod > 0 do
+        if 100 * math.random() < tmpMod then player:AddCoins(1) end
+        tmpMod = tmpMod - 100
+    end
+
+    -- Mod: % chance to start with additional keys
+    tmpMod = PST:getTreeSnapshotMod("vesselStartKeyChance", 0)
+    while tmpMod > 0 do
+        if 100 * math.random() < tmpMod then player:AddKeys(1) end
+        tmpMod = tmpMod - 100
+    end
+
+    -- Mod: % chance to start with additional bombs
+    tmpMod = PST:getTreeSnapshotMod("vesselStartBombChance", 0)
+    while tmpMod > 0 do
+        if 100 * math.random() < tmpMod then player:AddBombs(1) end
+        tmpMod = tmpMod - 100
+    end
+
     -- Weaponsmith node (Blacksmith mundane constellation)
     if PST:getTreeSnapshotMod("weaponsmith", false) and PST.astralWepApplyMods then
         local wepTier = math.min(5, math.floor(PST.modData.charData[PSTAVessel:getCharProfName()].level / 20))

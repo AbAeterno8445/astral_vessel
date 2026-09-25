@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.19",
+        "- Fixed starting pickup (coins, keys, bombs) nodes not granting the pickups reliably on run start.",
+        "",
+
         "v0.2.18",
         "- Fix occasional error when hitting enemies.",
         "",
