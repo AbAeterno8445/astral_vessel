@@ -177,7 +177,7 @@ function PSTAVessel:onDamage(target, damage, flag, source)
 
                 -- Hit source is directly the player or their tears
                 if source.Type == EntityType.ENTITY_PLAYER or source.SpawnerType == EntityType.ENTITY_PLAYER then
-                    local trueSrcPlayer = source.Entity:ToPlayer() or source.Entity.SpawnerEntity:ToPlayer()
+                    local trueSrcPlayer = source.Entity:ToPlayer() or (source.Entity.SpawnerEntity and source.Entity.SpawnerEntity:ToPlayer())
                     if trueSrcPlayer then
                         -- Squeeze Blood From Stone node (Baphomet demonic constellation)
                         if PST:getTreeSnapshotMod("squeezeBloodStone", false) and (flag & DamageFlag.DAMAGE_LASER) == 0 and target:GetFreezeCountdown() > 0 and PSTAVessel.modCooldowns.squeezeBloodStone == 0 then

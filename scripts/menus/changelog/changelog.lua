@@ -2,6 +2,10 @@ function PSTAVessel:getChangelogList()
     local changelog = {
         "",
 
+        "v0.2.18",
+        "- Fix occasional error when hitting enemies.",
+        "",
+
         "v0.2.17",
         "- Starting item loadouts now store item names and source mods where possible. When disabling a mod for which you had loadout items,",
         "these will go missing but still occupy the slot, and display a warning message. You can remove missing items with Respec input as usual.",
