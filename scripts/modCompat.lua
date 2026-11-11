@@ -499,6 +499,11 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addEpItem("FIRE_OF_ALEXANDRIA", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.DEMONIC})
         PSTAVessel_addEpItem("ANKLE_WEIGHTS", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addEpItem("GEOCACHE", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addEpItem("COPPOLA_HAT", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addEpItem("BOMB_VOUCHER", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addEpItem("FERRYMANS_OAR", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addEpItem("THROBBING_CROWN", {PSTAVConstellationType.MUTAGENIC, PSTAVConstellationType.OCCULT})
+        PSTAVessel_addEpItem("REMEMBRANCE", {PSTAVConstellationType.DIVINE})
 
         PSTAVessel_addEpItem("CARDIAC_ARREST", {PSTAVConstellationType.MUTAGENIC})
         PSTAVessel_addEpItem("THROWING_BAG", {PSTAVConstellationType.MUNDANE})
@@ -512,6 +517,8 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addEpItem("SURPRISE_BOX", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.MUNDANE})
         PSTAVessel_addEpItem("SAVAGE_CHAINS", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addEpItem("PORTABLE_DICE_MACHINE", {PSTAVConstellationType.MERCANTILE})
+        PSTAVessel_addEpItem("CORPUS_HERMETICUM", {PSTAVConstellationType.OCCULT})
+        PSTAVessel_addEpItem("CORPUS_VOCANDI", {PSTAVConstellationType.OCCULT})
 
         -- Knife items
         table.insert(PSTAVessel.knifeItems, Epiphany.Item.DESCENT.ID)
@@ -836,6 +843,10 @@ function PSTAVessel:initModCompat()
         PSTAVessel_addRevItem("Detective Magnifying Glass", {PSTAVConstellationType.MUNDANE})
         PSTAVessel_addRevItem("Schrödinger's Guppy Doll", {PSTAVConstellationType.MERCANTILE, PSTAVConstellationType.OCCULT})
         PSTAVessel_addRevItem("Teacher Qualification Certificate", {PSTAVConstellationType.MUNDANE})
+        PSTAVessel_addRevItem("Divine Virtues of Wind God", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.DIVINE, PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRevItem("Flapple", {PSTAVConstellationType.DEMONIC})
+        PSTAVessel_addRevItem("Peerless Wind God", {PSTAVConstellationType.ELEMENTAL})
+        PSTAVessel_addRevItem("Prohibitory Signboard", {PSTAVConstellationType.MUNDANE})
 
         PSTAVessel_addRevItem("Impulse to Destroy", {PSTAVConstellationType.DEMONIC})
         PSTAVessel_addRevItem("Blood Gem", {PSTAVConstellationType.DEMONIC})
@@ -3010,6 +3021,33 @@ function PSTAVessel:initModCompat()
 		PSTAVessel_addAnathemaItem("Scorched Wheat", {PSTAVConstellationType.DEMONIC})
 		PSTAVessel_addAnathemaItem("Beth's Pan", {PSTAVConstellationType.MUNDANE})
 		PSTAVessel_addAnathemaItem("Olive Branch", {PSTAVConstellationType.DIVINE})
+	end
+
+	-- TBoI: Retuned
+	if TBOI_RETUNED then
+		-- Items
+        local function PSTAVessel_addRetunedItem(retunedItemName, types, extraCost)
+            local tmpItem = Isaac.GetItemIdByName(retunedItemName)
+            if tmpItem == -1 then
+                print("[Astral Vessel] Warning: No TBoI: Retuned item '" .. retunedItemName .. "' found (mod compat).")
+                return
+            end
+            PSTAVessel:addConstellationItem(tmpItem, types, extraCost or 0, "TBoI: Retuned")
+        end
+
+		PSTAVessel_addRetunedItem("Tinnitus", {PSTAVConstellationType.MUTAGENIC})
+		PSTAVessel_addRetunedItem("Ol' Betsy", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRetunedItem("Headphones", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRetunedItem("Karaoke", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRetunedItem("Orchestra Leader", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRetunedItem("Tempo", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRetunedItem("Dissonance", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRetunedItem("Vibrato", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRetunedItem("Crescendo", {PSTAVConstellationType.ELEMENTAL})
+		PSTAVessel_addRetunedItem("Blast Helm", {PSTAVConstellationType.MUNDANE})
+		PSTAVessel_addRetunedItem("Golden Lute", {PSTAVConstellationType.ELEMENTAL, PSTAVConstellationType.OCCULT})
+
+		PSTAVessel_addRetunedItem("War Drum", {PSTAVConstellationType.MUNDANE, PSTAVConstellationType.OCCULT})
 	end
 end
 

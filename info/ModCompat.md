@@ -46,6 +46,7 @@
 - **ENA:** Items.
 - **Edith: Rebuilt:** Items.
 - **Anathema:** Items.
+- **TBoI: Retuned:** Items.
 
 \*Fly familiars are friendly monsters spawned by the **Suzerain Of Flies** large node, under the empyrean mutagenic 'Dragonfly' constellation.
 

@@ -1,7 +1,7 @@
 {
   "runtime.version": "Lua 5.3",
   "workspace.library": [
-    "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.16.0\\out\\emmylua\\repentogon"
+    "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.17.1\\out\\emmylua\\repentogon"
   ],
   "diagnostics.globals": [
     "ActionTriggers",
@@ -300,7 +300,8 @@
         "VTRemaster",
         "EdithRebuilt",
         "ENAmod",
-        "Furtherance"
+        "Furtherance",
+        "TBOI_RETUNED"
   ],
-  "runtime.plugin": "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.16.0\\out\\plugin\\plugin.lua"
+  "runtime.plugin": "c:\\Users\\Alejandro\\.vscode\\extensions\\filloax.isaac-lua-api-vscode-1.17.1\\out\\plugin\\plugin.lua"
 }
